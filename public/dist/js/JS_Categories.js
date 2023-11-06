@@ -1,17 +1,14 @@
-function JS_Category(baseUrl, module, action) {
-    $("#main_category").attr('class', 'nav-link active');
+function JS_Categories(baseUrl, module, action) {
+    $("#main_categories").attr('class', 'nav-link active');
     this.baseUrl = baseUrl;
     this.module = module;
     this.action = action;
     this.urlPath = baseUrl + '/' + module + (action != '' && action != undefined ? '/' + action : '');
-
-    // this.oFormIndex = 'form#frmCategory_index';
-    // this.oFormAdd = 'form#frmCategory_add';
 }
 /**
  * Sự kiện xảy ra
  */
-JS_Category.prototype.loadIndex = function(){
+JS_Categories.prototype.loadIndex = function(){
     var myClass = this;
     $('.chzn-select').chosen({height: '100%', width: '100%', search_contains: true});
     myClass.loadList();
@@ -25,7 +22,7 @@ JS_Category.prototype.loadIndex = function(){
 /**
  * Sự kiện con có thể dùng chung
  */
-JS_Category.prototype.loadEvent = function(){
+JS_Categories.prototype.loadEvent = function(){
     var myClass = this;
     $("#btn_update").click(function(){
         myClass.update();
@@ -37,10 +34,11 @@ JS_Category.prototype.loadEvent = function(){
 /**
  * Danh sách
  */
-JS_Category.prototype.loadList = function (currentPage = 1, perPage = 15) {
+JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
+    var oForm = '#frmCategory_index';
     var myClass = this;
     var url = myClass.urlPath + '/loadList';
-    var data = 'txtSearch=' + $("#frmCategory_index #txtSearch").val();
+    var data = 'txtSearch=' + $(oForm).find("#txtSearch").val();
     data += '&offset=' + currentPage;
     data += '&limit=' + perPage;
     Library.showloadding();
@@ -50,19 +48,19 @@ JS_Category.prototype.loadList = function (currentPage = 1, perPage = 15) {
         data: data,
         success: function (arrResult) {
             $("#table-container").html(arrResult['arrData']);
-            JS_Category.loadEvent(myClass, 'form#frmCategory_index');
+            JS_Categories.loadEvent(myClass, oForm);
             Library.hideloadding();
-            $("#frmCategory_index").find('.main_paginate .pagination a').click(function () {
+            $(oForm).find('.main_paginate .pagination a').click(function () {
                 var page = $(this).attr('page');
                 var perPage = $('#cbo_nuber_record_page').val();
                 myClass.loadList(page, perPage);
             });
-            $("#frmCategory_index").find('#cbo_nuber_record_page').change(function () {
-                var page = $("#frmCategory_index").find('#_currentPage').val();
-                var perPages = $("#frmCategory_index").find('#cbo_nuber_record_page').val();
+            $(oForm).find('#cbo_nuber_record_page').change(function () {
+                var page = $(oForm).find('#_currentPage').val();
+                var perPages = $(oForm).find('#cbo_nuber_record_page').val();
                 myClass.loadList(page, perPages);
             });
-            $("#frmCategory_index").find('#cbo_nuber_record_page').val(arrResult['perPage']);
+            $(oForm).find('#cbo_nuber_record_page').val(arrResult['perPage']);
         }, error: function(e){
             console.log(e);
             Library.hideloadding();
@@ -72,7 +70,7 @@ JS_Category.prototype.loadList = function (currentPage = 1, perPage = 15) {
 /**
  * Form thêm mới
  */
-JS_Category.prototype.create = function(){
+JS_Categories.prototype.create = function(){
     var myClass = this;
     var url = myClass.urlPath + '/create';
     Library.showloadding();
@@ -95,13 +93,13 @@ JS_Category.prototype.create = function(){
 /**
  * Form sửa
  */
-JS_Category.prototype.edit = function(id){
+JS_Categories.prototype.edit = function(id){
     
 }
 /**
  * Lưu thông tin
  */
-JS_Category.prototype.update = function(){
+JS_Categories.prototype.update = function(){
     var myClass = this;
     var oForm = 'form#frmCategory_add';
     var url = this.urlPath + '/update';
@@ -134,19 +132,19 @@ JS_Category.prototype.update = function(){
 /**
  * Xóa thông tin
  */
-JS_Category.prototype.delete = function(){
+JS_Categories.prototype.delete = function(){
 
 }
 /**
  * Thêm dòng mới trang index
  */
-JS_Category.prototype.addrow = function(){
+JS_Categories.prototype.addrow = function(){
 
 }
 /**
  * Sự kiện tạo một id mới theo uuid()
  */
-JS_Category.prototype.broofa = function(){
+JS_Categories.prototype.broofa = function(){
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -155,7 +153,7 @@ JS_Category.prototype.broofa = function(){
 /**
  * Sự kiện khi bấm 2 lần
  */
-JS_Category.prototype.click2 = function(id, column, type = 'input'){
+JS_Categories.prototype.click2 = function(id, column, type = 'input'){
     var myClass = this;
     $(".td_"+column+"_" + id).removeAttr('ondblclick');
     var text = $("#span_"+column+"_" + id).html();
@@ -188,11 +186,12 @@ JS_Category.prototype.click2 = function(id, column, type = 'input'){
 /**
  * Cập nhật khi ở màn hình hiển thị danh sách
  */
-JS_Category.prototype.updateColumn = function(id, column, value = '') {
+JS_Categories.prototype.updateColumn = function(id, column, value = '') {
+    var oForm = '#frmCategory_index';
     var myClass = this;
     var url = myClass.baseUrl + '/updateColumn';
     var data = 'id=' + id;
-    data += '&_token=' + $('#frmCategory_index').find('#_token').val();
+    data += '&_token=' + $(oForm).find('#_token').val();
     if(column == 'code'){ data += '&code=' + (column == 'code' ? value : ""); }
     else if(column == 'name'){ data += '&name=' + value; }
     else if(column == 'order'){ data += '&order=' + value; }
@@ -220,7 +219,7 @@ JS_Category.prototype.updateColumn = function(id, column, value = '') {
 /**
  * Thay đổi trạng thái
  */
-JS_Category.prototype.changeStatus = function(id){
+JS_Categories.prototype.changeStatus = function(id){
     var myClass = this;
     var url = myClass.urlPath + '/changeStatus';
     var data = '_token=' + $(this.oFormIndex + " #_token").val();
@@ -247,6 +246,6 @@ JS_Category.prototype.changeStatus = function(id){
 /**
  * Tìm kiếm
  */
-JS_Category.prototype.search = function(){
-    JS_Category.loadList();
+JS_Categories.prototype.search = function(){
+    JS_Categories.loadList();
 }

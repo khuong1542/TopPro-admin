@@ -7,7 +7,7 @@ return [
         'checkRole' => false,
         'child' => false
     ],
-    'category' => [
+    'categories' => [
         'name' => 'Quản trị danh mục',
         'icon' => 'bx bx-menu',
         'checkRole' => 'ADMIN',
