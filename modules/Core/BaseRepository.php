@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Backend\Core;
+namespace Modules\Core;
 
 use Exception;
 use Carbon\Carbon;
@@ -226,7 +226,7 @@ abstract class BaseRepository
     {
         $raw = $field . ', count(' . $field . ') as ' . $field . '_count';
 
-        return $this->model->select(DB::raw($raw))->groupBy($field)->get();
+        return $this->model->select(\DB::raw($raw))->groupBy($field)->get();
     }
 
     /**

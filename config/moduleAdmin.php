@@ -7,8 +7,27 @@ return [
         'checkRole' => false,
         'child' => false
     ],
-    'categories' => [
+    'listtype' => [
         'name' => 'Quản trị danh mục',
+        'icon' => 'bx bx-list-ul',
+        'checkRole' => 'ADMIN',
+        'child' => [
+            'listtype' => [
+                'name' => 'Loại danh mục',
+                'icon' => 'bx bx-chevrons-right',
+                'checkRole' => 'ADMIN',
+                'child' => false,
+            ],
+            'list' => [
+                'name' => 'Danh mục đối tượng',
+                'icon' => 'bx bx-chevrons-right',
+                'checkRole' => 'ADMIN',
+                'child' => false,
+            ],
+        ],
+    ],
+    'categories' => [
+        'name' => 'Quản trị chuyên mục',
         'icon' => 'bx bx-menu',
         'checkRole' => 'ADMIN',
         'child' => false,

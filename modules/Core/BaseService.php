@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Backend\Core;
+namespace Modules\Core;
 
 use Illuminate\Container\Container as App;
 use Exception;

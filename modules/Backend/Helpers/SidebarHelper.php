@@ -27,7 +27,7 @@ class SidebarHelper
                     $htmls .= '<a class="nav-link" id="action_'.$key.'" href="'.url($module.'/'.$key).'">'.$value['name'].'</a>';
                 }
             }
-            $htmls .= '</div>';
+            $htmls .= '</div></div>';
         }else{
             $htmls .= '<div class="nav-item">';
             $htmls .= '<a class="nav-link" id="main_'.$module.'" href="'.url($module).'" data-placement="left" style="display: flex;align-items: center;">';

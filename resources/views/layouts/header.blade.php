@@ -19,7 +19,7 @@
                 <!-- End Navbar Vertical Toggle -->
 
                 <!-- Search Form -->
-                <div class="dropdown ms-2">
+                <div class="dropdown ms-7">
                     <!-- Input Group -->
                     <div class="d-none d-lg-block">
                         <div class="input-group input-group-merge input-group-borderless input-group-hover-light navbar-input-group">

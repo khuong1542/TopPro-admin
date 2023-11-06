@@ -1,6 +1,7 @@
 /* Base */
 :root {
     --base-color: #132144;
+    --base-color-logo: #186493;
 }
 .bg-base{background-color: var(--base-color) !important;}
 .btn-base {color: #fff !important;background-color: var(--base-color) !important;border-color: var(--base-color) !important;}

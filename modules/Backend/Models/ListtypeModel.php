@@ -4,10 +4,11 @@ namespace Modules\Backend\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CategoriesModel extends Model
+class ListtypeModel extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'listtype';
     public $incrementing = false;
 
+    protected $sortable = [];
     protected $fillable = [];
 }

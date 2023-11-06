@@ -1,15 +1,21 @@
 @php use Modules\Backend\Helpers\SidebarHelper; @endphp
-
 <aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered bg-base  ">
     <div class="navbar-vertical-container">
         <div class="navbar-vertical-footer-offset">
             <a class="navbar-brand" href="index.html" aria-label="Front">
-                <img class="navbar-brand-logo" src="" alt="Logo" data-hs-theme-appearance="default">
-                <img class="navbar-brand-logo-mini" src="" alt="Logo" data-hs-theme-appearance="default">
+                <div class="logo">
+                    <span class="d-flex align-items-center">
+                        <img class="navbar-brand-logo" src="{{ URL::asset('public/dist/images/logo.png') }}" alt="Logo" data-hs-theme-appearance="default">
+                        <span class="ps-1" style="font-size: 2rem;color: var(--base-color-logo);"><b>DEVPRO</b></span>
+                    </span>
+                </div>
+                <div class="logo-mini">
+                    <img class="navbar-brand-logo-mini" src="{{ URL::asset('public/dist/images/logo.png') }}" alt="Logo" data-hs-theme-appearance="default">
+                </div>
             </a>
             <button type="button" class="js-navbar-vertical-aside-toggle-invoker navbar-aside-toggler">
-                <i class="bx bx-chevron-left navbar-toggler-short-align" data-bs-template='<div class="tooltip d-none d-md-block" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>' data-bs-toggle="tooltip" data-bs-placement="right" title="Collapse"></i>
-                <i class="bx bx-menu navbar-toggler-full-align" data-bs-template='<div class="tooltip d-none d-md-block" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>' data-bs-toggle="tooltip" data-bs-placement="right" title="Expand"></i>
+                <i class="bx bx-chevron-left navbar-toggler-short-align"></i>
+                <i class="bx bx-menu navbar-toggler-full-align"></i>
             </button>
 
             <div class="navbar-vertical-content">

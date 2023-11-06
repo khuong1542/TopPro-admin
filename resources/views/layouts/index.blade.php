@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dashboard | Front - Admin &amp; Dashboard Template</title>
-    <link rel="shortcut icon" href="favicon.ico">
+    <title>Quản trị DEVPro</title>
+    <link rel="shortcut icon" href="{{ URL::asset('public/dist/images/logo.png') }}">
     @include('layouts.css')
     @include('layouts.js')
 
@@ -19,11 +19,14 @@
     </main>
 
     <script>
-    (function() {
-      window.onload = function () {
-        new HSSideNav('.js-navbar-vertical-aside').init()
-      }
-    })()
+      $(".js-navbar-vertical-aside-toggle-invoker").click(function(){
+        $("body").toggleClass('navbar-vertical-aside-mini-mode', '');
+      });
+    // (function() {
+    //   window.onload = function () {
+    //     new HSSideNav('.js-navbar-vertical-aside').init()
+    //   }
+    // })()
   </script>
 </body>
 </html>
