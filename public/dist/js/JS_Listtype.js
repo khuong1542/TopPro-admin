@@ -18,6 +18,9 @@ JS_Listtype.prototype.loadIndex = function(){
     $("#btn_add").click(function(){
         myClass.create();
     });
+    $("#btn_edit").click(function(){
+        myClass.edit();
+    });
     $("#btn_delete").click(function(){
         myClass.delete();
     });

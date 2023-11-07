@@ -3442,6 +3442,14 @@ textarea.form-control-lg {
     border-width: .0625rem 0
 }
 
+form label.required::after{
+    content: '*';
+    position: relative;
+    top: 3px;
+    color: red;
+    padding-left: 1px;
+}
+
 .input-group {
     position: relative;
     display: -ms-flexbox;
@@ -4240,7 +4248,11 @@ fieldset:disabled .btn {
 .dropdown-item-text {
     display: block;
     padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
-    color: var(--bs-dropdown-link-color)
+    color: var(--bs-dropdown-link-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
 }
 
 .dropdown-menu-dark {
@@ -24977,6 +24989,9 @@ label.form-control {
         padding-right: var(--bs-gutter-x, 1.25rem);
         padding-left: var(--bs-gutter-x, 1.25rem)
     }
+    .navbar-vertical-aside-closed-mode .navbar-vertical-aside .navbar-aside-toggler{
+        right: -135px !important;
+    }
 }
 
 .navbar.navbar-container .navbar-nav-wrap-content-start {
@@ -27191,12 +27206,14 @@ label.form-control {
         width: .125rem;
         height: calc(100% - .25rem);
         content: "";
-        background-color: rgba(231, 234, 243, .7)
+        background-color: rgba(231, 234, 243, .7);
     }
 
     .navbar-expand-lg .navbar-dropdown-menu,
     .navbar-expand-lg .navbar-dropdown-submenu {
-        position: absolute
+        position: absolute;
+        overflow-y: auto;
+        max-height: 80vh;
     }
 
     .navbar-expand-lg .navbar-dropdown-sub-menu {
@@ -27947,10 +27964,16 @@ label.form-control {
     transition: .4s
 }
 
+.navbar-vertical-aside-closed-mode .navbar-vertical-aside .navbar-aside-toggler{
+    right: -145px;
+    transition: .2s ease-in-out;
+}
+
 .navbar-vertical-aside .navbar-aside-toggler {
     position: absolute;
     top: .734375rem;
-    right: -45px
+    right: -45px;
+    transition: .2s ease-in-out;
 }
 
 .navbar-vertical-content {
@@ -30226,7 +30249,7 @@ label.form-control {
 
 .page-header {
     border-bottom: 1px solid #ced4da;
-    /* padding-bottom: 2rem; */
+    padding-bottom: 1rem;
     margin-bottom: 2.25rem
 }
 
@@ -31957,6 +31980,10 @@ label.form-control {
 
 .table-lg>:not(caption)>*>* {
     padding: 1rem 1.5rem
+}
+
+.table-lg thead th {
+    padding: .5rem 1.5rem
 }
 
 .table-thead-bordered>:not(:last-child)>:last-child>* {

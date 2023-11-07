@@ -1,12 +1,12 @@
 @php use Modules\Backend\Helpers\SidebarHelper; @endphp
-<aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered bg-base  ">
+<aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered bg-base navbar-vertical-aside-initialized">
     <div class="navbar-vertical-container">
         <div class="navbar-vertical-footer-offset">
             <a class="navbar-brand" href="index.html" aria-label="Front">
                 <div class="logo">
                     <span class="d-flex align-items-center">
                         <img class="navbar-brand-logo" src="{{ URL::asset('public/dist/images/logo.png') }}" alt="Logo" data-hs-theme-appearance="default">
-                        <span class="ps-1" style="font-size: 2rem;color: var(--base-color-logo);"><b>DEVPRO</b></span>
+                        <span class="ps-1" style="font-size: 2rem;color: var(--base-color-logo);"><b class="text-logo">DEVPRO</b></span>
                     </span>
                 </div>
                 <div class="logo-mini">

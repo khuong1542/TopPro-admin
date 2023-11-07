@@ -11,4 +11,13 @@ class ListtypeModel extends Model
 
     protected $sortable = [];
     protected $fillable = [];
+
+    public function filter($query, $param, $value)
+    {
+        switch($param){
+            case 'id':
+                return $query;
+            default: return $query;
+        }
+    }
 }

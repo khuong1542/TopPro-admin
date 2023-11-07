@@ -19,14 +19,15 @@
     </main>
 
     <script>
-      $(".js-navbar-vertical-aside-toggle-invoker").click(function(){
-        $("body").toggleClass('navbar-vertical-aside-mini-mode', '');
-      });
-    // (function() {
-    //   window.onload = function () {
-    //     new HSSideNav('.js-navbar-vertical-aside').init()
-    //   }
-    // })()
+      // $(".js-navbar-vertical-aside-toggle-invoker").click(function(){
+      //   // $("body").toggleClass('navbar-vertical-aside-mini-mode', '');
+      //   $("body").toggleClass('navbar-vertical-aside-closed-mode navbar-vertical-aside-mini-mode', '');
+      // });
+    (function() {
+      window.onload = function () {
+        new HSSideNav('.js-navbar-vertical-aside').init()
+      }
+    })()
   </script>
 </body>
 </html>

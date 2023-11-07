@@ -5,17 +5,21 @@
 @section('content')
 <div class="content container-fluid">
     <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h1 class="page-header-title">Quản trị danh mục</h1>
+        @include('listtype.listtype.button')
+    </div>
+    <div class="card">
+        <div class="table-responsive datatable-custom">
+            <div id="datatable_wrapper" class="dataTables_wrapper no-footer">
+                <div id="table-container"></div>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="addModal" data-bs-backdrop="static">
 <script>
     var baseUrl = "{{ url('') }}";
-    var JS_Listtype = new JS_Listtype(baseUrl, 'admin', 'categories');
-    jQuery(document).ready(function(){
+    var JS_Listtype = new JS_Listtype(baseUrl, 'listtype', 'listtype');
+    jQuery(document).ready(function() {
         JS_Listtype.loadIndex();
     });
 </script>

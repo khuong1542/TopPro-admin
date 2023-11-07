@@ -1,0 +1,29 @@
+.text-logo {
+    position: relative;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--base-color-logo);
+}
+.text-logo:before {
+    content: 'DEVPRO';
+    color: #fff;
+    position: absolute;
+    width: 0;
+    overflow: hidden;
+    transition: 1s;
+    text-shadow: 2px 1px red, 0 0 0px red;
+    animation: ani 5s infinite linear;
+}
+
+@keyframes ani {
+    0% {
+        width: 0;
+    }
+    50% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
