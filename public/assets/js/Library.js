@@ -2,15 +2,15 @@ function Library() {
 
 }
 
-Library.prototype.showloadding = function() {
+Library.prototype.showloadding = function () {
     $(".main_loadding").show();
 }
 
-Library.prototype.hideloadding = function() {
+Library.prototype.hideloadding = function () {
     $("#loadding").hide();
     $(".main_loadding").hide();
 }
-Library.prototype.alertMessageFrontend = function(type, label, message, s = 2000) {
+Library.prototype.alertMessageFrontend = function (type, label, message, s = 2000) {
     var vclass = 'alert';
     lclass = 'bx';
     if (type == 'primary') {
@@ -48,12 +48,12 @@ Library.prototype.alertMessageFrontend = function(type, label, message, s = 2000
     $("#message-icon").addClass(lclass);
     $("#message-label").html(label);
     $("#message-infor").html(message);
-    $("#message-alert").fadeTo(s, 500).slideUp(500, function() {
+    $("#message-alert").fadeTo(s, 500).slideUp(500, function () {
         $("#message-alert").slideUp(500);
     })
 }
 
-Library.prototype.alertMessage = function(type, label, message, s = 2500) {
+Library.prototype.alertMessage = function (type, label, message, s = 2500) {
     $.toast({
         title: label,
         content: message,
@@ -62,53 +62,53 @@ Library.prototype.alertMessage = function(type, label, message, s = 2500) {
         dismissible: true,
         positionDefaults: 'top-left'
     });
-    $(document).on('hidden.bs.toast','.toast',function (e) {
+    $(document).on('hidden.bs.toast', '.toast', function (e) {
         $(this).remove();
     });
 }
 
 Library = new Library();
 
-function select_row(obj){
+function select_row(obj) {
     var oTable = $(obj).parent().parent().parent();
     $(oTable).find('td').parent().removeClass('selected');
-    $(oTable).find('td').parent().find('input[name="chk_item_id"]').prop('checked',false);
+    $(oTable).find('td').parent().find('input[name="chk_item_id"]').prop('checked', false);
     $(obj).parent().addClass('selected');
     var attDisabled = $(obj).parent().find('input[name="chk_item_id"]').prop('disabled');
-    if(typeof(attDisabled) === 'undefined' || attDisabled == ''){
-        $(obj).parent().find('input[name="chk_item_id"]').prop('checked',true);
-        $(obj).parent().find('input[name="chk_item_id"]').prop('checked','checked');
+    if (typeof (attDisabled) === 'undefined' || attDisabled == '') {
+        $(obj).parent().find('input[name="chk_item_id"]').prop('checked', true);
+        $(obj).parent().find('input[name="chk_item_id"]').prop('checked', 'checked');
     }
 }
-function checkbox_all_item_id(p_chk_obj){
+function checkbox_all_item_id(p_chk_obj) {
     var p_chk_obj = $('#table-data').find('input[name="chk_item_id"]');
     var v_count = p_chk_obj.length;
     //remove class cua tat ca cac tr trong table
     if ($('[name="chk_all_item_id"]').is(':checked')) {
-        $(p_chk_obj).each(function() {
-          $(this).prop('checked',true);
-           $(this).parent().parent().addClass('selected');
+        $(p_chk_obj).each(function () {
+            $(this).prop('checked', true);
+            $(this).parent().parent().addClass('selected');
         });
-    }else{
-        $(p_chk_obj).each(function() {
-          $(this).prop('checked',false);
-           $(this).parent().parent().removeClass('selected');
-        });   
+    } else {
+        $(p_chk_obj).each(function () {
+            $(this).prop('checked', false);
+            $(this).parent().parent().removeClass('selected');
+        });
     }
 }
-function checkbox_all_item_id_delete(p_chk_obj){
+function checkbox_all_item_id_delete(p_chk_obj) {
     var p_chk_obj = $('#table-data-delete').find('input[name="chk_item_id"]');
     var v_count = p_chk_obj.length;
     //remove class cua tat ca cac tr trong table
     if ($('[name="chk_all_item_id"]').is(':checked')) {
-        $(p_chk_obj).each(function() {
-          $(this).prop('checked',true);
-           $(this).parent().parent().addClass('selected');
+        $(p_chk_obj).each(function () {
+            $(this).prop('checked', true);
+            $(this).parent().parent().addClass('selected');
         });
-    }else{
-        $(p_chk_obj).each(function() {
-          $(this).prop('checked',false);
-           $(this).parent().parent().removeClass('selected');
-        });   
+    } else {
+        $(p_chk_obj).each(function () {
+            $(this).prop('checked', false);
+            $(this).parent().parent().removeClass('selected');
+        });
     }
 }

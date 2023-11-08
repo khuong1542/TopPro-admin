@@ -6,7 +6,7 @@
                 <div class="logo">
                     <span class="d-flex align-items-center">
                         <img class="navbar-brand-logo" src="{{ URL::asset('public/dist/images/logo.png') }}" alt="Logo" data-hs-theme-appearance="default">
-                        <span class="ps-1" style="font-size: 2rem;color: var(--base-color-logo);"><b class="text-logo">DEVPRO</b></span>
+                        <span class="ps-1" style="font-size: 2rem;"><b class="text-logo">DEVPRO</b></span>
                     </span>
                 </div>
                 <div class="logo-mini">

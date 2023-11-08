@@ -268,7 +268,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
                                                                     </div>
                                                                 </div>
                                                             </div>

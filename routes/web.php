@@ -6,9 +6,6 @@ use Modules\Backend\Controllers\DashboardController;
 use Modules\Backend\Controllers\ListController;
 use Modules\Backend\Controllers\ListtypeController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 Route::prefix('/')->group(function(){
     Route::prefix('/')->group(function(){
         Route::get('', [DashboardController::class, 'index']);

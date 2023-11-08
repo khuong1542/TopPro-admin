@@ -46,4 +46,25 @@ class ListtypeService extends BaseService
         $data = [];
         return $data;
     }
+    /**
+     * Sửa
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function edit($input): array
+    {
+        $data = [];
+        return $data;
+    }
+    /**
+     * Cập nhật
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function _update($input): array
+    {
+        $data = $this->repository->_update($input);
+        return array('success' => true, 'message' => 'Cập nhật thành công');
+    }
+    
 }

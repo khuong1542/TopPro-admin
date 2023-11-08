@@ -1,4 +1,12 @@
 <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table dataTable no-footer" role="grid" aria-describedby="datatable_info">
+    <colgroup>
+        <col width="5%">
+        <col width="25%">
+        <col width="25%">
+        <col width="15%">
+        <col width="20%">
+        <col width="10%">
+    </colgroup>
     <thead class="thead-light">
         <th><input type="checkbox" name="chk_all_item_id" onclick="checkbox_all_item_id(document.forms[0].chk_item_id);"></th>
         <th>Mã danh mục</th>
@@ -30,7 +38,7 @@
     <tfoot>
         @if(isset($datas) && count($datas) > 0)
         <tr>
-            <td>{{ $datas->links('pagination.default') }}</td>
+            <td colspan="10">{{ $datas->links('pagination.default') }}</td>
         </tr>
         @else
         <tr>

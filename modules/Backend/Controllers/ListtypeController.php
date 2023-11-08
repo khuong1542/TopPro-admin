@@ -31,10 +31,27 @@ class ListtypeController extends Controller
     }
     /**
      * Thêm mới
+     * Request
      */
     public function create(Request $request)
     {
         $data = $this->listtypeService->create($request->all());
         return view('listtype.listtype.add', $data);
+    }
+    /**
+     * Sửa
+     */
+    public function edit(Request $request)
+    {
+        $data = $this->listtypeService->create($request->all());
+        return view('listtype.listtype.add', $data);
+    }
+    /**
+     * Cập nhật
+     */
+    public function update(Request $request)
+    {
+        $data = $this->listtypeService->_update($request->all());
+        return $data;
     }
 }

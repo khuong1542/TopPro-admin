@@ -3,17 +3,17 @@
     text-decoration: none;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--base-color-logo);
+    color: #fff;
 }
 .text-logo:before {
     content: 'DEVPRO';
-    color: #fff;
+    color: var(--base-color-logo);
     position: absolute;
-    width: 0;
+    width: 100%;
     overflow: hidden;
     transition: 1s;
-    text-shadow: 2px 1px red, 0 0 0px red;
     animation: ani 5s infinite linear;
+    -webkit-text-stroke: 1px var(--base-color-logo);
 }
 
 @keyframes ani {
