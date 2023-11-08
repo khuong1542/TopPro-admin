@@ -53,7 +53,7 @@ Library.prototype.alertMessageFrontend = function (type, label, message, s = 200
     })
 }
 
-Library.prototype.alertMessage = function (type, label, message, s = 2500) {
+Library.prototype.alertMessage = function (type, label, message, s = 3000) {
     $.toast({
         title: label,
         content: message,
@@ -110,5 +110,16 @@ function checkbox_all_item_id_delete(p_chk_obj) {
             $(this).prop('checked', false);
             $(this).parent().parent().removeClass('selected');
         });
+    }
+}
+function select_checkbox_row(obj){
+    if (obj.checked) {
+        $(obj).parent().parent().addClass('selected');
+        $(obj).prop('checked',true);
+        $(obj).prop('checked','checked');
+    }
+    else{
+        $(obj).parent().parent().removeClass('selected');
+        $(obj).prop('checked',false);
     }
 }

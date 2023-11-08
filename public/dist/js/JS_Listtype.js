@@ -39,6 +39,9 @@ JS_Listtype.prototype.loadEvent = function () {
     $("#btn_saveImport").click(function () {
         myClass.saveImport();
     });
+    $("input").on('keydown', function(){
+        $(this).removeClass('border-danger');
+    });
 }
 /**
  * Danh sách
@@ -114,24 +117,26 @@ JS_Listtype.prototype.update = function (type = false) {
     var myClass = this;
     var oForm = 'form#frmListtype_add';
     var url = this.urlPath + '/update';
+    var order = $("#order").val();
     var data = $(oForm).serialize();
-    // Library.showloadding();
+    Library.showloadding();
     $.ajax({
         url: url,
         type: 'POST',
         data: data,
         success: function (arrResult) {
+            Library.hideloadding();
             if (arrResult['success'] == true) {
                 Library.alertMessage('success', 'Thông báo', arrResult['message']);
                 $(oForm)[0].reset();
+                $(oForm).find('#order').val(parseInt(order) + 1);
                 if(type){
                     $(".modal").modal('hide');
                     myClass.loadList();
                 }
             } else {
-                myClass.loadList();
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
-                Library.hideloadding();
+                $("#" + arrResult.key).focus();
             }
         }, error: function (e) {
             console.log(e);

@@ -7,14 +7,17 @@ use Modules\Backend\Controllers\ListController;
 use Modules\Backend\Controllers\ListtypeController;
 
 Route::prefix('/')->group(function(){
+    // Dashboard
     Route::prefix('/')->group(function(){
         Route::get('', [DashboardController::class, 'index']);
         Route::get('dashboard', [DashboardController::class, 'index']);
     });
+    // Chuyên mục
     Route::prefix('/categories')->group(function(){
         Route::get('', [CategoriesController::class, 'index']);
         Route::get('create', [CategoriesController::class, 'create']);
     });
+    // Danh sách danh mục
     Route::prefix('listtype')->group(function(){
         Route::prefix('listtype')->group(function(){
             Route::get('/', [ListtypeController::class, 'index']);

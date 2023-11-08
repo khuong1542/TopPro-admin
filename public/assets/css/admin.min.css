@@ -27,3 +27,6 @@
         width: 0;
     }
 }
+.placeholder-danger::placeholder{
+    color: #dc3545;
+}

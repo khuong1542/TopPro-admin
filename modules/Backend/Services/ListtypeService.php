@@ -7,8 +7,11 @@ use Modules\Backend\Repositories\ListtypeRepository;
 
 class ListtypeService extends BaseService
 {
-    public function __construct()
-    {
+    private $validateService;
+    public function __construct(
+        ValidateService $validateService
+    ){
+        $this->validateService = $validateService;
         parent::__construct();
     }
     public function repository()
@@ -43,7 +46,7 @@ class ListtypeService extends BaseService
      */
     public function create($input): array
     {
-        $data = [];
+        $data['order'] = $this->repository->select('id')->count() + 1;
         return $data;
     }
     /**
@@ -63,6 +66,12 @@ class ListtypeService extends BaseService
      */
     public function _update($input): array
     {
+        $check = $this->validateService->validate($input, 'danh mục');
+        if($check['status'] === false){
+            foreach($check['message'] as $key => $message){
+                return array('success' => false, 'message' => $message, 'key' => $key);
+            }
+        }
         $data = $this->repository->_update($input);
         return array('success' => true, 'message' => 'Cập nhật thành công');
     }

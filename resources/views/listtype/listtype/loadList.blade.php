@@ -1,4 +1,4 @@
-<table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table dataTable no-footer" role="grid" aria-describedby="datatable_info">
+<table id="table-data" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table dataTable no-footer" role="grid" aria-describedby="datatable_info">
     <colgroup>
         <col width="5%">
         <col width="25%">
@@ -20,11 +20,11 @@
         @foreach($datas as $data)
         @php $id = $data->id; @endphp
         <tr>
-            <td align="center"><input type="checkbox" name="chk_item_id" value="{{ $data->id }}"></td>
-            <td>{{ $data->code }}</td>
-            <td>{{ $data->name }}</td>
-            <td align="center">{{ $data->order }}</td>
-            <td align="center">
+            <td align="center"><input type="checkbox" ondblclick="" onclick="{select_checkbox_row(this);}" name="chk_item_id" value="{{$data->id}}"></td>
+            <td onclick="{select_row(this);}">{{ $data->code }}</td>
+            <td onclick="{select_row(this);}">{{ $data->name }}</td>
+            <td onclick="{select_row(this);}" align="center">{{ $data->order }}</td>
+            <td onclick="{select_row(this);}" align="center">
                 <label class="custom-control custom-checkbox p-0 m-0 pointer " style="cursor: pointer;">
                     <input type="checkbox" hidden class="custom-control-input toggle-status" id="status_{{$id}}" data-id="{{$id}}" {{ $data->status == 1 ? 'checked' : '' }}>
                     <span class="custom-control-indicator p-0 m-0" onclick="JS_CategoryCate.changeStatusCategoryCate('{{$id}}')"></span>
