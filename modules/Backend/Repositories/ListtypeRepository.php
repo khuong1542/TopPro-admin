@@ -15,8 +15,16 @@ class ListtypeRepository extends BaseRepository
     {
         return ListtypeModel::class;
     }
+    /**
+     * Lưu thông tin
+     * @param $data Dữ liệu truyền vào
+     * @return array $sql
+     */
     public function _update($data)
     {
+        if(isset($data['order']) && !empty($data['order'])){
+            $this->updateOrder($data);
+        }
         if(isset($data['id']) && !empty($data['id'])){
             $sql = $this->model->where('id', $data['id'])->first();
             $sql->updated_at = date('Y-m-d H:i:s');
@@ -31,5 +39,17 @@ class ListtypeRepository extends BaseRepository
         $sql->status = isset($data['status']) && $data['status'] === 'on' ? 1 : 0;
         $sql->save();
         return $sql;
+    }
+    /**
+     * Cập nhật STT
+     */
+    public function updateOrder($data)
+    {
+        $query = $this->model->where('order', '>=', $data['order']);
+        if(isset($data['id']) && !empty($data['id'])){
+            $query = $query->where('id', '<>', $data['id']);
+        }
+        $query = $query->orderBy('order')->get();
+        dd($query);
     }
 }

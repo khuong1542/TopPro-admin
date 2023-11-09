@@ -26,6 +26,7 @@ Route::prefix('/')->group(function(){
             Route::get('edit', [ListtypeController::class, 'edit']);
             Route::post('update', [ListtypeController::class, 'update']);
             Route::post('delete', [ListtypeController::class, 'delete']);
+            Route::post('updateOrderTable', [ListtypeController::class, 'updateOrderTable']);
             Route::post('changeStatus', [ListtypeController::class, 'changeStatus']);
         });
         Route::prefix('list')->group(function(){

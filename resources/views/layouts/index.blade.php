@@ -12,11 +12,7 @@
 </head>
 
 <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset">
-	<div class="main_loadding" style="display: none;">
-		<svg class="spinner-container" viewBox="0 0 44 44">
-			<circle class="path" cx="22" cy="22" r="20" fill="none" stroke-width="4"></circle>
-		</svg>
-	</div>
+	<div class="main_loadding"></div>
 	@include('layouts.header')
 	@include('layouts.sidebar')
 	<main id="content" role="main" class="main">
@@ -25,10 +21,6 @@
 	</main>
 
 	<script>
-		// $(".js-navbar-vertical-aside-toggle-invoker").click(function(){
-		//   // $("body").toggleClass('navbar-vertical-aside-mini-mode', '');
-		//   $("body").toggleClass('navbar-vertical-aside-closed-mode navbar-vertical-aside-mini-mode', '');
-		// });
 		(function() {
 			window.onload = function() {
 				new HSSideNav('.js-navbar-vertical-aside').init()

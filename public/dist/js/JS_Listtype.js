@@ -7,6 +7,8 @@ function JS_Listtype(baseUrl, module, action) {
     this.module = module;
     this.action = action;
     this.urlPath = baseUrl + '/' + module + (action != '' && action != undefined ? '/' + action : '');
+    this.currentPage = 1
+    this.perPage = 15;
 }
 /**
  * Sự kiện xảy ra
@@ -23,6 +25,12 @@ JS_Listtype.prototype.loadIndex = function () {
     });
     $("#btn_delete").click(function () {
         myClass.delete();
+    });
+    $("#btn_search").click(function () {
+        search();
+    });
+    $("#btn_update_order").click(function () {
+        myClass.updateOrderTable();
     });
 }
 /**
@@ -47,10 +55,12 @@ JS_Listtype.prototype.loadEvent = function () {
  * Danh sách
  */
 JS_Listtype.prototype.loadList = function (currentPage = 1, perPage = 15) {
-    var oForm = '#frmListtype_index';
     var myClass = this;
+    var oForm = '#frmListtype_index';
+    myClass.currentPage = currentPage;
+    myClass.perPage = perPage;
     var url = myClass.urlPath + '/loadList';
-    var data = 'txtSearch=' + $(oForm).find("#txtSearch").val();
+    var data = 'txt_search=' + $(oForm).find("#txt_search").val();
     data += '&offset=' + currentPage;
     data += '&limit=' + perPage;
     Library.showloadding();
@@ -88,8 +98,7 @@ JS_Listtype.prototype.create = function () {
     Library.showloadding();
     $.ajax({
         url: url,
-        type: 'GET', processData: false,
-        contentType: false,
+        type: 'GET',
         success: function (arrResult) {
             Library.hideloadding();
             $("#addModal").html(arrResult);
@@ -107,7 +116,43 @@ JS_Listtype.prototype.create = function () {
  * Form sửa
  */
 JS_Listtype.prototype.edit = function (id) {
-
+    var myClass = this;
+    var url = myClass.urlPath + '/edit';
+    var listId = '';
+    var chk_item_id = $('#table-data').find('input[name="chk_item_id"]');
+    $(chk_item_id).each(function () {
+        if ($(this).is(':checked')) {
+            if (listId !== '') {
+                listId += ',' + $(this).val();
+            } else {
+                listId = $(this).val();
+            }
+        }
+    });
+    if(listId == ''){
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một danh mục để sửa!');
+        return false;
+    }
+    if(listId > 1){
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một danh mục để sửa!');
+        return false;
+    }
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {id: listId},
+        success: function (arrResult) {
+            Library.hideloadding();
+            $("#addModal").html(arrResult);
+            $("#addModal").modal('show');
+            $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
+            myClass.loadEvent();
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
 }
 /**
  * Lưu thông tin
@@ -132,7 +177,7 @@ JS_Listtype.prototype.update = function (type = false) {
                 $(oForm).find('#order').val(parseInt(order) + 1);
                 if(type){
                     $(".modal").modal('hide');
-                    myClass.loadList();
+                    myClass.loadList(myClass.currentPage, myClass.perPage);
                 }
             } else {
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
@@ -149,6 +194,31 @@ JS_Listtype.prototype.update = function (type = false) {
  */
 JS_Listtype.prototype.delete = function () {
 
+}
+/**
+ * Cập nhật lại toàn bộ STT
+ */
+JS_Listtype.prototype.updateOrderTable = function(){
+    var myClass = this;
+    var url = this.urlPath + '/updateOrderTable';
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {_token: $("#_token").val()},
+        success: function (arrResult) {
+            Library.hideloadding();
+            if (arrResult['success'] == true) {
+                Library.alertMessage('success', 'Thông báo', arrResult['message']);
+                myClass.loadList(myClass.currentPage, myClass.perPage);
+            } else {
+                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+            }
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
 }
 /**
  * Thêm dòng mới trang index
@@ -218,11 +288,11 @@ JS_Listtype.prototype.updateColumn = function (id, column, value = '') {
             if (result['success'] == true) {
                 Library.alertMessage('success', 'Thông báo', result['message']);
                 if (column == 'order') {
-                    myClass.loadList();
+                    myClass.loadList(myClass.currentPage, myClass.perPage);
                 }
             } else {
                 Library.alertMessage('danger', 'Lỗi', result['message']);
-                myClass.loadList();
+                myClass.loadList(myClass.currentPage, myClass.perPage);
             }
         }, error: function (e) {
             console.log(e);
@@ -261,6 +331,6 @@ JS_Listtype.prototype.changeStatus = function (id) {
 /**
  * Tìm kiếm
  */
-JS_Listtype.prototype.search = function () {
-    JS_Listtype.loadList();
+ function search () {
+    JS_Listtype.loadList(JS_Listtype.currentPage, JS_Listtype.perPage);
 }

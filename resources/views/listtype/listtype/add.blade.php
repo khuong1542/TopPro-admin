@@ -7,6 +7,7 @@
         <div class="modal-body">
             <form id="frmListtype_add" autocomplete="off">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="id" id="id" value="{{ $datas->id ?? '' }}">
                 <div class="mb-3 row">
                     <div class="col-md-3"><label class="required"><span>Mã danh mục</span></label></div>
                     <div class="col-md-9">
@@ -24,7 +25,7 @@
                 <div class="mb-3 row">
                     <div class="col-md-3"><label class="required"><span>Thứ tự</span></label></div>
                     <div class="col-md-3"><input type="number" name="order" id="order" class="form-control" placeholder="Thứ tự" value="{{ $datas->order ?? ( $order ?? '' ) }}"></div>
-                    <div class="col-md-6"><label class="form-control mt-0 border-0"><input type="checkbox" name="status" id="status" {{ $check ?? '' }}> Hoạt động</label></div>
+                    <div class="col-md-6"><label class="form-control mt-0 border-0"><input type="checkbox" name="status" id="status" {{ $checked ?? '' }}> Hoạt động</label></div>
                 </div>
             </form>
         </div>

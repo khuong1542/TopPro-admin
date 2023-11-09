@@ -33,6 +33,7 @@ class ListtypeService extends BaseService
      */
     public function loadList($input): array
     {
+        $input['sort'] = 'order';
         $data['datas'] = $this->repository->filter($input);
         return array(
             'arrData' => view('listtype.listtype.loadList', $data)->render(),
@@ -56,7 +57,9 @@ class ListtypeService extends BaseService
      */
     public function edit($input): array
     {
-        $data = [];
+        $listtype = $this->repository->where('id', $input['id'])->first();
+        $data['checked'] = $listtype->status == 1 ? 'checked="checked"' : '';
+        $data['datas'] = $listtype;
         return $data;
     }
     /**
@@ -74,6 +77,20 @@ class ListtypeService extends BaseService
         }
         $data = $this->repository->_update($input);
         return array('success' => true, 'message' => 'Cập nhật thành công');
+    }
+    /**
+     * Cập nhật số thứ tự
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function updateOrderTable($input): array
+    {
+        $listtype = $this->repository->select('*')->orderBy('updated_at')->orderBy('created_at')->get();
+        $i = 1;
+        foreach($listtype as $key => $value){
+            $value->update(['order' => $i++]);
+        }
+        return array('success' => true, 'message' => 'Cập nhật thành công!');
     }
     
 }

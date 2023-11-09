@@ -43,7 +43,7 @@ class ListtypeController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = $this->listtypeService->create($request->all());
+        $data = $this->listtypeService->edit($request->all());
         return view('listtype.listtype.add', $data);
     }
     /**
@@ -52,6 +52,17 @@ class ListtypeController extends Controller
     public function update(Request $request)
     {
         $data = $this->listtypeService->_update($request->all());
+        return $data;
+    }
+    /**
+     * Xoá
+     */
+    /**
+     * Cập nhật số thứ tự
+     */
+    public function updateOrderTable(Request $request)
+    {
+        $data = $this->listtypeService->updateOrderTable($request->all());
         return $data;
     }
 }

@@ -1,10 +1,10 @@
-<table id="table-data" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table dataTable no-footer" role="grid" aria-describedby="datatable_info">
+<table id="table-data" class="table table-lg table-borderless table-thead-bordered table-bordered table-striped" role="grid" aria-describedby="datatable_info">
     <colgroup>
         <col width="5%">
-        <col width="25%">
-        <col width="25%">
+        <col width="30%">
+        <col width="30%">
+        <col width="10%">
         <col width="15%">
-        <col width="20%">
         <col width="10%">
     </colgroup>
     <thead class="thead-light">
