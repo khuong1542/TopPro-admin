@@ -33,7 +33,7 @@ abstract class BaseService
     {
         $repository = $this->app->make($this->repository());
         if (!$repository instanceof BaseRepository) {
-            throw new Exception("Class {$this->repository()} must be an instance of Modules\Core\Efy\Http\BaseRepository");
+            throw new Exception("Class {$this->repository()} must be an instance of Modules\Core\BaseRepository");
         }
 
         $this->repository = $repository;

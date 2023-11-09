@@ -5,18 +5,24 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form id="frmListtype_add" autocomplete="off">
+            <form id="frmList_add" autocomplete="off">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id" id="id" value="{{ $datas->id ?? '' }}">
                 <div class="mb-3 row">
-                    <div class="col-md-3"><label class="required"><span>Mã danh mục</span></label></div>
+                    <div class="col-md-3"><label><span>Thuộc danh mục</span></label></div>
                     <div class="col-md-9">
-                        <input type="text" name="code" id="code" class="form-control" placeholder="Nhập mã danh mục" value="{{ $datas->code ?? '' }}">
+                        <input type="button" class="form-control text-start" disabled value="{{ $listtype->name }}">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <div class="col-md-3"><label class="required"><span>Tên danh mục</span></label></div>
-                    <div class="col-md-9"><input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên danh mục" value="{{ $datas->name ?? '' }}"></div>
+                    <div class="col-md-3"><label class="required"><span>Mã đối tượng</span></label></div>
+                    <div class="col-md-9">
+                        <input type="text" name="code" id="code" class="form-control" placeholder="Nhập mã đối tượng" value="{{ $datas->code ?? '' }}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-3"><label class="required"><span>Tên đối tượng</span></label></div>
+                    <div class="col-md-9"><input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên đối tượng" value="{{ $datas->name ?? '' }}"></div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-md-3"><label><span>Ghi chú</span></label></div>

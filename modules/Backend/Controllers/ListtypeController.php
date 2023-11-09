@@ -57,12 +57,25 @@ class ListtypeController extends Controller
     /**
      * Xoá
      */
+    public function delete(Request $request)
+    {
+        $data = $this->listtypeService->_delete($request->all());
+        return $data;
+    }
     /**
      * Cập nhật số thứ tự
      */
     public function updateOrderTable(Request $request)
     {
         $data = $this->listtypeService->updateOrderTable($request->all());
+        return $data;
+    }
+    /**
+     * Cập nhật trạng thái
+     */
+    public function changeStatus(Request $request)
+    {
+        $data = $this->listtypeService->changeStatus($request->all());
         return $data;
     }
 }

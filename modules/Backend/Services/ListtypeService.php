@@ -1,17 +1,22 @@
 <?php
- 
+
 namespace Modules\Backend\Services;
 
+use Modules\Backend\Models\ListModel;
 use Modules\Core\BaseService;
 use Modules\Backend\Repositories\ListtypeRepository;
+use Modules\Core\Helpers\LoggerHelpers;
 
 class ListtypeService extends BaseService
 {
     private $validateService;
+    private $logger;
     public function __construct(
         ValidateService $validateService
-    ){
+    ) {
         $this->validateService = $validateService;
+        $this->logger = new LoggerHelpers();
+        $this->logger->setFileName('ListtypeService_Backend');
         parent::__construct();
     }
     public function repository()
@@ -70,13 +75,37 @@ class ListtypeService extends BaseService
     public function _update($input): array
     {
         $check = $this->validateService->validate($input, 'danh mục');
-        if($check['status'] === false){
-            foreach($check['message'] as $key => $message){
+        if ($check['status'] === false) {
+            foreach ($check['message'] as $key => $message) {
                 return array('success' => false, 'message' => $message, 'key' => $key);
             }
         }
-        $data = $this->repository->_update($input);
-        return array('success' => true, 'message' => 'Cập nhật thành công');
+        try {
+            $this->logger->setChannel('Update')->log('Params', $input);
+            $data = $this->repository->_update($input);
+            return array('success' => true, 'message' => 'Cập nhật thành công');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('Update')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => $e->getMessage());
+        }
+    }
+    /**
+     * Xóa
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function _delete($input): array
+    {
+        $arrIds = explode(',', $input['listId']);
+        try {
+            $this->logger->setChannel('Delete')->log('Params', $arrIds);
+            ListModel::select('*')->whereIn('listtype_id', $arrIds)->delete();
+            $this->repository->whereIn('id', $arrIds)->delete();
+            return array('success' => true, 'message' => 'Xóa thành công.');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('Delete')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => 'Xóa thất bại!');
+        }
     }
     /**
      * Cập nhật số thứ tự
@@ -85,12 +114,28 @@ class ListtypeService extends BaseService
      */
     public function updateOrderTable($input): array
     {
-        $listtype = $this->repository->select('*')->orderBy('updated_at')->orderBy('created_at')->get();
-        $i = 1;
-        foreach($listtype as $key => $value){
-            $value->update(['order' => $i++]);
+        try {
+            $this->logger->setChannel('UpdateOrderTable')->log('Params', $input);
+            $listtype = $this->repository->select('*')->orderBy('updated_at')->orderBy('created_at')->get();
+            $i = 1;
+            foreach ($listtype as $key => $value) {
+                $value->update(['order' => $i++]);
+            }
+            return array('success' => true, 'message' => 'Cập nhật thành công!');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('UpdateOrderTable')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => 'Xóa thất bại!');
         }
-        return array('success' => true, 'message' => 'Cập nhật thành công!');
     }
-    
+    public function changeStatus($input): array
+    {
+        try {
+            $this->logger->setChannel('ChangeStatus')->log('Params', $input);
+            $this->repository->where('id', $input['id'])->update(['status' => $input['status']]);
+            return array('success' => true, 'message' => 'Cập nhật thành công!');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('ChangeStatus')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => 'Xóa thất bại!');
+        }
+    }
 }

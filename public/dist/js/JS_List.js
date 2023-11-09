@@ -1,8 +1,8 @@
-function JS_Listtype(baseUrl, module, action) {
+function JS_List(baseUrl, module, action) {
     $("#active_listtype").attr('class', 'nav-item active');
     $("#main_listtype").attr('class', 'nav-link dropdown-toggle active');
-    $("#action_listtype").attr('class', 'nav-link active');
     $("#collapse_listtype").attr('class', 'nav-collapse collapse show');
+    $("#action_list").attr('class', 'nav-link active');
     this.baseUrl = baseUrl;
     this.module = module;
     this.action = action;
@@ -13,7 +13,7 @@ function JS_Listtype(baseUrl, module, action) {
 /**
  * Sự kiện xảy ra
  */
-JS_Listtype.prototype.loadIndex = function () {
+JS_List.prototype.loadIndex = function () {
     var myClass = this;
     $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
     myClass.loadList();
@@ -32,19 +32,25 @@ JS_Listtype.prototype.loadIndex = function () {
     $("#btn_update_order").click(function () {
         myClass.updateOrderTable();
     });
+    $("#listtype_id").change(function () {
+        search();
+    });
 }
 /**
  * Danh sách
  */
-JS_Listtype.prototype.loadList = function (currentPage = 1, perPage = 15) {
+JS_List.prototype.loadList = function (currentPage = 1, perPage = 15) {
     var myClass = this;
-    var oForm = '#frmListtype_index';
+    var oForm = '#frmList_index';
     myClass.currentPage = currentPage;
     myClass.perPage = perPage;
     var url = myClass.urlPath + '/loadList';
-    var data = 'txt_search=' + $(oForm).find("#txt_search").val();
-    data += '&offset=' + currentPage;
-    data += '&limit=' + perPage;
+    var data = {
+        listtype_id: $("#listtype_id").val(),
+        txt_search: $("#txt_search").val(),
+        offset: currentPage,
+        limit: perPage,
+    }
     Library.showloadding();
     $.ajax({
         url: url,
@@ -73,15 +79,24 @@ JS_Listtype.prototype.loadList = function (currentPage = 1, perPage = 15) {
 /**
  * Form thêm mới
  */
-JS_Listtype.prototype.create = function () {
+JS_List.prototype.create = function () {
     var myClass = this;
     var url = myClass.urlPath + '/create';
+    var data = {
+        _token: $("#_token").val(),
+        listtype_id: $("#listtype_id").val(),
+    }
     Library.showloadding();
     $.ajax({
         url: url,
-        type: 'GET',
+        type: 'POST',
+        data: data,
         success: function (arrResult) {
             Library.hideloadding();
+            if (arrResult['success'] == false) {
+                Library.alertMessage('warning', 'Lỗi', arrResult['message']);
+                return false;
+            }
             $("#addModal").html(arrResult);
             $("#addModal").modal('show');
             $("#status").attr('checked', true);
@@ -101,7 +116,7 @@ JS_Listtype.prototype.create = function () {
 /**
  * Form sửa
  */
-JS_Listtype.prototype.edit = function (id) {
+JS_List.prototype.edit = function (id) {
     var myClass = this;
     var url = myClass.urlPath + '/edit';
     var listId = '';
@@ -127,7 +142,7 @@ JS_Listtype.prototype.edit = function (id) {
     $.ajax({
         url: url,
         type: 'GET',
-        data: { id: listId },
+        data: { id: listId, listtype_id: $("#listtype_id").val() },
         success: function (arrResult) {
             Library.hideloadding();
             $("#addModal").html(arrResult);
@@ -146,12 +161,13 @@ JS_Listtype.prototype.edit = function (id) {
  * Lưu thông tin
  * @return string
  */
-JS_Listtype.prototype.update = function (type = false) {
+JS_List.prototype.update = function (type = false) {
     var myClass = this;
-    var oForm = 'form#frmListtype_add';
+    var oForm = 'form#frmList_add';
     var url = myClass.urlPath + '/update';
     var order = $("#order").val();
     var data = $(oForm).serialize();
+    data += '&listtype_id=' + $("#listtype_id").val();
     Library.showloadding();
     $.ajax({
         url: url,
@@ -180,7 +196,7 @@ JS_Listtype.prototype.update = function (type = false) {
 /**
  * Xóa thông tin
  */
-JS_Listtype.prototype.delete = function () {
+JS_List.prototype.delete = function () {
     var myClass = this;
     var listId = '';
     var chk_item_id = $('#table-data').find('input[name="chk_item_id"]');
@@ -200,13 +216,14 @@ JS_Listtype.prototype.delete = function () {
     var url = myClass.urlPath + '/delete';
     $.confirm({
         title: 'Thông báo',
+        titleClass: 'fw-bold text-danger',
         content: 'Bạn có chắc chắn muốn xóa!',
         type: 'red',
         closeIcon: true,
         autoClose: 'cancel|9000',
         buttons: {
             delete: {
-                btnClass: 'btn-danger',
+                btnClass: 'btn-primary',
                 text: 'Xác nhận',
                 action: function () {
                     Library.showloadding();
@@ -230,7 +247,7 @@ JS_Listtype.prototype.delete = function () {
                 }
             },
             cancel: {
-                btnClass: 'btn-secondary',
+                btnClass: 'btn-danger',
                 text: 'Đóng',
                 action: function () { }
             },
@@ -240,14 +257,15 @@ JS_Listtype.prototype.delete = function () {
 /**
  * Cập nhật lại toàn bộ STT
  */
-JS_Listtype.prototype.updateOrderTable = function () {
+JS_List.prototype.updateOrderTable = function () {
     var myClass = this;
     $.confirm({
         title: 'Thông báo',
-        content: 'Bạn có chắc chắn muốn cập nhật lại tất cả các số thứ tự!',
+        titleClass: 'fw-bold text-success',
+        content: 'Bạn có chắc chắn muốn cập nhật lại tất cả các số thứ tự của danh mục <b class="text-primary">' + $("#" + $("#listtype_id").val()).html() + '</b>!',
         type: 'green',
         closeIcon: true,
-        autoClose: 'cancel|9000',
+        // autoClose: 'cancel|9000',
         buttons: {
             delete: {
                 btnClass: 'btn-success',
@@ -258,7 +276,7 @@ JS_Listtype.prototype.updateOrderTable = function () {
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: { _token: $("#_token").val() },
+                        data: { _token: $("#_token").val(), listtype_id: $("#listtype_id").val() },
                         success: function (arrResult) {
                             Library.hideloadding();
                             if (arrResult['success'] == true) {
@@ -285,13 +303,13 @@ JS_Listtype.prototype.updateOrderTable = function () {
 /**
  * Thêm dòng mới trang index
  */
-JS_Listtype.prototype.addrow = function () {
+JS_List.prototype.addrow = function () {
 
 }
 /**
  * Sự kiện tạo một id mới theo uuid()
  */
-JS_Listtype.prototype.broofa = function () {
+JS_List.prototype.broofa = function () {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -300,7 +318,7 @@ JS_Listtype.prototype.broofa = function () {
 /**
  * Sự kiện khi bấm 2 lần
  */
-JS_Listtype.prototype.click2 = function (id, column, type = 'input') {
+JS_List.prototype.click2 = function (id, column, type = 'input') {
     var myClass = this;
     $(".td_" + column + "_" + id).removeAttr('ondblclick');
     var text = $("#span_" + column + "_" + id).html();
@@ -333,8 +351,8 @@ JS_Listtype.prototype.click2 = function (id, column, type = 'input') {
 /**
  * Cập nhật khi ở màn hình hiển thị danh sách
  */
-JS_Listtype.prototype.updateColumn = function (id, column, value = '') {
-    var oForm = '#frmListtype_index';
+JS_List.prototype.updateColumn = function (id, column, value = '') {
+    var oForm = '#frmList_index';
     var myClass = this;
     var url = myClass.baseUrl + '/updateColumn';
     var data = 'id=' + id;
@@ -367,7 +385,7 @@ JS_Listtype.prototype.updateColumn = function (id, column, value = '') {
  * Thay đổi trạng thái
  */
 function changeStatus(id) {
-    var myClass = JS_Listtype;
+    var myClass = JS_List;
     var url = myClass.urlPath + '/changeStatus';
     var data = {
         _token: $("#_token").val(),
@@ -396,5 +414,5 @@ function changeStatus(id) {
  * Tìm kiếm
  */
 function search() {
-    JS_Listtype.loadList(JS_Listtype.currentPage, JS_Listtype.perPage);
+    JS_List.loadList(JS_List.currentPage, JS_List.perPage);
 }

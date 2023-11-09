@@ -35,6 +35,7 @@ class ListtypeRepository extends BaseRepository
         }
         $sql->code = $data['code'] ?? null;
         $sql->name = $data['name'] ?? null;
+        $sql->note = $data['note'] ?? null;
         $sql->order = $data['order'] ?? null;
         $sql->status = isset($data['status']) && $data['status'] === 'on' ? 1 : 0;
         $sql->save();
@@ -42,14 +43,19 @@ class ListtypeRepository extends BaseRepository
     }
     /**
      * Cập nhật STT
+     * @param $data Dữ liệu truyền vào
      */
     public function updateOrder($data)
     {
         $query = $this->model->where('order', '>=', $data['order']);
         if(isset($data['id']) && !empty($data['id'])){
-            $query = $query->where('id', '<>', $data['id']);
+            $listtype = $this->model->where('id', $data['id'])->first();
+            $query = $query->where('id', '<>', $listtype->id)->where('order', '<', $listtype->order);
         }
         $query = $query->orderBy('order')->get();
-        dd($query);
+        $i = $data['order'];
+        foreach($query as $key => $value){
+            $value->update(['order' => ++$i]);
+        }
     }
 }
