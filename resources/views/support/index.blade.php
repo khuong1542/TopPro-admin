@@ -34,7 +34,7 @@
 <div class="modal fade" id="addModal" data-bs-backdrop="static"></div>
 <script>
     var baseUrl = "{{ url('') }}";
-    var JS_Support = new JS_Support(baseUrl, 'support', 'list');
+    var JS_Support = new JS_Support(baseUrl, 'support');
     jQuery(document).ready(function() {
         JS_Support.loadIndex();
     });

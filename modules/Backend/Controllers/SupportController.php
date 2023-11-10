@@ -3,6 +3,7 @@
 namespace Modules\Backend\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Backend\Services\SupportService;
 
 class SupportController extends Controller
@@ -26,6 +27,14 @@ class SupportController extends Controller
     public function loadList(Request $request)
     {
         $data = $this->supportService->loadList($request->all());
+        return $data;
+    }
+    /**
+     * Lấy thông tin danh sách
+     */
+    public function updateData(Request $request)
+    {
+        $data = $this->supportService->updateData($request->all());
         return $data;
     }
 }

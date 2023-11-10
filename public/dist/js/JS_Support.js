@@ -1,8 +1,5 @@
 function JS_Support(baseUrl, module, action) {
-    $("#active_listtype").attr('class', 'nav-item active');
-    $("#main_listtype").attr('class', 'nav-link dropdown-toggle active');
-    $("#collapse_listtype").attr('class', 'nav-collapse collapse show');
-    $("#action_list").attr('class', 'nav-link active');
+    $("#main_support").attr('class', 'nav-link active');
     this.baseUrl = baseUrl;
     this.module = module;
     this.action = action;
@@ -21,33 +18,18 @@ JS_Support.prototype.loadIndex = function () {
 /**
  * Xóa thông tin
  */
-JS_Support.prototype.delete = function () {
-    var myClass = this;
-    var listId = '';
-    var chk_item_id = $('#table-data').find('input[name="chk_item_id"]');
-    $(chk_item_id).each(function () {
-        if ($(this).is(':checked')) {
-            if (listId !== '') {
-                listId += ',' + $(this).val();
-            } else {
-                listId = $(this).val();
-            }
-        }
-    });
-    if (listId == '') {
-        Library.alertMessage('warning', 'Cảnh báo', 'Chọn ít nhất một danh mục để xoá!');
-        return false;
-    }
-    var url = myClass.urlPath + '/delete';
+ function updateData(code, type = '') {
+    var myClass = JS_Support;
+    var url = myClass.urlPath + '/updateData';
     $.confirm({
         title: 'Thông báo',
         titleClass: 'fw-bold text-danger',
-        content: 'Bạn có chắc chắn muốn xóa!',
+        content: 'Lấy danh sách danh mục đối tượng!',
         type: 'red',
         closeIcon: true,
         autoClose: 'cancel|9000',
         buttons: {
-            delete: {
+            updateData: {
                 btnClass: 'btn-primary',
                 text: 'Xác nhận',
                 action: function () {
@@ -55,12 +37,11 @@ JS_Support.prototype.delete = function () {
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: { _token: $("#_token").val(), listId: listId },
+                        data: { _token: $("#_token").val(), code: code, type: type, },
                         success: function (arrResult) {
                             Library.hideloadding();
                             if (arrResult['success'] == true) {
                                 Library.alertMessage('success', 'Thông báo', arrResult['message']);
-                                myClass.loadList(myClass.currentPage, myClass.perPage);
                             } else {
                                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
                             }
