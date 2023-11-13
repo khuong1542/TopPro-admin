@@ -13,11 +13,6 @@ Route::prefix('/')->group(function(){
         Route::get('', [DashboardController::class, 'index']);
         Route::get('dashboard', [DashboardController::class, 'index']);
     });
-    // Chuyên mục
-    Route::prefix('/categories')->group(function(){
-        Route::get('', [CategoriesController::class, 'index']);
-        Route::get('create', [CategoriesController::class, 'create']);
-    });
     // Danh sách danh mục
     Route::prefix('listtype')->group(function(){
         Route::prefix('listtype')->group(function(){
@@ -41,9 +36,12 @@ Route::prefix('/')->group(function(){
             Route::post('changeStatus', [ListController::class, 'changeStatus']); 
         });
     });
-    Route::prefix('support')->group(function(){
-        Route::get('/', [SupportController::class, 'index']);
-        Route::post('updateData', [SupportController::class, 'updateData']); 
+    // Chuyên mục
+    Route::prefix('categories')->group(function(){
+        Route::get('', [CategoriesController::class, 'index']);
+        Route::get('loadList', [CategoriesController::class, 'loadList']);
+        Route::get('create', [CategoriesController::class, 'create']);
+        Route::post('addList', [CategoriesController::class, 'addList']);
     });
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});
@@ -52,4 +50,8 @@ Route::prefix('/')->group(function(){
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});
+    Route::prefix('support')->group(function(){
+        Route::get('/', [SupportController::class, 'index']);
+        Route::post('updateData', [SupportController::class, 'updateData']); 
+    });
 });

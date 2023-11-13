@@ -31,7 +31,6 @@ class ListtypeController extends Controller
     }
     /**
      * Thêm mới
-     * Request
      */
     public function create(Request $request)
     {

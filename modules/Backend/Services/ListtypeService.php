@@ -127,6 +127,11 @@ class ListtypeService extends BaseService
             return array('success' => false, 'message' => 'Xóa thất bại!');
         }
     }
+    /**
+     * Cập nhật trạng thái
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
     public function changeStatus($input): array
     {
         try {

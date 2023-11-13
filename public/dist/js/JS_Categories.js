@@ -4,41 +4,31 @@ function JS_Categories(baseUrl, module, action) {
     this.module = module;
     this.action = action;
     this.urlPath = baseUrl + '/' + module + (action != '' && action != undefined ? '/' + action : '');
+    this.oFormIndex = '#frmCategories_index';
+    this.oFormAdd = '#frmCategories_add';
 }
 /**
  * Sự kiện xảy ra
  */
-JS_Categories.prototype.loadIndex = function(){
+JS_Categories.prototype.loadIndex = function () {
     var myClass = this;
-    $('.chzn-select').chosen({height: '100%', width: '100%', search_contains: true});
+    $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
     myClass.loadList();
-    $("#btn_add").click(function(){
+    $("#btn_add").click(function () {
         myClass.create();
     });
-    $("#btn_delete").click(function(){
+    $("#btn_delete").click(function () {
         myClass.delete();
-    });
-}
-/**
- * Sự kiện con có thể dùng chung
- */
-JS_Categories.prototype.loadEvent = function(){
-    var myClass = this;
-    $("#btn_update").click(function(){
-        myClass.update();
-    });
-    $("#btn_saveImport").click(function(){
-        myClass.saveImport();
     });
 }
 /**
  * Danh sách
  */
 JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
-    var oForm = '#frmCategory_index';
     var myClass = this;
+    var oForm = myClass.oFormIndex;
     var url = myClass.urlPath + '/loadList';
-    var data = 'txtSearch=' + $(oForm).find("#txtSearch").val();
+    var data = 'txt_search=' + $(oForm).find("#txt_search").val();
     data += '&offset=' + currentPage;
     data += '&limit=' + perPage;
     Library.showloadding();
@@ -48,7 +38,6 @@ JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
         data: data,
         success: function (arrResult) {
             $("#table-container").html(arrResult['arrData']);
-            JS_Categories.loadEvent(myClass, oForm);
             Library.hideloadding();
             $(oForm).find('.main_paginate .pagination a').click(function () {
                 var page = $(this).attr('page');
@@ -61,7 +50,7 @@ JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
                 myClass.loadList(page, perPages);
             });
             $(oForm).find('#cbo_nuber_record_page').val(arrResult['perPage']);
-        }, error: function(e){
+        }, error: function (e) {
             console.log(e);
             Library.hideloadding();
         }
@@ -70,21 +59,89 @@ JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
 /**
  * Form thêm mới
  */
-JS_Categories.prototype.create = function(){
+JS_Categories.prototype.create = function () {
     var myClass = this;
     var url = myClass.urlPath + '/create';
     Library.showloadding();
     $.ajax({
         url: url,
-        type: 'GET',processData: false,
-        contentType: false,
-        success: function(arrResult){
+        type: 'GET',
+        success: function (arrResult) {
             Library.hideloadding();
             $("#addModal").html(arrResult);
             $("#addModal").modal('show');
-            $('.chzn-select').chosen({height: '100%', width: '100%', search_contains: true});
-            myClass.loadEvent();
-        },error: function(e){
+            $("#status").attr('checked', true);
+            $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
+            $("#btn_add_layout").click(function () { myClass.addList('layout') });
+            $("#btn_add_type").click(function () { myClass.addList('type') });
+            $("#btn_update").click(function () {
+                myClass.update(false);
+            });
+            $("#btn_update_close").click(function () {
+                myClass.update(true);
+            });
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
+}
+/**
+ * Thêm danh mục đối tượng
+ */
+JS_Categories.prototype.addList = function (id) {
+    var myClass = this;
+    var url = this.urlPath + '/addList';
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (arrResult) {
+            if (arrResult['success'] == true) {
+                $("#addModal").modal('hide');
+                $("#addList").html(arrResult['data']);
+                $("#addList").modal('show');
+                $("#updateList").click(function(){
+                    myClass.updateList(id);
+                });
+            } else {
+                myClass.loadList();
+                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+                Library.hideloadding();
+            }
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
+}
+/**
+ * 
+ */
+JS_Categories.prototype.updateList = function(id){
+    var myClass = this;
+    var url = this.urlPath + '/updateList';
+    var data = {
+        _token: $("#_token").val(),
+        code: code,
+    };
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        success: function (arrResult) {
+            if (arrResult['success'] == true) {
+                $(".modal").modal('hide');
+                $("#" + id).append('<option value="' + arrResult['data']['code'] + '">' + arrResult['data']['name'] + '</option>');
+                $(".chzn-select").trigger('chosen:updated');
+                myClass.loadList();
+            } else {
+                myClass.loadList();
+                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+                Library.hideloadding();
+            }
+        }, error: function (e) {
             console.log(e);
             Library.hideloadding();
         }
@@ -93,15 +150,15 @@ JS_Categories.prototype.create = function(){
 /**
  * Form sửa
  */
-JS_Categories.prototype.edit = function(id){
-    
+JS_Categories.prototype.edit = function (id) {
+
 }
 /**
  * Lưu thông tin
  */
-JS_Categories.prototype.update = function(){
+JS_Categories.prototype.update = function () {
     var myClass = this;
-    var oForm = 'form#frmCategory_add';
+    var oForm = myClass.oFormAdd;
     var url = this.urlPath + '/update';
     var data = $(oForm).serialize();
     // var check = myClass.validateForm(myClass, oForm);
@@ -123,7 +180,7 @@ JS_Categories.prototype.update = function(){
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
                 Library.hideloadding();
             }
-        }, error: function(e){
+        }, error: function (e) {
             console.log(e);
             Library.hideloadding();
         }
@@ -132,19 +189,19 @@ JS_Categories.prototype.update = function(){
 /**
  * Xóa thông tin
  */
-JS_Categories.prototype.delete = function(){
+JS_Categories.prototype.delete = function () {
 
 }
 /**
  * Thêm dòng mới trang index
  */
-JS_Categories.prototype.addrow = function(){
+JS_Categories.prototype.addrow = function () {
 
 }
 /**
  * Sự kiện tạo một id mới theo uuid()
  */
-JS_Categories.prototype.broofa = function(){
+JS_Categories.prototype.broofa = function () {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -153,32 +210,32 @@ JS_Categories.prototype.broofa = function(){
 /**
  * Sự kiện khi bấm 2 lần
  */
-JS_Categories.prototype.click2 = function(id, column, type = 'input'){
+JS_Categories.prototype.click2 = function (id, column, type = 'input') {
     var myClass = this;
-    $(".td_"+column+"_" + id).removeAttr('ondblclick');
-    var text = $("#span_"+column+"_" + id).html();
-    $("#"+column+"_" + id).removeAttr('hidden');
-    if(type == 'input'){
-        $("#span_"+column+"_" + id).html('<textarea name="'+column+'" id="'+column+'_' + id + '" rows="3">'+text+'</textarea>');
-    }else if(type == 'select'){
+    $(".td_" + column + "_" + id).removeAttr('ondblclick');
+    var text = $("#span_" + column + "_" + id).html();
+    $("#" + column + "_" + id).removeAttr('hidden');
+    if (type == 'input') {
+        $("#span_" + column + "_" + id).html('<textarea name="' + column + '" id="' + column + '_' + id + '" rows="3">' + text + '</textarea>');
+    } else if (type == 'select') {
         console.log('select');
-    }else if(type == 'date'){
-        $("#span_"+column+"_" + id).html('<input name="'+column+'" id="'+column+'_' + id + '" rows="3" value="'+ text +'" />');
+    } else if (type == 'date') {
+        $("#span_" + column + "_" + id).html('<input name="' + column + '" id="' + column + '_' + id + '" rows="3" value="' + text + '" />');
         console.log('date');
-    }else if(type == 'textarea'){
+    } else if (type == 'textarea') {
         console.log('textarea');
-    }else if(type == 'multipleSelect'){
+    } else if (type == 'multipleSelect') {
         console.log('multipleSelect');
     }
-    $("#"+column+"_" + id).focus();
-    $("#span_"+column+"_" + id).removeAttr('id');
-    
-    $("#"+column+"_" + id).focusout(function(){
-        $(".td_"+column+"_" + id).attr('ondblclick', "click2('"+id+"', '"+column+"', '"+type+"')");
-        $("#"+column+"_" + id).attr('hidden', true);
-        $(".span_"+column+"_" + id).attr('id', 'span_'+column+'_' + id);
-        $(".span_"+column+"_" + id).html($("#"+column+"_" + id).val());
-        if(text != $(".span_" + column + '_' + id).html()){
+    $("#" + column + "_" + id).focus();
+    $("#span_" + column + "_" + id).removeAttr('id');
+
+    $("#" + column + "_" + id).focusout(function () {
+        $(".td_" + column + "_" + id).attr('ondblclick', "click2('" + id + "', '" + column + "', '" + type + "')");
+        $("#" + column + "_" + id).attr('hidden', true);
+        $(".span_" + column + "_" + id).attr('id', 'span_' + column + '_' + id);
+        $(".span_" + column + "_" + id).html($("#" + column + "_" + id).val());
+        if (text != $(".span_" + column + '_' + id).html()) {
             myClass.updateColumn(id, column, $(".span_" + column + '_' + id).html());
         }
     });
@@ -186,15 +243,15 @@ JS_Categories.prototype.click2 = function(id, column, type = 'input'){
 /**
  * Cập nhật khi ở màn hình hiển thị danh sách
  */
-JS_Categories.prototype.updateColumn = function(id, column, value = '') {
-    var oForm = '#frmCategory_index';
+JS_Categories.prototype.updateColumn = function (id, column, value = '') {
     var myClass = this;
+    var oForm = myClass.oFormIndex;
     var url = myClass.baseUrl + '/updateColumn';
     var data = 'id=' + id;
     data += '&_token=' + $(oForm).find('#_token').val();
-    if(column == 'code'){ data += '&code=' + (column == 'code' ? value : ""); }
-    else if(column == 'name'){ data += '&name=' + value; }
-    else if(column == 'order'){ data += '&order=' + value; }
+    if (column == 'code') { data += '&code=' + (column == 'code' ? value : ""); }
+    else if (column == 'name') { data += '&name=' + value; }
+    else if (column == 'order') { data += '&order=' + value; }
     $.ajax({
         url: url,
         data: data,
@@ -202,14 +259,14 @@ JS_Categories.prototype.updateColumn = function(id, column, value = '') {
         success: function (result) {
             if (result['success'] == true) {
                 Library.alertMessage('success', 'Thông báo', result['message']);
-                if(column == 'order'){
+                if (column == 'order') {
                     myClass.loadList();
                 }
             } else {
                 Library.alertMessage('danger', 'Lỗi', result['message']);
                 myClass.loadList();
             }
-        }, error: function(e){
+        }, error: function (e) {
             console.log(e);
             Library.hideloadding();
         }
@@ -219,10 +276,10 @@ JS_Categories.prototype.updateColumn = function(id, column, value = '') {
 /**
  * Thay đổi trạng thái
  */
-JS_Categories.prototype.changeStatus = function(id){
+JS_Categories.prototype.changeStatus = function (id) {
     var myClass = this;
     var url = myClass.urlPath + '/changeStatus';
-    var data = '_token=' + $(this.oFormIndex + " #_token").val();
+    var data = '_token=' + $("#_token").val();
     data += '&status=' + ($("#status_" + id).is(":checked") ? 0 : 1);
     data += '&id=' + id;
     Library.showloadding();
@@ -230,14 +287,14 @@ JS_Categories.prototype.changeStatus = function(id){
         url: url,
         type: "POST",
         data: data,
-        success: function(result){
-            if(result['success'] == true){
+        success: function (result) {
+            if (result['success'] == true) {
                 Library.alertMessage('success', 'Thông báo', result['message']);
-            }else{
+            } else {
                 Library.alertMessage('danger', 'Lỗi', result['message']);
             }
             Library.hideloadding();
-        }, error: function(e){
+        }, error: function (e) {
             console.log(e);
             Library.hideloadding();
         }
@@ -246,6 +303,6 @@ JS_Categories.prototype.changeStatus = function(id){
 /**
  * Tìm kiếm
  */
-JS_Categories.prototype.search = function(){
+JS_Categories.prototype.search = function () {
     JS_Categories.loadList();
 }
