@@ -2,16 +2,19 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2 class="modal-title" id="exampleModalLabel">Thêm mới</h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close btn_close_list" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form id="frmList_add" autocomplete="off">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="listtype_id" id="listtype_id">
+                <input type="hidden" name="listtype_id" id="listtype_id" value="{{ $listtype->id ?? '' }}">
                 <div class="mb-3 row">
                     <div class="col-md-3"><label><span>Thuộc danh mục</span></label></div>
-                    <div class="col-md-9">
-                        <input type="button" class="form-control text-start" disabled value="{{ $listtype->name }}">
+                    <div class="col-md-8">
+                        <input type="button" name="listtype_name" id="listtype_name" class="form-control text-start" disabled value="{{ $listtype->name ?? '' }}">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-primary" id="btn_add_listtype"><i class="bx bx-plus"></i></button>
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -37,10 +40,10 @@
         </div>
         <div class="modal-footer">
             @if(!isset($datas->id))
-            <button type="button" id="btn_update" class="btn btn-info">Lưu & Thêm</button>
+            <button type="button" id="btn_update_list" class="btn btn-info">Lưu & Thêm</button>
             @endif
-            <button type="button" id="btn_update_close" class="btn btn-primary">Lưu & Đóng</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+            <button type="button" id="btn_update_list_close" class="btn btn-primary">Lưu & Đóng</button>
+            <button type="button" class="btn btn-danger btn_close_list">Đóng</button>
         </div>
     </div>
 </div>

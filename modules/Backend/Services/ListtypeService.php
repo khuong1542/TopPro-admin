@@ -83,7 +83,7 @@ class ListtypeService extends BaseService
         try {
             $this->logger->setChannel('Update')->log('Params', $input);
             $data = $this->repository->_update($input);
-            return array('success' => true, 'message' => 'Cập nhật thành công');
+            return array('success' => true, 'message' => 'Cập nhật thành công', 'data' => $data);
         } catch (\Exception $e) {
             $this->logger->setChannel('Update')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
             return array('success' => false, 'message' => $e->getMessage());

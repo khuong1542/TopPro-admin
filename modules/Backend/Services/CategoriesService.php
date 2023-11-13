@@ -2,15 +2,28 @@
  
 namespace Modules\Backend\Services;
 
+use Illuminate\Support\Facades\Validator;
 use Modules\Core\BaseService;
 use Modules\Backend\Repositories\CategoriesRepository;
+use Modules\Core\Helpers\ListtypeHelper;
+use Modules\Core\Helpers\LoggerHelpers;
 
 class CategoriesService extends BaseService
 {
     private $listtypeService;
-    public function __construct(ListtypeService $listtypeService)
+    private $listService;
+    private $validateService;
+    private $logger;
+    public function __construct(
+        ListtypeService $listtypeService,
+        ListService $listService,
+        ValidateService $validateService)
     {
         $this->listtypeService = $listtypeService;
+        $this->listService = $listService;
+        $this->validateService = $validateService;
+        $this->logger = new LoggerHelpers;
+        $this->logger->setFileName('CategoriesService');
         parent::__construct();
     }
     public function repository()
@@ -46,15 +59,77 @@ class CategoriesService extends BaseService
      */
     public function create($input): array
     {
+        $data['layout'] = ListtypeHelper::_getAllByCode(['DM_LAYOUT']);
+        $data['type'] = ListtypeHelper::_getAllByCode(['DM_CATEGORY_TYPE']);
         $data['order'] = $this->repository->select('id')->count() + 1;
         return $data;
     }
     /**
-     * 
+     * Thêm mới danh sách đối tượng
+     * @param $input Dữ liệu truyền vào
+     * @return array
      */
     public function addList($input): array
     {
-        $data = [];
+        $validator = Validator::make($input, [
+            'code' => 'required',
+        ],[
+            'code.required' => 'Không tồn tại mã danh mục!',
+        ]);
+        if($validator->fails()){
+            return array('success' => false, 'message' => $validator->errors()->get('code')[0]);
+        }
+        $data['listtype'] = $this->listtypeService->where('code', $input['code'])->first();
+        $data['order'] = $this->listService->where('listtype_id', ($data['listtype']->id ?? null))->count() + 1;
+        return $data;
+    }
+    /**
+     * Cập nhật danh mục đối tượng
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function updateList($input): array
+    {
+        $validator = Validator::make($input, [
+            'dataUpdate' => 'required',
+        ],[
+            'dataUpdate.required' => 'Không tồn tại dữ liệu cập nhật!',
+        ]);
+        if($validator->fails()){
+            return array('success' => false, 'message' => $validator->errors()->get('dataUpdate')[0]);
+        }
+        parse_str($input['dataUpdate'], $params);
+        $data = $this->listService->_update($params);
+        return $data;
+    }
+    /**
+     * Thêm mới danh sách
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function addListtype($input): array
+    {
+        $data['order'] = $this->listtypeService->select('id')->count();
+        return $data;
+    }
+    /**
+     * Cập nhật danh mục
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function updateListtype($input): array
+    {
+        $validator = Validator::make($input, [
+            'dataUpdate' => 'required',
+        ],[
+            'dataUpdate.required' => 'Không tồn tại dữ liệu cập nhật!',
+        ]);
+        if($validator->fails()){
+            return array('success' => false, 'message' => $validator->errors()->get('dataUpdate')[0]);
+        }
+        parse_str($input['dataUpdate'], $params);
+        $data = $this->listtypeService->_update($params);
+        $data['order'] = $this->listService->where('listtype_id', $data['data']->id)->count() + 1;
         return $data;
     }
     /**
@@ -76,12 +151,13 @@ class CategoriesService extends BaseService
      */
     public function _update($input): array
     {
-        $check = $this->validateService->validate($input, 'danh mục');
-        if ($check['status'] === false) {
-            foreach ($check['message'] as $key => $message) {
-                return array('success' => false, 'message' => $message, 'key' => $key);
-            }
-        }
+        dd($input);
+        // $check = $this->validateService->validate($input, 'danh mục');
+        // if ($check['status'] === false) {
+        //     foreach ($check['message'] as $key => $message) {
+        //         return array('success' => false, 'message' => $message, 'key' => $key);
+        //     }
+        // }
         try {
             $this->logger->setChannel('Update')->log('Params', $input);
             $data = $this->repository->_update($input);

@@ -19,9 +19,9 @@
             <!-- Tồn tại mục con -->
             @if(isset($value['child']) && !empty($value['child']))
             <td rowspan="{{ count($value['child']) }}">{{ $value['name'] }}</td>
-            @php 
-                $vChild = array_splice( $value['child'], 0, 1 );
-                $kChild = key($vChild);
+            @php
+            $vChild = array_splice( $value['child'], 0, 1 );
+            $kChild = key($vChild);
             @endphp
             <td>{{ $vChild[key($vChild)]['name'] }}</td>
             <td align="center">
@@ -41,17 +41,19 @@
         <tr>
             <td align="center">{{ ++$i }}</td>
             <td>
-                <span>{{ $child['name'] }}</span>
-                <span class="col-md-6">
-                    @if(isset(${$child['code']}) && $child['code'] != 'DM_PHUONG_XA')
-                    <select name="listtype_id" id="listtype_id" class="form-control chzn-select">
-                        <option value="">--Chọn--</option>
-                        @foreach(${$child['code']} as $danhmuc)
-                        <option value="{{ $danhmuc['id'] }}">{{ $danhmuc['name'] }}</option>
-                        @endforeach
-                    </select>
-                    @endif
-                </span>
+                <div class="row">
+                    <span class="col-md-6">{{ $child['name'] }}</span>
+                    <span class="col-md-6 option_{{ $child['code'] }}">
+                        @if(isset(${$child['code']}) && $child['code'] != 'DM_PHUONG_XA')
+                        <select name="listtype_id" id="listtype_id" class="form-control chzn-select">
+                            <option value="">--Chọn--</option>
+                            @foreach(${$child['code']} as $danhmuc)
+                            <option value="{{ $danhmuc['id'] }}">{{ $danhmuc['name'] }}</option>
+                            @endforeach
+                        </select>
+                        @endif
+                    </span>
+                </div>
             </td>
             <td align="center">
                 <button type="button" id="btn_{{ $child['code'] }}" class="btn btn-primary" onclick="updateData('{{ $key }}', '{{ $keyChild }}')">Cập nhật</button>

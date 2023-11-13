@@ -72,8 +72,8 @@ JS_Categories.prototype.create = function () {
             $("#addModal").modal('show');
             $("#status").attr('checked', true);
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_add_layout").click(function () { myClass.addList('layout') });
-            $("#btn_add_type").click(function () { myClass.addList('type') });
+            $("#btn_add_layout").click(function () { myClass.addList('layout', 'DM_LAYOUT') });
+            $("#btn_add_type").click(function () { myClass.addList('type', 'DM_CATEGORY_TYPE') });
             $("#btn_update").click(function () {
                 myClass.update(false);
             });
@@ -89,26 +89,37 @@ JS_Categories.prototype.create = function () {
 /**
  * Thêm danh mục đối tượng
  */
-JS_Categories.prototype.addList = function (id) {
+JS_Categories.prototype.addList = function (id, code) {
     var myClass = this;
     var url = this.urlPath + '/addList';
+    var data = {
+        _token: $("#_token").val(),
+        code: code,
+    };
     Library.showloadding();
     $.ajax({
         url: url,
         type: 'GET',
+        data: data,
         success: function (arrResult) {
-            if (arrResult['success'] == true) {
-                $("#addModal").modal('hide');
-                $("#addList").html(arrResult['data']);
-                $("#addList").modal('show');
-                $("#updateList").click(function(){
-                    myClass.updateList(id);
-                });
-            } else {
-                myClass.loadList();
-                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
-                Library.hideloadding();
-            }
+            Library.hideloadding();
+            $("#addModal").modal('hide');
+            $("#addList").html(arrResult);
+            $("#addList").modal('show');
+            $("#frmList_add #status").attr('checked', true);
+            $("#btn_update_list").click(function(){
+                myClass.updateList(id, false);
+            });
+            $("#btn_update_list_close").click(function(){
+                myClass.updateList(id, true);
+            });
+            $("#btn_add_listtype").click(function(){
+                myClass.addListtype(id, false);
+            });
+            $(".btn_close_list").click(function(){
+                $("#addList").modal('hide');
+                $("#addModal").modal('show');
+            });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -118,12 +129,12 @@ JS_Categories.prototype.addList = function (id) {
 /**
  * 
  */
-JS_Categories.prototype.updateList = function(id){
+JS_Categories.prototype.updateList = function(id, type){
     var myClass = this;
     var url = this.urlPath + '/updateList';
     var data = {
         _token: $("#_token").val(),
-        code: code,
+        dataUpdate: $("#frmList_add").serialize(),
     };
     Library.showloadding();
     $.ajax({
@@ -131,13 +142,81 @@ JS_Categories.prototype.updateList = function(id){
         type: 'POST',
         data: data,
         success: function (arrResult) {
+            Library.hideloadding();
             if (arrResult['success'] == true) {
-                $(".modal").modal('hide');
                 $("#" + id).append('<option value="' + arrResult['data']['code'] + '">' + arrResult['data']['name'] + '</option>');
                 $(".chzn-select").trigger('chosen:updated');
-                myClass.loadList();
+                $("#frmList_add")[0].reset();
+                $("#frmList_add #order").val(parseInt(arrResult['data']['order']) + 1);
+                if(type){
+                    $("#addList").modal('hide');
+                    $("#addModal").modal('show');
+                }
             } else {
-                myClass.loadList();
+                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+            }
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
+}
+/**
+ * Thêm mới danh mục
+ */
+JS_Categories.prototype.addListtype = function(){
+    var myClass = this;
+    var url = this.urlPath + '/addListtype';
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'GET',
+            success: function (arrResult) {
+                Library.hideloadding();
+                $("#addList").modal('hide');
+                $("#addListtype").html(arrResult);
+                $("#addListtype").modal('show');
+                $("#frmListtype_add #status").attr('checked', true);
+                $("#btn_update_listtype").click(function(){
+                    myClass.updateListtype(id);
+                });
+                $(".btn_close_listtype").click(function(){
+                    $("#addListtype").html('');
+                    $("#addListtype").modal('hide');
+                    $("#addList").modal('show');
+                });
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
+}
+/**
+ * Cập nhật danh mục
+ */
+JS_Categories.prototype.updateListtype = function(){
+    var myClass = this;
+    var url = this.urlPath + '/updateListtype';
+    var data = {
+        _token: $("#_token").val(),
+        dataUpdate: $("#frmListtype_add").serialize(),
+    };
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        success: function (arrResult) {
+            Library.hideloadding();
+            if (arrResult['success'] == true) {
+                console.log(arrResult);
+                $("#frmList_add #listtype_name").val(arrResult['data']['name']);
+                $("#frmList_add #listtype_id").val(arrResult['data']['id']);
+                $("#frmList_add #order").val(arrResult['order']);
+                $("#addListtype").html('');
+                $("#addListtype").modal('hide');
+                $("#addList").modal('show');
+            } else {
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
                 Library.hideloadding();
             }

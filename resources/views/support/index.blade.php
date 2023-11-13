@@ -19,7 +19,7 @@
             <form id="frmSupport_index">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                 <div class="card-body">
-                    <div class="table-responsive datatable-custom">
+                    <div class="datatable-custom">
                         <div id="datatable_wrapper" class="dataTables_wrapper no-footer">
                             <div id="table-container">
                                 @include('support.loadList')
