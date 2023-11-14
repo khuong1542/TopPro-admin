@@ -52,7 +52,8 @@ class ListtypeService extends BaseService
      */
     public function create($input): array
     {
-        $data['order'] = $this->repository->select('id')->count() + 1;
+        $listtype = $this->repository->select('order')->orderBy('order', 'desc')->first();
+        $data['order'] = isset($listtype->order) ? (int)$listtype->order + 1 : 1;
         return $data;
     }
     /**

@@ -13,16 +13,19 @@ class CategoriesService extends BaseService
     private $listtypeService;
     private $listService;
     private $validateService;
+    private $fileService;
     private $logger;
     public function __construct(
         ListtypeService $listtypeService,
         ListService $listService,
-        ValidateService $validateService)
-    {
+        FileService $fileService,
+        ValidateService $validateService
+    ){
         $this->listtypeService = $listtypeService;
-        $this->listService = $listService;
+        $this->listService     = $listService;
         $this->validateService = $validateService;
-        $this->logger = new LoggerHelpers;
+        $this->fileService     = $fileService;
+        $this->logger          = new LoggerHelpers;
         $this->logger->setFileName('CategoriesService');
         parent::__construct();
     }
@@ -61,7 +64,8 @@ class CategoriesService extends BaseService
     {
         $data['layout'] = ListtypeHelper::_getAllByCode(['DM_LAYOUT']);
         $data['type'] = ListtypeHelper::_getAllByCode(['DM_CATEGORY_TYPE']);
-        $data['order'] = $this->repository->select('id')->count() + 1;
+        $categories = $this->repository->select('order')->orderBy('order', 'desc')->first();
+        $data['order'] = isset($categories->order) ? (int)$categories->order + 1 : 1;
         return $data;
     }
     /**
@@ -139,9 +143,9 @@ class CategoriesService extends BaseService
      */
     public function edit($input): array
     {
-        $categories = $this->repository->where('id', $input['id'])->first();
-        $data['checked'] = $categories->status == 1 ? 'checked="checked"' : '';
-        $data['datas'] = $categories;
+        $data['layout'] = ListtypeHelper::_getAllByCode(['DM_LAYOUT']);
+        $data['type'] = ListtypeHelper::_getAllByCode(['DM_CATEGORY_TYPE']);
+        $data['datas'] = $this->repository->where('id', $input['id'])->first();
         return $data;
     }
     /**
@@ -151,17 +155,29 @@ class CategoriesService extends BaseService
      */
     public function _update($input): array
     {
-        dd($input);
-        // $check = $this->validateService->validate($input, 'danh mục');
-        // if ($check['status'] === false) {
-        //     foreach ($check['message'] as $key => $message) {
-        //         return array('success' => false, 'message' => $message, 'key' => $key);
-        //     }
-        // }
+        $validator = Validator::make($input, [
+            'dataUpdate' => 'required',
+        ],[
+            'dataUpdate.required' => 'Không tồn tại dữ liệu cập nhật!',
+        ]);
+        if($validator->fails()){
+            return array('success' => false, 'message' => $validator->errors()->get('dataUpdate')[0]);
+        }
+        parse_str($input['dataUpdate'], $params);
+        $check = $this->validateService->validate($params, 'chuyên mục');
+        if ($check['status'] === false) {
+            foreach ($check['message'] as $key => $message) {
+                return array('success' => false, 'message' => $message, 'key' => $key);
+            }
+        }
         try {
             $this->logger->setChannel('Update')->log('Params', $input);
-            $data = $this->repository->_update($input);
-            return array('success' => true, 'message' => 'Cập nhật thành công');
+            if($_FILES != []){
+                $images = $this->fileService->upload($_FILES);
+                $params['images'] = $images[0]['url'];
+            }
+            $data = $this->repository->_update($params);
+            return array('success' => true, 'message' => 'Cập nhật thành công', 'data' => $data);
         } catch (\Exception $e) {
             $this->logger->setChannel('Update')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
             return array('success' => false, 'message' => $e->getMessage());

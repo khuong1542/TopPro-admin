@@ -230,7 +230,7 @@ JS_Listtype.prototype.delete = function () {
                 }
             },
             cancel: {
-                btnClass: 'btn-secondary',
+                btnClass: 'btn-default',
                 text: 'Đóng',
                 action: function () { }
             },
@@ -275,7 +275,7 @@ JS_Listtype.prototype.updateOrderTable = function () {
                 }
             },
             cancel: {
-                btnClass: 'btn-secondary',
+                btnClass: 'btn-default',
                 text: 'Đóng',
                 action: function () { }
             },

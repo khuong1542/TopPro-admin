@@ -41,10 +41,13 @@ Route::prefix('/')->group(function(){
         Route::get('', [CategoriesController::class, 'index']);
         Route::get('loadList', [CategoriesController::class, 'loadList']);
         Route::get('create', [CategoriesController::class, 'create']);
+        Route::get('edit', [CategoriesController::class, 'edit']);
+        Route::post('update', [CategoriesController::class, 'update']);
         Route::get('addList', [CategoriesController::class, 'addList']);
         Route::post('updateList', [CategoriesController::class, 'updateList']);
         Route::get('addListtype', [CategoriesController::class, 'addListtype']);
         Route::post('updateListtype', [CategoriesController::class, 'updateListtype']);
+        Route::post('delete', [CategoriesController::class, 'delete']);
     });
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});

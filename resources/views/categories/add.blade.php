@@ -23,13 +23,28 @@
                     <div class="col-md-9"><input type="text" name="slug" id="slug" class="form-control" placeholder="Nhập đường dẫn" value="{{ $datas->slug ?? '' }}"></div>
                 </div>
                 <div class="mb-3 row">
+                    <div class="col-md-3"><label><span>Ảnh đại diện</span></label></div>
+                    <div class="col-md-9">
+                        <label for="images" class="btn btn-default mt-0">Chọn ảnh</label>
+                        <input type="file" hidden name="images" id="images" onchange="showImage(this)">
+                        <div id="feature_img" class="mt-1 col-md-3">
+                            @if(isset($datas->images) && $datas->images)
+                            <img src="{{ $datas->images }}" alt="Ảnh đại diện" width="100%">
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 row">
                     <div class="col-md-3"><label><span>Layout</span></label></div>
                     <div class="col-md-8">
                         <select name="layout" id="layout" class="form-control chzn-select">
                             <option value="">--Chọn layout--</option>
                             @if(isset($layout))
                             @foreach($layout as $key => $value)
-                            <option value="{{ $value->code }}">{{ $value->name }}</option>
+                            <option 
+                                @if(isset($datas->layout) && $value->code == $datas->layout) selected @endif
+                                value="{{ $value->code }}">{{ $value->name }}
+                            </option>
                             @endforeach
                             @endif
                         </select>
@@ -45,7 +60,10 @@
                             <option value="">--Chọn loại chuyên mục--</option>
                             @if(isset($type))
                             @foreach($type as $key => $value)
-                            <option value="{{ $value->code }}">{{ $value->name }}</option>
+                            <option
+                                @if(isset($datas->type) && $value->code == $datas->type) selected @endif
+                                value="{{ $value->code }}">{{ $value->name }}
+                            </option>
                             @endforeach
                             @endif
                         </select>
@@ -63,19 +81,22 @@
                     <div class="col-md-9"><textarea type="text" name="note" id="note" rows="2" class="form-control" placeholder="Nhập ghi chú">{{ $datas->note ?? '' }}</textarea></div>
                 </div>
                 <div class="mb-3 row">
-                    <div class="col-md-3"><label><span>Ảnh đại diện</span></label></div>
-                    <div class="col-md-3">
-                        <label for="images" class="btn btn-default mt-0">Chọn ảnh</label>
-                        <input type="file" hidden name="images" id="images">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-control mt-0 border-0"><input type="checkbox" name="is_display_menu" id="is_display_menu"> Hiển thị trang chủ</label>
-                    </div>
-                </div>
-                <div class="mb-3 row">
                     <div class="col-md-3"><label class="required"><span>Thứ tự</span></label></div>
                     <div class="col-md-3"><input type="number" name="order" id="order" class="form-control" placeholder="Thứ tự" value="{{ $datas->order ?? ( $order ?? '' ) }}"></div>
-                    <div class="col-md-6"><label class="form-control mt-0 border-0"><input type="checkbox" name="status" id="status" {{ $checked ?? '' }}> Hoạt động</label></div>
+                    <div class="col-md-3">
+                        <label class="form-control mt-0 border-0">
+                            <input type="checkbox" name="status" id="status"
+                                @if(isset($datas->is_display_menu) && $datas->is_display_menu === 1) checked="true" @endif>
+                            <span>Hoạt động</span>
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control mt-0 border-0">
+                            <input type="checkbox" name="is_display_menu" id="is_display_menu"
+                                @if(isset($datas->is_display_menu) && $datas->is_display_menu === 1) checked="true" @endif>
+                            <span>Hiển thị trang chủ</span>
+                        </label>
+                    </div>
                 </div>
             </form>
         </div>

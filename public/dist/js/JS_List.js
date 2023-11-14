@@ -223,7 +223,7 @@ JS_List.prototype.delete = function () {
         autoClose: 'cancel|9000',
         buttons: {
             delete: {
-                btnClass: 'btn-primary',
+                btnClass: 'btn-danger',
                 text: 'Xác nhận',
                 action: function () {
                     Library.showloadding();
@@ -247,7 +247,7 @@ JS_List.prototype.delete = function () {
                 }
             },
             cancel: {
-                btnClass: 'btn-danger',
+                btnClass: 'btn-default',
                 text: 'Đóng',
                 action: function () { }
             },
@@ -265,7 +265,7 @@ JS_List.prototype.updateOrderTable = function () {
         content: 'Bạn có chắc chắn muốn cập nhật lại tất cả các số thứ tự của danh mục <b class="text-primary">' + $("#" + $("#listtype_id").val()).html() + '</b>!',
         type: 'green',
         closeIcon: true,
-        // autoClose: 'cancel|9000',
+        autoClose: 'cancel|9000',
         buttons: {
             delete: {
                 btnClass: 'btn-success',
@@ -293,7 +293,7 @@ JS_List.prototype.updateOrderTable = function () {
                 }
             },
             cancel: {
-                btnClass: 'btn-secondary',
+                btnClass: 'btn-default',
                 text: 'Đóng',
                 action: function () { }
             },

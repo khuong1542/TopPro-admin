@@ -5,7 +5,12 @@
 @section('content')
 <div class="content container-fluid">
     <div class="page-header">
-        @include('listtype.listtype.button')
+        <div class="row align-items-center">
+            <div class="col-sm mb-2 mb-sm-0">
+                <h1 class="page-header-title">Quản trị danh mục</h1>
+            </div>
+            @include('button.index')
+        </div>
     </div>
     <div class="page-body">
         <div class="card">

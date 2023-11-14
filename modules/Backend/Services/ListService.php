@@ -59,7 +59,8 @@ class ListService extends BaseService
             return array('success' => false, 'message' => 'Không tồn tại mã chuyên mục');
         }
         $data['listtype'] = $listtype;
-        $data['order'] = $this->repository->select('id')->where('listtype_id', $input['listtype_id'])->count() + 1;
+        $list = $this->repository->select('order')->where('listtype_id', $input['listtype_id'])->orderBy('order', 'desc')->first();
+        $data['order'] = isset($list->order) ? (int)$list->order + 1 : 1;
         return $data;
     }
     /**

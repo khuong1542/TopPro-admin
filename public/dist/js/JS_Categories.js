@@ -6,6 +6,8 @@ function JS_Categories(baseUrl, module, action) {
     this.urlPath = baseUrl + '/' + module + (action != '' && action != undefined ? '/' + action : '');
     this.oFormIndex = '#frmCategories_index';
     this.oFormAdd = '#frmCategories_add';
+    this.currentPage = 1
+    this.perPage = 15;
 }
 /**
  * Sự kiện xảy ra
@@ -17,8 +19,14 @@ JS_Categories.prototype.loadIndex = function () {
     $("#btn_add").click(function () {
         myClass.create();
     });
+    $("#btn_edit").click(function () {
+        myClass.edit();
+    });
     $("#btn_delete").click(function () {
         myClass.delete();
+    });
+    $("#btn_search").click(function () {
+        search();
     });
 }
 /**
@@ -27,6 +35,8 @@ JS_Categories.prototype.loadIndex = function () {
 JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
     var myClass = this;
     var oForm = myClass.oFormIndex;
+    myClass.currentPage = currentPage;
+    myClass.perPage = perPage;
     var url = myClass.urlPath + '/loadList';
     var data = 'txt_search=' + $(oForm).find("#txt_search").val();
     data += '&offset=' + currentPage;
@@ -144,7 +154,7 @@ JS_Categories.prototype.updateList = function(id, type){
         success: function (arrResult) {
             Library.hideloadding();
             if (arrResult['success'] == true) {
-                $("#" + id).append('<option value="' + arrResult['data']['code'] + '">' + arrResult['data']['name'] + '</option>');
+                $("#" + id).append('<option selected value="' + arrResult['data']['code'] + '">' + arrResult['data']['name'] + '</option>');
                 $(".chzn-select").trigger('chosen:updated');
                 $("#frmList_add")[0].reset();
                 $("#frmList_add #order").val(parseInt(arrResult['data']['order']) + 1);
@@ -230,32 +240,76 @@ JS_Categories.prototype.updateListtype = function(){
  * Form sửa
  */
 JS_Categories.prototype.edit = function (id) {
-
+    var myClass = this;
+    var url = myClass.urlPath + '/edit';
+    var listId = '';
+    var chk_item_id = $('#table-data').find('input[name="chk_item_id"]');
+    $(chk_item_id).each(function () {
+        if ($(this).is(':checked')) {
+            if (listId !== '') {
+                listId += ',' + $(this).val();
+            } else {
+                listId = $(this).val();
+            }
+        }
+    });
+    if (listId == '') {
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một chuyên mục để sửa!');
+        return false;
+    }
+    if (listId > 1) {
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một chuyên mục để sửa!');
+        return false;
+    }
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: { id: listId },
+        success: function (arrResult) {
+            Library.hideloadding();
+            $("#addModal").html(arrResult);
+            $("#addModal").modal('show');
+            $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
+            $("#btn_update_close").click(function () {
+                myClass.update(true);
+            });
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
 }
 /**
  * Lưu thông tin
  */
-JS_Categories.prototype.update = function () {
+JS_Categories.prototype.update = function (type) {
     var myClass = this;
     var oForm = myClass.oFormAdd;
     var url = this.urlPath + '/update';
-    var data = $(oForm).serialize();
-    // var check = myClass.validateForm(myClass, oForm);
-    // if (check == false) {
-    //     return false;
-    // }
+    var data = new FormData;
+    data.append('_token', $("#_token").val());
+    data.append('dataUpdate', $(oForm).serialize());
+    data.append('files', $("#images")[0].files[0]);
     Library.showloadding();
     $.ajax({
         url: url,
         type: 'POST',
         data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
         success: function (arrResult) {
             if (arrResult['success'] == true) {
-                $(".modal").modal('hide');
                 Library.alertMessage('success', 'Thông báo', arrResult['message']);
                 myClass.loadList();
+                $(oForm)[0].reset();
+                $("#feature_img").html('');
+                $("#images").val('');
+                if(type){
+                    $("#addModal").modal('hide');
+                }
             } else {
-                myClass.loadList();
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
                 Library.hideloadding();
             }
@@ -269,7 +323,62 @@ JS_Categories.prototype.update = function () {
  * Xóa thông tin
  */
 JS_Categories.prototype.delete = function () {
-
+    var myClass = this;
+    var listId = '';
+    var chk_item_id = $('#table-data').find('input[name="chk_item_id"]');
+    $(chk_item_id).each(function () {
+        if ($(this).is(':checked')) {
+            if (listId !== '') {
+                listId += ',' + $(this).val();
+            } else {
+                listId = $(this).val();
+            }
+        }
+    });
+    if (listId == '') {
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn ít nhất một chuyên mục để xoá!');
+        return false;
+    }
+    var url = myClass.urlPath + '/delete';
+    $.confirm({
+        title: 'Thông báo',
+        titleClass: 'fw-bold text-danger',
+        content: 'Bạn có chắc chắn muốn xóa!',
+        type: 'red',
+        closeIcon: true,
+        autoClose: 'cancel|9000',
+        buttons: {
+            delete: {
+                btnClass: 'btn-danger',
+                text: 'Xác nhận',
+                action: function () {
+                    Library.showloadding();
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: { _token: $("#_token").val(), listId: listId },
+                        success: function (arrResult) {
+                            Library.hideloadding();
+                            if (arrResult['success'] == true) {
+                                Library.alertMessage('success', 'Thông báo', arrResult['message']);
+                                myClass.loadList(myClass.currentPage, myClass.perPage);
+                            } else {
+                                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+                            }
+                        }, error: function (e) {
+                            console.log(e);
+                            Library.hideloadding();
+                        }
+                    });
+                }
+            },
+            cancel: {
+                btnClass: 'btn-default',
+                text: 'Đóng',
+                action: function () { }
+            },
+        }
+    });
 }
 /**
  * Thêm dòng mới trang index
@@ -382,6 +491,21 @@ JS_Categories.prototype.changeStatus = function (id) {
 /**
  * Tìm kiếm
  */
-JS_Categories.prototype.search = function () {
+function search() {
     JS_Categories.loadList();
+}
+/**
+ * Hiển thị hình ảnh
+ */
+function showImage(_this)
+{
+    var reader = new FileReader();
+    var img = document.createElement("img");
+    reader.readAsDataURL($(_this)[0].files[0]);
+    reader.onload = function(){
+        var dataURL = reader.result;
+        img.src = dataURL;
+        img.style = 'width: 100%;';
+    };
+    $("#feature_img").html(img);
 }
