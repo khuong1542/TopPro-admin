@@ -30,3 +30,6 @@
 .placeholder-danger::placeholder{
     color: #dc3545;
 }
+#table-data tr td{
+    vertical-align: middle;
+}
