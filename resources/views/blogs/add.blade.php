@@ -5,7 +5,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form id="frmCategories_add" autocomplete="off">
+            <form id="frmBlogs_add" autocomplete="off">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id" id="id" value="{{ $datas->id ?? '' }}">
                 <div class="mb-3 row">

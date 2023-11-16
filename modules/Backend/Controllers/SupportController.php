@@ -26,8 +26,8 @@ class SupportController extends Controller
      */
     public function loadList(Request $request)
     {
-        $data = $this->supportService->loadList($request->all());
-        return $data;
+        // $data = $this->supportService->loadList($request->all());
+        // return $data;
     }
     /**
      * Lấy thông tin danh sách

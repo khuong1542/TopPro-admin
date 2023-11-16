@@ -18,14 +18,14 @@ JS_Support.prototype.loadIndex = function () {
 /**
  * Xóa thông tin
  */
- function updateData(code, type = '') {
+function updateData(code, type = '') {
     var myClass = JS_Support;
     var url = myClass.urlPath + '/updateData';
     $.confirm({
         title: 'Thông báo',
-        titleClass: 'fw-bold text-danger',
+        titleClass: 'fw-bold text-primary',
         content: 'Lấy danh sách danh mục đối tượng!',
-        type: 'red',
+        type: 'blue',
         closeIcon: true,
         autoClose: 'cancel|9000',
         buttons: {
@@ -53,7 +53,7 @@ JS_Support.prototype.loadIndex = function () {
                 }
             },
             cancel: {
-                btnClass: 'btn-danger',
+                btnClass: 'btn-default',
                 text: 'Đóng',
                 action: function () { }
             },

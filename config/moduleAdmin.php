@@ -32,6 +32,12 @@ return [
         'checkRole' => 'ADMIN',
         'child' => false,
     ],
+    'blogs' => [
+        'name' => 'Quản trị bài viết',
+        'icon' => 'bx bx-news',
+        'checkRole' => 'ADMIN',
+        'child' => false,
+    ],
     'support' => [
         'name' => 'Hỗ trợ hệ thống',
         'icon' => 'bx bx-support',

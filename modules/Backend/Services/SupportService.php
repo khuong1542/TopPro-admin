@@ -35,7 +35,6 @@ class SupportService
      */
     public function updateData($input): array
     {
-        dd($input);
         $config = config('supportConfig');
         if(array_key_exists($input['code'], $config)){
             $data = $config[$input['code']];
@@ -77,9 +76,6 @@ class SupportService
      */
     public function getDataDiaDanhHanhChinh($data, $listtype_code, $type = '')
     {
-        dd($data, $listtype_code, $type);
-        dd($type);
-        // dd($data);
         $listtype = $this->listtypeService->where('code', $listtype_code)->first();
         $arr = [];
         $lists = $this->listService->select('code')->where('listtype_id', $listtype->id)->get()->toArray();

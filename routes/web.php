@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Backend\Controllers\BlogsController;
 use Modules\Backend\Controllers\CategoriesController;
 use Modules\Backend\Controllers\DashboardController;
 use Modules\Backend\Controllers\ListController;
@@ -49,7 +50,10 @@ Route::prefix('/')->group(function(){
         Route::post('updateListtype', [CategoriesController::class, 'updateListtype']);
         Route::post('delete', [CategoriesController::class, 'delete']);
     });
-    // Route::prefix('')->group(function(){});
+    Route::prefix('blogs')->group(function(){
+        Route::get('', [BlogsController::class, 'index']);
+        Route::get('loadList', [BlogsController::class, 'loadList']);
+    });
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});

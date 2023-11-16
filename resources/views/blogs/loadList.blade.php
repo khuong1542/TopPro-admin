@@ -9,9 +9,9 @@
     </colgroup>
     <thead class="thead-light">
         <th><input type="checkbox" name="chk_all_item_id" onclick="checkbox_all_item_id(document.forms[0].chk_item_id);"></th>
-        <th>Mã chuyên mục</th>
-        <th>Tên chuyên mục</th>
-        <th>Ảnh chuyên mục</th>
+        <th>Tiêu đề</th>
+        <th>Đường dẫn</th>
+        <th>Ảnh</th>
         <th>Thứ tự</th>
         <th>Trạng thái</th>
     </thead>
@@ -21,8 +21,8 @@
         @php $id = $data->id; @endphp
         <tr>
             <td align="center"><input type="checkbox" ondblclick="" onclick="{select_checkbox_row(this);}" name="chk_item_id" value="{{$data->id}}"></td>
-            <td onclick="{select_row(this);}">{{ $data->code }}</td>
-            <td onclick="{select_row(this);}">{{ $data->name }}</td>
+            <td onclick="{select_row(this);}">{{ $data->title }}</td>
+            <td onclick="{select_row(this);}"><a href="{{ $data->slug }}">{{ $data->slug }}</a></td>
             <td onclick="{select_row(this);}" align="center">
                 <img src="{{ $data->images ?? '' }}" alt="Ảnh đại diện" width="80">
             </td>

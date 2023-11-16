@@ -1,33 +1,30 @@
 @extends('layouts.index')
-@section('css')
-<style>
-    #frmSupport_index table tr td {
-        vertical-align: middle;
-    }
-</style>
-@endsection
 @section('js')
-<script src="{{ URL::asset('public/dist/js/JS_Support.js') }}"></script>
+<script src="{{ URL::asset('public/dist/js/JS_Blog.js') }}"></script>
 @endsection
 @section('content')
 <div class="content container-fluid">
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col-sm mb-2 mb-sm-0">
-                <h1 class="page-header-title">Hỗ trợ hệ thống</h1>
+                <h1 class="page-header-title">Quản trị bài viết</h1>
             </div>
+            @include('button.index')
         </div>
     </div>
     <div class="page-body">
         <div class="card">
-            <form id="frmSupport_index">
+            <form id="frmBlogs_index">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                <div class="card-header">
+                    <div class="row">
+                        @include('blogs.search')
+                    </div>
+                </div>
                 <div class="card-body">
-                    <div class="datatable-custom">
+                    <div class="table-responsive datatable-custom">
                         <div id="datatable_wrapper" class="dataTables_wrapper no-footer">
-                            <div id="table-container">
-                                @include('support.loadList')
-                            </div>
+                            <div id="table-container"></div>
                         </div>
                     </div>
                 </div>
@@ -36,11 +33,13 @@
     </div>
 </div>
 <div class="modal fade" id="addModal" data-bs-backdrop="static"></div>
+<div class="modal fade" id="addList" data-bs-backdrop="static"></div>
+<div class="modal fade" id="addListtype" data-bs-backdrop="static"></div>
 <script>
     var baseUrl = "{{ url('') }}";
-    var JS_Support = new JS_Support(baseUrl, 'support');
+    var JS_Blog = new JS_Blog(baseUrl, 'blogs');
     jQuery(document).ready(function() {
-        JS_Support.loadIndex();
+        JS_Blog.loadIndex();
     });
 </script>
 @endsection

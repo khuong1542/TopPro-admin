@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h2 class="modal-title" id="exampleModalLabel">Thêm mới</h2>
+            <h2 class="modal-title" id="exampleModalLabel">Thêm mới danh mục đối tượng</h2>
             <button type="button" class="btn-close btn_close_list" aria-label="Close"></button>
         </div>
         <div class="modal-body">

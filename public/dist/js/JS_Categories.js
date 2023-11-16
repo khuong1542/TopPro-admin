@@ -84,12 +84,8 @@ JS_Categories.prototype.create = function () {
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
             $("#btn_add_layout").click(function () { myClass.addList('layout', 'DM_LAYOUT') });
             $("#btn_add_type").click(function () { myClass.addList('type', 'DM_CATEGORY_TYPE') });
-            $("#btn_update").click(function () {
-                myClass.update(false);
-            });
-            $("#btn_update_close").click(function () {
-                myClass.update(true);
-            });
+            $("#btn_update").click(function () {myClass.update(false);});
+            $("#btn_update_close").click(function () {myClass.update(true);});
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -271,9 +267,9 @@ JS_Categories.prototype.edit = function (id) {
             $("#addModal").html(arrResult);
             $("#addModal").modal('show');
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_update_close").click(function () {
-                myClass.update(true);
-            });
+            $("#btn_add_layout").click(function () { myClass.addList('layout', 'DM_LAYOUT') });
+            $("#btn_add_type").click(function () { myClass.addList('type', 'DM_CATEGORY_TYPE') });
+            $("#btn_update_close").click(function () {myClass.update(true);});
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
