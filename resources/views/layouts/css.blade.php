@@ -7,5 +7,5 @@
 <link rel="stylesheet" href="{{URL::asset('public/assets/css/toast.min.css')}}">
 <link rel="stylesheet" href="{{URL::asset('public/assets/boxicons/css/boxicons.min.css')}}">
 <link rel="stylesheet" href="{{URL::asset('public/assets/chosen/chosen.min.css')}}">
-<link rel="stylesheet" href="{{URL::asset('public/assets/daterangepicker/daterangepicker.min.css')}}">
+<link rel="stylesheet" href="{{URL::asset('public/assets/datepicker/datepicker.min.css')}}">
 @yield('css')

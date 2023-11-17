@@ -142,6 +142,7 @@ JS_Blog.prototype.update = function (type) {
     var data = new FormData;
     data.append('_token', $("#_token").val());
     data.append('dataUpdate', $(oForm).serialize());
+    data.append('content', CKEDITOR.instances.editor1.getData());
     data.append('files', $("#images")[0].files[0]);
     Library.showloadding();
     $.ajax({

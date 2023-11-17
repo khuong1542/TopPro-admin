@@ -53,6 +53,10 @@ Route::prefix('/')->group(function(){
     Route::prefix('blogs')->group(function(){
         Route::get('', [BlogsController::class, 'index']);
         Route::get('loadList', [BlogsController::class, 'loadList']);
+        Route::get('create', [BlogsController::class, 'create']);
+        Route::get('edit', [BlogsController::class, 'edit']);
+        Route::post('update', [BlogsController::class, 'update']);
+        Route::post('delete', [BlogsController::class, 'delete']);
     });
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});

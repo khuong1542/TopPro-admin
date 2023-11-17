@@ -6,6 +6,6 @@
 <script src="{{URL::asset('public/assets/js/Library.js')}}"></script>
 <script src="{{URL::asset('public/assets/js/toast.min.js')}}"></script>
 <script src="{{URL::asset('public/assets/chosen/chosen.min.js')}}"></script>
-<script src="{{URL::asset('public/assets/daterangepicker/moment.min.js')}}"></script>
-<script src="{{URL::asset('public/assets/daterangepicker/daterangepicker.min.js')}}"></script>
+<script src="{{URL::asset('public/assets/ckeditor/ckeditor.js')}}"></script>
+<script src="{{URL::asset('public/assets/datepicker/datepicker.min.js')}}"></script>
 @yield('js')

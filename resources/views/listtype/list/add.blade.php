@@ -17,7 +17,7 @@
                 <div class="mb-3 row">
                     <div class="col-md-3"><label class="required"><span>Mã đối tượng</span></label></div>
                     <div class="col-md-9">
-                        <input type="text" name="code" id="code" class="form-control" placeholder="Nhập mã đối tượng" value="{{ $datas->code ?? '' }}">
+                        <input type="text" name="code" id="code" class="form-control text-uppercase" placeholder="Nhập mã đối tượng" value="{{ $datas->code ?? '' }}">
                     </div>
                 </div>
                 <div class="mb-3 row">

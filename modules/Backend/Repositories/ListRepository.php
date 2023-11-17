@@ -34,7 +34,7 @@ class ListRepository extends BaseRepository
             $sql->created_at = date('Y-m-d H:i:s');
         }
         $sql->listtype_id = $data['listtype_id'] ?? null;
-        $sql->code = $data['code'] ?? null;
+        $sql->code = strtoupper($data['code']) ?? null;
         $sql->name = $data['name'] ?? null;
         $sql->note = $data['note'] ?? null;
         $sql->order = $data['order'] ?? null;

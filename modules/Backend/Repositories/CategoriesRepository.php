@@ -33,7 +33,7 @@ class CategoriesRepository extends BaseRepository
             $sql->id = (string)\Str::uuid();
             $sql->created_at = date('Y-m-d H:i:s');
         }
-        $sql->code            = $data['code'] ?? null;
+        $sql->code            = strtoupper($data['code']) ?? null;
         $sql->name            = $data['name'] ?? null;
         $sql->slug            = $data['slug'] ?? null;
         $sql->layout          = $data['layout'] ?? null;
