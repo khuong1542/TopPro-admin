@@ -33,8 +33,8 @@
     </div>
 </div>
 <div class="modal fade" id="addModal" data-bs-backdrop="static"></div>
-<div class="modal fade" id="addList" data-bs-backdrop="static"></div>
-<div class="modal fade" id="addListtype" data-bs-backdrop="static"></div>
+<div class="modal fade" id="addModalList" data-bs-backdrop="static"></div>
+<div class="modal fade" id="addModalListtype" data-bs-backdrop="static"></div>
 <script>
     var baseUrl = "{{ url('') }}";
     var JS_Categories = new JS_Categories(baseUrl, 'categories');

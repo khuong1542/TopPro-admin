@@ -26,11 +26,11 @@ class CategoriesRepository extends BaseRepository
             $this->updateOrder($data);
         }
         if(isset($data['id']) && !empty($data['id'])){
-            $sql = $this->model->where('id', $data['id'])->first();
+            $sql             = $this->model->where('id', $data['id'])->first();
             $sql->updated_at = date('Y-m-d H:i:s');
         }else{
-            $sql = new $this->model;
-            $sql->id = (string)\Str::uuid();
+            $sql             = new $this->model;
+            $sql->id         = (string)\Str::uuid();
             $sql->created_at = date('Y-m-d H:i:s');
         }
         $sql->code            = strtoupper($data['code']) ?? null;
@@ -54,15 +54,9 @@ class CategoriesRepository extends BaseRepository
     public function updateOrder($data)
     {
         $query = $this->model->where('order', '>=', $data['order']);
-        if(isset($data['layout']) && !empty($data['layout'])){
-            $query = $query->where('layout', $data['layout']);
-        }
-        if(isset($data['type']) && !empty($data['type'])){
-            $query = $query->where('type', $data['type']);
-        }
         if(isset($data['id']) && !empty($data['id'])){
-            $list = $this->model->where('id', $data['id'])->first();
-            $query = $query->where('id', '<>', $list->id)->where('order', '<', $list->order);
+            $categories = $this->model->where('id', $data['id'])->first();
+            $query = $query->where('id', '<>', $categories->id);
         }
         $query = $query->orderBy('order')->get();
         $i = $data['order'];

@@ -87,6 +87,7 @@ class SupportService
             $params = [
                 'id' => (string)\Str::uuid(),
                 'listtype_id' => $listtype->id,
+                'listtype_code' => $listtype->code,
                 'code' => strtoupper($value['codename']),
                 'code_other' => strtoupper($value['code']),
                 'name' => $value['name'],

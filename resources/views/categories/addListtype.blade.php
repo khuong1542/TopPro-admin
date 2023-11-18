@@ -29,7 +29,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" id="btn_update_listtype" class="btn btn-primary">Lưu & Đóng</button>
+            <button type="button" id="btn_update_listtype" class="btn btn-info">Lưu & Thêm</button>
+            <button type="button" id="btn_update_listtype_close" class="btn btn-primary">Lưu & Đóng</button>
             <button type="button" class="btn btn-danger btn_close_listtype">Đóng</button>
         </div>
     </div>

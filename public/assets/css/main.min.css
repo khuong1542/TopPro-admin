@@ -6602,7 +6602,7 @@ fieldset:disabled .btn {
 }
 
 .modal-footer>* {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 @media (min-width:576px) {

@@ -50,7 +50,7 @@
                         </select>
                     </div>
                     <div class="col-md-1 pr-0" align="right">
-                        <button type="button" class="btn btn-primary" id="btn_add_layout"><i class="bx bx-plus"></i></button>
+                        <button type="button" class="btn btn-primary" id="btn_reset_layout" title="Tải lại danh sách danh mục"><i class='bx bx-refresh'></i></button>
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -69,7 +69,7 @@
                         </select>
                     </div>
                     <div class="col-md-1 pr-0" align="right">
-                        <button type="button" class="btn btn-primary" id="btn_add_type"><i class="bx bx-plus"></i></button>
+                        <button type="button" class="btn btn-primary" id="btn_reset_type" title="Tải lại danh sách danh mục"><i class='bx bx-refresh'></i></button>
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -100,12 +100,26 @@
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
-            @if(!isset($datas->id))
-            <button type="button" id="btn_update" class="btn btn-info">Lưu & Thêm</button>
-            @endif
-            <button type="button" id="btn_update_close" class="btn btn-primary">Lưu & Đóng</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+        <div class="modal-footer justify-content-between">
+            <div class="btn-other ms-0" style="display:flex;">
+                <button type="button" id="btn_add_listtype" class="btn btn-success d-flex align-items-center"><i class="bx bx-plus"></i><span>Danh mục</span></button>
+                <button type="button" id="btn_add_list" class="btn btn-success d-flex align-items-center ms-1"><i class="bx bx-plus"></i><span>Danh mục đối tượng</span></button>
+            </div>
+            <div class="ms-0">
+                @if(!isset($datas->id))
+                <button type="button" id="btn_update" class="btn btn-info">Lưu & Thêm</button>
+                @endif
+                <button type="button" id="btn_update_close" class="btn btn-primary">Lưu & Đóng</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    $("#frmCategories_add #name").change(function(){
+        var date = new Date;
+        var str = Library.convertStr(($("#name").val()).trim());
+        str = str + '-' + date.getTime() + '.html';
+        $("#slug").val(str);
+    });
+</script>

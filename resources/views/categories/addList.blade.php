@@ -7,14 +7,16 @@
         <div class="modal-body">
             <form id="frmList_add" autocomplete="off">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="listtype_id" id="listtype_id" value="{{ $listtype->id ?? '' }}">
                 <div class="mb-3 row">
                     <div class="col-md-3"><label><span>Thuộc danh mục</span></label></div>
-                    <div class="col-md-8">
-                        <input type="button" name="listtype_name" id="listtype_name" class="form-control text-start" disabled value="{{ $listtype->name ?? '' }}">
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-primary" id="btn_add_listtype"><i class="bx bx-plus"></i></button>
+                    <div class="col-md-9">
+                        <select name="listtype_id" id="listtype_id" class="form-control chzn-select">
+                            @if(isset($listtypes))
+                            @foreach($listtypes as $listtype)
+                            <option value="{{ $listtype->id }}">{{ $listtype->name }}</option>
+                            @endforeach
+                            @endif
+                        </select>
                     </div>
                 </div>
                 <div class="mb-3 row">

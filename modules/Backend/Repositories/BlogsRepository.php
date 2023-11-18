@@ -26,11 +26,11 @@ class BlogsRepository extends BaseRepository
             $this->updateOrder($data);
         }
         if(isset($data['id']) && !empty($data['id'])){
-            $sql = $this->model->where('id', $data['id'])->first();
+            $sql             = $this->model->where('id', $data['id'])->first();
             $sql->updated_at = date('Y-m-d H:i:s');
         }else{
-            $sql = new $this->model;
-            $sql->id = (string)\Str::uuid();
+            $sql             = new $this->model;
+            $sql->id         = (string)\Str::uuid();
             $sql->created_at = date('Y-m-d H:i:s');
         }
         $sql->categories_id       = $data['categories_id'] ?? null;
@@ -45,13 +45,13 @@ class BlogsRepository extends BaseRepository
         $sql->blog_type           = isset($data['blog_type']) ? trim(implode(',', $data['blog_type']), ',') : null;
         $sql->current_status      = $data['current_status'] ?? null;
         $sql->related_keywords    = $data['related_keywords'] ?? null;
-        $sql->is_comment          = isset($data['is_comment']) && $data['is_comment']                   === 'on' ? 1 : 0;
+        $sql->is_comment          = isset($data['is_comment']) && $data['is_comment'] === 'on' ? 1 : 0;
         $sql->is_hide_relate_blog = isset($data['is_hide_relate_blog']) && $data['is_hide_relate_blog'] === 'on' ? 1 : 0;
         $sql->view                = $data['view'] ?? null;
         $sql->like                = $data['like'] ?? null;
         $sql->rating              = $data['rating'] ?? null;
         $sql->order               = $data['order'] ?? null;
-        $sql->status              = isset($data['status']) && $data['status']                           === 'on' ? 1 : 0;
+        $sql->status              = isset($data['status']) && $data['status'] === 'on' ? 1 : 0;
         $sql->save();
         return $sql;
     }
@@ -63,8 +63,8 @@ class BlogsRepository extends BaseRepository
     {
         $query = $this->model->where('order', '>=', $data['order']);
         if(isset($data['id']) && !empty($data['id'])){
-            $list = $this->model->where('id', $data['id'])->first();
-            $query = $query->where('id', '<>', $list->id)->where('order', '<', $list->order);
+            $blogs = $this->model->where('id', $data['id'])->first();
+            $query = $query->where('id', '<>', $blogs->id);
         }
         $query = $query->orderBy('order')->get();
         $i = $data['order'];

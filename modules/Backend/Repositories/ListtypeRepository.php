@@ -26,17 +26,17 @@ class ListtypeRepository extends BaseRepository
             $this->updateOrder($data);
         }
         if(isset($data['id']) && !empty($data['id'])){
-            $sql = $this->model->where('id', $data['id'])->first();
+            $sql             = $this->model->where('id', $data['id'])->first();
             $sql->updated_at = date('Y-m-d H:i:s');
         }else{
-            $sql = new $this->model;
-            $sql->id = (string)\Str::uuid();
+            $sql             = new $this->model;
+            $sql->id         = (string)\Str::uuid();
             $sql->created_at = date('Y-m-d H:i:s');
         }
-        $sql->code = strtoupper($data['code']) ?? null;
-        $sql->name = $data['name'] ?? null;
-        $sql->note = $data['note'] ?? null;
-        $sql->order = $data['order'] ?? null;
+        $sql->code   = strtoupper($data['code']) ?? null;
+        $sql->name   = $data['name'] ?? null;
+        $sql->note   = $data['note'] ?? null;
+        $sql->order  = $data['order'] ?? null;
         $sql->status = isset($data['status']) && $data['status'] === 'on' ? 1 : 0;
         $sql->save();
         return $sql;
@@ -50,7 +50,7 @@ class ListtypeRepository extends BaseRepository
         $query = $this->model->where('order', '>=', $data['order']);
         if(isset($data['id']) && !empty($data['id'])){
             $listtype = $this->model->where('id', $data['id'])->first();
-            $query = $query->where('id', '<>', $listtype->id)->where('order', '<', $listtype->order);
+            $query = $query->where('id', '<>', $listtype->id);
         }
         $query = $query->orderBy('order')->get();
         $i = $data['order'];

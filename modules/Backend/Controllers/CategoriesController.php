@@ -46,6 +46,22 @@ class CategoriesController extends Controller
         return view('categories.add', $data);
     }
     /**
+     * Cập nhật Danh sách
+     */
+    public function addListtype(Request $request)
+    {
+        $data = $this->categoriesService->addListtype($request->all());
+        return view('categories.addListtype', $data);
+    }
+    /**
+     * Cập nhật Danh sách
+     */
+    public function updateListtype(Request $request)
+    {
+        $data = $this->categoriesService->updateListtype($request->all());
+        return $data;
+    }
+    /**
      * Cập nhật Danh sách đối tượng
      */
     public function addList(Request $request)
@@ -62,19 +78,11 @@ class CategoriesController extends Controller
         return $data;
     }
     /**
-     * Cập nhật Danh sách
+     * 
      */
-    public function addListtype(Request $request)
+    public function refresh(Request $request)
     {
-        $data = $this->categoriesService->addListtype($request->all());
-        return view('categories.addListtype', $data);
-    }
-    /**
-     * Cập nhật Danh sách
-     */
-    public function updateListtype(Request $request)
-    {
-        $data = $this->categoriesService->updateListtype($request->all());
+        $data = $this->categoriesService->refresh($request->all());
         return $data;
     }
     /**

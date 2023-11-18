@@ -4,10 +4,15 @@ function JS_Categories(baseUrl, module, action) {
     this.module = module;
     this.action = action;
     this.urlPath = baseUrl + '/' + module + (action != '' && action != undefined ? '/' + action : '');
-    this.oFormIndex = '#frmCategories_index';
-    this.oFormAdd = '#frmCategories_add';
-    this.currentPage = 1
-    this.perPage = 15;
+    this.oFormIndex = '#frmCategories_index'; // Form Index Chuyên mục
+    this.oFormAdd = '#frmCategories_add'; // Form Thêm chuyên mục
+    this.oFormListtypeAdd = '#frmListtype_add'; // Form Thêm danh sách danh mục
+    this.oFormListAdd = '#frmList_add'; // Form Thêm danh sách danh mục đối tượng
+    this.addModal = "#addModal"; // Modal Thêm mới chuyên mục
+    this.addModalListtype = "#addModalListtype"; // Modal Thêm mới danh sách danh mục
+    this.addModalList = "#addModalList"; // Modal Thêm mới danh sách danh mục đối tượng
+    this.currentPage = 1; // Trang hiển thị hiện tại
+    this.perPage = 15; // Số bản ghi hiển thị trên một trang
 }
 /**
  * Sự kiện xảy ra
@@ -25,20 +30,34 @@ JS_Categories.prototype.loadIndex = function () {
     $("#btn_delete").click(function () {
         myClass.delete();
     });
+    $("#btn_update_order").click(function () {
+        myClass.updateOrderTable();
+    });
     $("#btn_search").click(function () {
         search();
     });
 }
 /**
+ * Sự kiện con dùng chung
+ */
+JS_Categories.prototype.loadEvent = function () {
+    var myClass = this;
+    $("#btn_reset_layout").click(function () { myClass.refresh('layout', 'DM_LAYOUT') });
+    $("#btn_reset_type").click(function () { myClass.refresh('type', 'DM_LOAI_CHUYEN_MUC') });
+    $("#btn_add_listtype").click(function () { myClass.addListtype() });
+    $("#btn_add_list").click(function () { myClass.addList() });
+}
+/**
  * Danh sách
+ * @param currentPage Trang hiện tại
+ * @param perPage Số bản ghi hiển thị trên trang
  */
 JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
     var myClass = this;
-    var oForm = myClass.oFormIndex;
     myClass.currentPage = currentPage;
     myClass.perPage = perPage;
     var url = myClass.urlPath + '/loadList';
-    var data = 'txt_search=' + $(oForm).find("#txt_search").val();
+    var data = 'txt_search=' + $(myClass.oFormIndex).find("#txt_search").val();
     data += '&offset=' + currentPage;
     data += '&limit=' + perPage;
     Library.showloadding();
@@ -49,17 +68,17 @@ JS_Categories.prototype.loadList = function (currentPage = 1, perPage = 15) {
         success: function (arrResult) {
             $("#table-container").html(arrResult['arrData']);
             Library.hideloadding();
-            $(oForm).find('.main_paginate .pagination a').click(function () {
+            $(myClass.oFormIndex).find('.main_paginate .pagination a').click(function () {
                 var page = $(this).attr('page');
                 var perPage = $('#cbo_nuber_record_page').val();
                 myClass.loadList(page, perPage);
             });
-            $(oForm).find('#cbo_nuber_record_page').change(function () {
-                var page = $(oForm).find('#_currentPage').val();
-                var perPages = $(oForm).find('#cbo_nuber_record_page').val();
+            $(myClass.oFormIndex).find('#cbo_nuber_record_page').change(function () {
+                var page = $(myClass.oFormIndex).find('#_currentPage').val();
+                var perPages = $(myClass.oFormIndex).find('#cbo_nuber_record_page').val();
                 myClass.loadList(page, perPages);
             });
-            $(oForm).find('#cbo_nuber_record_page').val(arrResult['perPage']);
+            $(myClass.oFormIndex).find('#cbo_nuber_record_page').val(arrResult['perPage']);
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -78,14 +97,13 @@ JS_Categories.prototype.create = function () {
         type: 'GET',
         success: function (arrResult) {
             Library.hideloadding();
-            $("#addModal").html(arrResult);
-            $("#addModal").modal('show');
+            $(myClass.addModal).html(arrResult);
+            $(myClass.addModal).modal('show');
             $("#status").attr('checked', true);
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_add_layout").click(function () { myClass.addList('layout', 'DM_LAYOUT') });
-            $("#btn_add_type").click(function () { myClass.addList('type', 'DM_CATEGORY_TYPE') });
-            $("#btn_update").click(function () {myClass.update(false);});
-            $("#btn_update_close").click(function () {myClass.update(true);});
+            myClass.loadEvent();
+            $("#btn_update").click(function () { myClass.update(false); });
+            $("#btn_update_close").click(function () { myClass.update(true); });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -93,38 +111,31 @@ JS_Categories.prototype.create = function () {
     });
 }
 /**
- * Thêm danh mục đối tượng
+ * Thêm mới danh mục
  */
-JS_Categories.prototype.addList = function (id, code) {
+JS_Categories.prototype.addListtype = function () {
     var myClass = this;
-    var url = this.urlPath + '/addList';
-    var data = {
-        _token: $("#_token").val(),
-        code: code,
-    };
+    var url = this.urlPath + '/addListtype';
     Library.showloadding();
     $.ajax({
         url: url,
         type: 'GET',
-        data: data,
         success: function (arrResult) {
             Library.hideloadding();
-            $("#addModal").modal('hide');
-            $("#addList").html(arrResult);
-            $("#addList").modal('show');
-            $("#frmList_add #status").attr('checked', true);
-            $("#btn_update_list").click(function(){
-                myClass.updateList(id, false);
+            $(myClass.addModal).modal('hide');
+            $(myClass.addModalListtype).html(arrResult);
+            $(myClass.addModalListtype).modal('show');
+            $(myClass.oFormListtypeAdd + " #status").attr('checked', true);
+            $("#btn_update_listtype").click(function () {
+                myClass.updateListtype(false);
             });
-            $("#btn_update_list_close").click(function(){
-                myClass.updateList(id, true);
+            $("#btn_update_listtype_close").click(function () {
+                myClass.updateListtype(true);
             });
-            $("#btn_add_listtype").click(function(){
-                myClass.addListtype(id, false);
-            });
-            $(".btn_close_list").click(function(){
-                $("#addList").modal('hide');
-                $("#addModal").modal('show');
+            $(".btn_close_listtype").click(function () {
+                $(myClass.addModalListtype).html('');
+                $(myClass.addModalListtype).modal('hide');
+                $(myClass.addModal).modal('show');
             });
         }, error: function (e) {
             console.log(e);
@@ -133,14 +144,15 @@ JS_Categories.prototype.addList = function (id, code) {
     });
 }
 /**
- * 
+ * Cập nhật danh mục
+ * @param boolen True: Đóng modal, False: Không đóng modal
  */
-JS_Categories.prototype.updateList = function(id, type){
+JS_Categories.prototype.updateListtype = function (boolen) {
     var myClass = this;
-    var url = this.urlPath + '/updateList';
+    var url = this.urlPath + '/updateListtype';
     var data = {
         _token: $("#_token").val(),
-        dataUpdate: $("#frmList_add").serialize(),
+        dataUpdate: $(myClass.oFormListtypeAdd).serialize(),
     };
     Library.showloadding();
     $.ajax({
@@ -150,13 +162,83 @@ JS_Categories.prototype.updateList = function(id, type){
         success: function (arrResult) {
             Library.hideloadding();
             if (arrResult['success'] == true) {
-                $("#" + id).append('<option selected value="' + arrResult['data']['code'] + '">' + arrResult['data']['name'] + '</option>');
-                $(".chzn-select").trigger('chosen:updated');
-                $("#frmList_add")[0].reset();
-                $("#frmList_add #order").val(parseInt(arrResult['data']['order']) + 1);
-                if(type){
-                    $("#addList").modal('hide');
-                    $("#addModal").modal('show');
+                $(myClass.oFormListtypeAdd)[0].reset();
+                $(myClass.oFormListtypeAdd + " #order").val(parseInt(arrResult['data']['order']) + 1);
+                $(myClass.oFormListtypeAdd + " #order").focus();
+                if (boolen) {
+                    $(myClass.addModalListtype).html('');
+                    $(myClass.addModalListtype).modal('hide');
+                    $(myClass.addModal).modal('show');
+                }
+            } else {
+                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+                Library.hideloadding();
+            }
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
+}
+/**
+ * Thêm danh mục đối tượng
+ */
+JS_Categories.prototype.addList = function () {
+    var myClass = this;
+    var url = myClass.urlPath + '/addList';
+    var data = {
+        _token: $("#_token").val(),
+    };
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: data,
+        success: function (arrResult) {
+            Library.hideloadding();
+            $(myClass.addModal).modal('hide');
+            $(myClass.addModalList).html(arrResult);
+            $(myClass.addModalList).modal('show');
+            $(myClass.oFormListAdd + " #status").attr('checked', true);
+            $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
+            $("#btn_update_list").click(function () { myClass.updateList(false); });
+            $("#btn_update_list_close").click(function () { myClass.updateList(true); });
+            $(".btn_close_list").click(function () {
+                $(myClass.addModalList).html('');
+                $(myClass.addModalList).modal('hide');
+                $(myClass.addModal).modal('show');
+            });
+        }, error: function (e) {
+            console.log(e);
+            Library.hideloadding();
+        }
+    });
+}
+/**
+ * Cập nhật danh sách danh mục đối tượng
+ * @param boolen True: Đóng modal, False: Không đóng modal
+ */
+JS_Categories.prototype.updateList = function (boolen) {
+    var myClass = this;
+    var url = this.urlPath + '/updateList';
+    var data = {
+        _token: $("#_token").val(),
+        dataUpdate: $(myClass.oFormListAdd).serialize(),
+    };
+    Library.showloadding();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        success: function (arrResult) {
+            Library.hideloadding();
+            if (arrResult['success'] == true) {
+                $(myClass.oFormListAdd)[0].reset();
+                $(myClass.oFormListAdd + " #order").val(parseInt(arrResult['data']['order']) + 1);
+                $(myClass.oFormListAdd + " #code").focus();
+                if (boolen) {
+                    $(myClass.addModalList).modal('hide');
+                    $(myClass.addModal).modal('show');
                 }
             } else {
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
@@ -168,64 +250,32 @@ JS_Categories.prototype.updateList = function(id, type){
     });
 }
 /**
- * Thêm mới danh mục
+ * Tải lại danh mục đối tượng 
+ * @param id Id select
+ * @param code Mã danh mục đối tượng
  */
-JS_Categories.prototype.addListtype = function(){
+JS_Categories.prototype.refresh = function (id, code) {
     var myClass = this;
-    var url = this.urlPath + '/addListtype';
-    Library.showloadding();
-    $.ajax({
-        url: url,
-        type: 'GET',
-            success: function (arrResult) {
-                Library.hideloadding();
-                $("#addList").modal('hide');
-                $("#addListtype").html(arrResult);
-                $("#addListtype").modal('show');
-                $("#frmListtype_add #status").attr('checked', true);
-                $("#btn_update_listtype").click(function(){
-                    myClass.updateListtype(id);
-                });
-                $(".btn_close_listtype").click(function(){
-                    $("#addListtype").html('');
-                    $("#addListtype").modal('hide');
-                    $("#addList").modal('show');
-                });
-        }, error: function (e) {
-            console.log(e);
-            Library.hideloadding();
-        }
-    });
-}
-/**
- * Cập nhật danh mục
- */
-JS_Categories.prototype.updateListtype = function(){
-    var myClass = this;
-    var url = this.urlPath + '/updateListtype';
+    var url = myClass.urlPath + '/refresh';
     var data = {
         _token: $("#_token").val(),
-        dataUpdate: $("#frmListtype_add").serialize(),
+        code: code,
     };
     Library.showloadding();
     $.ajax({
         url: url,
-        type: 'POST',
+        type: 'GET',
         data: data,
         success: function (arrResult) {
             Library.hideloadding();
-            if (arrResult['success'] == true) {
-                console.log(arrResult);
-                $("#frmList_add #listtype_name").val(arrResult['data']['name']);
-                $("#frmList_add #listtype_id").val(arrResult['data']['id']);
-                $("#frmList_add #order").val(arrResult['order']);
-                $("#addListtype").html('');
-                $("#addListtype").modal('hide');
-                $("#addList").modal('show');
-            } else {
-                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
-                Library.hideloadding();
-            }
+            var htmls = '';
+            if (id == 'layout') htmls = '<option value="">--Chọn layout--</option>';
+            if (id == 'type') htmls = '<option value="">--Chọn loại chuyên mục--</option>';
+            $.each(arrResult.data, function (key, value) {
+                htmls += '<option value="' + value.listtype_id + '">' + value.name + '</option>';
+            })
+            $("#" + id).html(htmls);
+            $('.chzn-select').trigger("chosen:updated");
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -264,12 +314,11 @@ JS_Categories.prototype.edit = function (id) {
         data: { id: listId },
         success: function (arrResult) {
             Library.hideloadding();
-            $("#addModal").html(arrResult);
-            $("#addModal").modal('show');
+            $(myClass.addModal).html(arrResult);
+            $(myClass.addModal).modal('show');
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_add_layout").click(function () { myClass.addList('layout', 'DM_LAYOUT') });
-            $("#btn_add_type").click(function () { myClass.addList('type', 'DM_CATEGORY_TYPE') });
-            $("#btn_update_close").click(function () {myClass.update(true);});
+            myClass.loadEvent();
+            $("#btn_update_close").click(function () { myClass.update(true); });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -278,14 +327,14 @@ JS_Categories.prototype.edit = function (id) {
 }
 /**
  * Lưu thông tin
+ * @param boolen True: Đóng modal, False: Không đóng modal
  */
-JS_Categories.prototype.update = function (type) {
+JS_Categories.prototype.update = function (boolen) {
     var myClass = this;
-    var oForm = myClass.oFormAdd;
     var url = this.urlPath + '/update';
     var data = new FormData;
     data.append('_token', $("#_token").val());
-    data.append('dataUpdate', $(oForm).serialize());
+    data.append('dataUpdate', $(myClass.oFormAdd).serialize());
     data.append('files', $("#images")[0].files[0]);
     Library.showloadding();
     $.ajax({
@@ -299,11 +348,16 @@ JS_Categories.prototype.update = function (type) {
             if (arrResult['success'] == true) {
                 Library.alertMessage('success', 'Thông báo', arrResult['message']);
                 myClass.loadList();
-                $(oForm)[0].reset();
+                $(myClass.oFormAdd)[0].reset();
                 $("#feature_img").html('');
                 $("#images").val('');
-                if(type){
-                    $("#addModal").modal('hide');
+                $("#order").val(parseInt($("#order").val()) + 1);
+                $("#code").focus();
+                $('#layout option:first').prop('selected', true);
+                $('#type option:first').prop('selected', true);
+                $('.chzn-select').trigger("chosen:updated");
+                if (boolen) {
+                    $(myClass.addModal).modal('hide');
                 }
             } else {
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
@@ -377,91 +431,56 @@ JS_Categories.prototype.delete = function () {
     });
 }
 /**
- * Thêm dòng mới trang index
+ * Cập nhật lại toàn bộ STT
  */
-JS_Categories.prototype.addrow = function () {
-
-}
-/**
- * Sự kiện tạo một id mới theo uuid()
- */
-JS_Categories.prototype.broofa = function () {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-/**
- * Sự kiện khi bấm 2 lần
- */
-JS_Categories.prototype.click2 = function (id, column, type = 'input') {
+JS_Categories.prototype.updateOrderTable = function () {
     var myClass = this;
-    $(".td_" + column + "_" + id).removeAttr('ondblclick');
-    var text = $("#span_" + column + "_" + id).html();
-    $("#" + column + "_" + id).removeAttr('hidden');
-    if (type == 'input') {
-        $("#span_" + column + "_" + id).html('<textarea name="' + column + '" id="' + column + '_' + id + '" rows="3">' + text + '</textarea>');
-    } else if (type == 'select') {
-        console.log('select');
-    } else if (type == 'date') {
-        $("#span_" + column + "_" + id).html('<input name="' + column + '" id="' + column + '_' + id + '" rows="3" value="' + text + '" />');
-        console.log('date');
-    } else if (type == 'textarea') {
-        console.log('textarea');
-    } else if (type == 'multipleSelect') {
-        console.log('multipleSelect');
-    }
-    $("#" + column + "_" + id).focus();
-    $("#span_" + column + "_" + id).removeAttr('id');
-
-    $("#" + column + "_" + id).focusout(function () {
-        $(".td_" + column + "_" + id).attr('ondblclick', "click2('" + id + "', '" + column + "', '" + type + "')");
-        $("#" + column + "_" + id).attr('hidden', true);
-        $(".span_" + column + "_" + id).attr('id', 'span_' + column + '_' + id);
-        $(".span_" + column + "_" + id).html($("#" + column + "_" + id).val());
-        if (text != $(".span_" + column + '_' + id).html()) {
-            myClass.updateColumn(id, column, $(".span_" + column + '_' + id).html());
-        }
-    });
-}
-/**
- * Cập nhật khi ở màn hình hiển thị danh sách
- */
-JS_Categories.prototype.updateColumn = function (id, column, value = '') {
-    var myClass = this;
-    var oForm = myClass.oFormIndex;
-    var url = myClass.baseUrl + '/updateColumn';
-    var data = 'id=' + id;
-    data += '&_token=' + $(oForm).find('#_token').val();
-    if (column == 'code') { data += '&code=' + (column == 'code' ? value : ""); }
-    else if (column == 'name') { data += '&name=' + value; }
-    else if (column == 'order') { data += '&order=' + value; }
-    $.ajax({
-        url: url,
-        data: data,
-        type: "PUT",
-        success: function (result) {
-            if (result['success'] == true) {
-                Library.alertMessage('success', 'Thông báo', result['message']);
-                if (column == 'order') {
-                    myClass.loadList();
+    $.confirm({
+        title: 'Thông báo',
+        content: 'Bạn có chắc chắn muốn cập nhật lại tất cả các số thứ tự!',
+        type: 'green',
+        closeIcon: true,
+        autoClose: 'cancel|9000',
+        buttons: {
+            delete: {
+                btnClass: 'btn-success',
+                text: 'Xác nhận',
+                action: function () {
+                    var url = myClass.urlPath + '/updateOrderTable';
+                    Library.showloadding();
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: { _token: $("#_token").val() },
+                        success: function (arrResult) {
+                            Library.hideloadding();
+                            if (arrResult['success'] == true) {
+                                Library.alertMessage('success', 'Thông báo', arrResult['message']);
+                                myClass.loadList(myClass.currentPage, myClass.perPage);
+                            } else {
+                                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+                            }
+                        }, error: function (e) {
+                            console.log(e);
+                            Library.hideloadding();
+                        }
+                    });
                 }
-            } else {
-                Library.alertMessage('danger', 'Lỗi', result['message']);
-                myClass.loadList();
-            }
-        }, error: function (e) {
-            console.log(e);
-            Library.hideloadding();
+            },
+            cancel: {
+                btnClass: 'btn-default',
+                text: 'Đóng',
+                action: function () { }
+            },
         }
     });
-    $("#" + id).prop('readonly');
 }
 /**
  * Thay đổi trạng thái
+ * @param id ID đối tượng
  */
-JS_Categories.prototype.changeStatus = function (id) {
-    var myClass = this;
+function changeStatus(id) {
+    var myClass = JS_Categories;
     var url = myClass.urlPath + '/changeStatus';
     var data = '_token=' + $("#_token").val();
     data += '&status=' + ($("#status_" + id).is(":checked") ? 0 : 1);
@@ -493,12 +512,11 @@ function search() {
 /**
  * Hiển thị hình ảnh
  */
-function showImage(_this)
-{
+function showImage(_this) {
     var reader = new FileReader();
     var img = document.createElement("img");
     reader.readAsDataURL($(_this)[0].files[0]);
-    reader.onload = function(){
+    reader.onload = function () {
         var dataURL = reader.result;
         img.src = dataURL;
         img.style = 'width: 100%;';

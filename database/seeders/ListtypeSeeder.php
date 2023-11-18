@@ -36,6 +36,34 @@ class ListtypeSeeder extends Seeder
                 'order' => 3,
                 'status' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
+            ],[
+                'id' => (string)\Str::uuid(),
+                'code' => 'DM_LAYOUT',
+                'name' => 'Danh mục layout',
+                'order' => 4,
+                'status' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],[
+                'id' => (string)\Str::uuid(),
+                'code' => 'DM_LOAI_CHUYEN_MUC',
+                'name' => 'Danh mục loại chuyên mục',
+                'order' => 5,
+                'status' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],[
+                'id' => (string)\Str::uuid(),
+                'code' => 'DM_LOAI_BAI_VIET',
+                'name' => 'Danh mục loại bài viết',
+                'order' => 6,
+                'status' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],[
+                'id' => (string)\Str::uuid(),
+                'code' => 'DM_TRANG_THAI_BAI_VIET',
+                'name' => 'Danh mục trạng thái bài viết',
+                'order' => 7,
+                'status' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
             ],
         ]);
     }

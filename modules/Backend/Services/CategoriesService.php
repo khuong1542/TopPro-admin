@@ -63,9 +63,38 @@ class CategoriesService extends BaseService
     public function create($input): array
     {
         $data['layout'] = ListtypeHelper::_getAllByCode(['DM_LAYOUT']);
-        $data['type'] = ListtypeHelper::_getAllByCode(['DM_CATEGORY_TYPE']);
+        $data['type'] = ListtypeHelper::_getAllByCode(['DM_LOAI_CHUYEN_MUC']);
         $categories = $this->repository->select('order')->orderBy('order', 'desc')->first();
         $data['order'] = isset($categories->order) ? (int)$categories->order + 1 : 1;
+        return $data;
+    }
+    /**
+     * Thêm mới danh sách
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function addListtype($input): array
+    {
+        $data['order'] = $this->listtypeService->select('id')->count() + 1;
+        return $data;
+    }
+    /**
+     * Cập nhật danh mục
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function updateListtype($input): array
+    {
+        $validator = Validator::make($input, [
+            'dataUpdate' => 'required',
+        ],[
+            'dataUpdate.required' => 'Không tồn tại dữ liệu cập nhật!',
+        ]);
+        if($validator->fails()){
+            return array('success' => false, 'message' => $validator->errors()->get('dataUpdate')[0]);
+        }
+        parse_str($input['dataUpdate'], $params);
+        $data = $this->listtypeService->_update($params);
         return $data;
     }
     /**
@@ -75,16 +104,8 @@ class CategoriesService extends BaseService
      */
     public function addList($input): array
     {
-        $validator = Validator::make($input, [
-            'code' => 'required',
-        ],[
-            'code.required' => 'Không tồn tại mã danh mục!',
-        ]);
-        if($validator->fails()){
-            return array('success' => false, 'message' => $validator->errors()->get('code')[0]);
-        }
-        $data['listtype'] = $this->listtypeService->where('code', $input['code'])->first();
-        $data['order'] = $this->listService->where('listtype_id', ($data['listtype']->id ?? null))->count() + 1;
+        $data['listtypes'] = $this->listtypeService->select('*')->get();
+        $data['order'] = $this->listService->select('id')->count() + 1;
         return $data;
     }
     /**
@@ -107,34 +128,27 @@ class CategoriesService extends BaseService
         return $data;
     }
     /**
-     * Thêm mới danh sách
+     * Tải lại danh sách danh mục đối tượng
      * @param $input Dữ liệu truyền vào
      * @return array
      */
-    public function addListtype($input): array
-    {
-        $data['order'] = $this->listtypeService->select('id')->count();
-        return $data;
-    }
-    /**
-     * Cập nhật danh mục
-     * @param $input Dữ liệu truyền vào
-     * @return array
-     */
-    public function updateListtype($input): array
+    public function refresh($input): array
     {
         $validator = Validator::make($input, [
-            'dataUpdate' => 'required',
+            'code' => 'required',
         ],[
-            'dataUpdate.required' => 'Không tồn tại dữ liệu cập nhật!',
+            'code.required' => 'Không tồn tại dữ liệu cập nhật!',
         ]);
         if($validator->fails()){
-            return array('success' => false, 'message' => $validator->errors()->get('dataUpdate')[0]);
+            return array('success' => false, 'message' => $validator->errors()->get('code')[0]);
         }
-        parse_str($input['dataUpdate'], $params);
-        $data = $this->listtypeService->_update($params);
-        $data['order'] = $this->listService->where('listtype_id', $data['data']->id)->count() + 1;
-        return $data;
+        $listtype = $this->listtypeService->where('code', $input['code'])->where('status', 1)->first();
+        if(!empty($listtype)){
+            $data = $this->listService->where('listtype_id', $listtype->id)->where('status', 1)->orderBy('order')->get();
+            return array('success' => true, 'message' => 'Thành công', 'data' => $data);
+        }else{
+            return array('success' => false, 'message' => 'Không tồn tại danh mục có mã: ' . $input['code']);
+        }
     }
     /**
      * Sửa
@@ -144,7 +158,7 @@ class CategoriesService extends BaseService
     public function edit($input): array
     {
         $data['layout'] = ListtypeHelper::_getAllByCode(['DM_LAYOUT']);
-        $data['type'] = ListtypeHelper::_getAllByCode(['DM_CATEGORY_TYPE']);
+        $data['type'] = ListtypeHelper::_getAllByCode(['DM_LOAI_CHUYEN_MUC']);
         $data['datas'] = $this->repository->where('id', $input['id'])->first();
         return $data;
     }

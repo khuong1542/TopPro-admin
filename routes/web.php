@@ -16,6 +16,7 @@ Route::prefix('/')->group(function(){
     });
     // Danh sách danh mục
     Route::prefix('listtype')->group(function(){
+        // Danh mục
         Route::prefix('listtype')->group(function(){
             Route::get('/', [ListtypeController::class, 'index']);
             Route::get('loadList', [ListtypeController::class, 'loadList']);
@@ -26,6 +27,7 @@ Route::prefix('/')->group(function(){
             Route::post('updateOrderTable', [ListtypeController::class, 'updateOrderTable']);
             Route::post('changeStatus', [ListtypeController::class, 'changeStatus']);
         });
+        // Danh mục đối tượng
         Route::prefix('list')->group(function(){
             Route::get('/', [ListController::class, 'index']);
             Route::get('loadList', [ListController::class, 'loadList']);
@@ -48,7 +50,10 @@ Route::prefix('/')->group(function(){
         Route::post('updateList', [CategoriesController::class, 'updateList']);
         Route::get('addListtype', [CategoriesController::class, 'addListtype']);
         Route::post('updateListtype', [CategoriesController::class, 'updateListtype']);
+        Route::get('refresh', [CategoriesController::class, 'refresh']);
         Route::post('delete', [CategoriesController::class, 'delete']);
+        Route::post('updateOrderTable', [CategoriesController::class, 'updateOrderTable']);
+        Route::post('changeStatus', [CategoriesController::class, 'changeStatus']);
     });
     Route::prefix('blogs')->group(function(){
         Route::get('', [BlogsController::class, 'index']);
