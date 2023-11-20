@@ -61,4 +61,20 @@ class BlogsController extends Controller
         $data = $this->blogsService->_delete($request->all());
         return $data;
     }
+    /**
+     * Cập nhật số thứ tự
+     */
+    public function updateOrderTable(Request $request)
+    {
+        $data = $this->blogsService->updateOrderTable($request->all());
+        return $data;
+    }
+    /**
+     * Cập nhật trạng thái
+     */
+    public function changeStatus(Request $request)
+    {
+        $data = $this->blogsService->changeStatus($request->all());
+        return $data;
+    }
 }

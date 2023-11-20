@@ -223,7 +223,7 @@ class CategoriesService extends BaseService
     {
         try {
             $this->logger->setChannel('UpdateOrderTable')->log('Params', $input);
-            $categories = $this->repository->select('*')->orderBy('updated_at')->orderBy('created_at')->get();
+            $categories = $this->repository->select('*')->orderBy('order')->get();
             $i = 1;
             foreach ($categories as $key => $value) {
                 $value->update(['order' => $i++]);

@@ -62,6 +62,8 @@ Route::prefix('/')->group(function(){
         Route::get('edit', [BlogsController::class, 'edit']);
         Route::post('update', [BlogsController::class, 'update']);
         Route::post('delete', [BlogsController::class, 'delete']);
+        Route::post('updateOrderTable', [BlogsController::class, 'updateOrderTable']);
+        Route::post('changeStatus', [BlogsController::class, 'changeStatus']);
     });
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});

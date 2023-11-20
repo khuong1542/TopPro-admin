@@ -39,7 +39,7 @@ class BlogsRepository extends BaseRepository
         $sql->author              = $data['author'] ?? null;
         $sql->source              = $data['source'] ?? null;
         $sql->date_create         = $data['date_create'] ?? null;
-        $sql->images              = $data['images'] ?? null;
+        $sql->images              = $data['images'] ?? ($sql->images ?? null);
         $sql->images_note         = $data['images_note'] ?? null;
         $sql->content             = $data['content'] ?? null;
         $sql->blog_type           = isset($data['blog_type']) ? trim(implode(',', $data['blog_type']), ',') : null;

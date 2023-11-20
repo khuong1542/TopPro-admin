@@ -130,7 +130,7 @@ class ListService extends BaseService
     {
         try {
             $this->logger->setChannel('UpdateOrderTable')->log('Params', $input);
-            $list = $this->repository->select('*')->where('listtype_id', $input['listtype_id'])->orderBy('updated_at')->orderBy('created_at')->get();
+            $list = $this->repository->select('*')->where('listtype_id', $input['listtype_id'])->orderBy('order')->get();
             $i = 1;
             foreach ($list as $key => $value) {
                 $value->update(['order' => $i++]);

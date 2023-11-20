@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'url_client' => 'http://localhost:8080/TopPro/client/',
+    'url_client' => 'http://localhost:4200/TopPro/client/',
 ];

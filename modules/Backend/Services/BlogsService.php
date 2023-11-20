@@ -117,4 +117,57 @@ class BlogsService extends BaseService
             return array('success' => false, 'message' => $e->getMessage());
         }
     }
+    /**
+     * Xóa
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function _delete($input): array
+    {
+        $arrIds = explode(',', $input['listId']);
+        try {
+            $this->logger->setChannel('Delete')->log('Params', $arrIds);
+            $this->repository->whereIn('id', $arrIds)->delete();
+            return array('success' => true, 'message' => 'Xóa thành công.');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('Delete')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => 'Xóa thất bại!');
+        }
+    }
+    /**
+     * Cập nhật số thứ tự
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function updateOrderTable($input): array
+    {
+        try {
+            $this->logger->setChannel('UpdateOrderTable')->log('Params', $input);
+            $categories = $this->repository->select('*')->orderBy('order')->get();
+            $i = 1;
+            foreach ($categories as $key => $value) {
+                $value->update(['order' => $i++]);
+            }
+            return array('success' => true, 'message' => 'Cập nhật thành công!');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('UpdateOrderTable')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => 'Xóa thất bại!');
+        }
+    }
+    /**
+     * Cập nhật trạng thái
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function changeStatus($input): array
+    {
+        try {
+            $this->logger->setChannel('ChangeStatus')->log('Params', $input);
+            $this->repository->where('id', $input['id'])->update(['status' => $input['status']]);
+            return array('success' => true, 'message' => 'Cập nhật thành công!');
+        } catch (\Exception $e) {
+            $this->logger->setChannel('ChangeStatus')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+            return array('success' => false, 'message' => 'Xóa thất bại!');
+        }
+    }
 }

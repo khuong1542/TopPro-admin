@@ -25,6 +25,9 @@ JS_Blog.prototype.loadIndex = function () {
     $("#btn_delete").click(function () {
         myClass.delete();
     });
+    $("#btn_update_order").click(function () {
+        myClass.updateOrderTable();
+    });
     $("#btn_search").click(function () {
         search();
     });
@@ -82,8 +85,8 @@ JS_Blog.prototype.create = function () {
             $("#addModal").modal('show');
             $("#status").attr('checked', true);
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_update").click(function () {myClass.update(false);});
-            $("#btn_update_close").click(function () {myClass.update(true);});
+            $("#btn_update").click(function () { myClass.update(false); });
+            $("#btn_update_close").click(function () { myClass.update(true); });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -125,7 +128,7 @@ JS_Blog.prototype.edit = function (id) {
             $("#addModal").html(arrResult);
             $("#addModal").modal('show');
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_update_close").click(function () {myClass.update(true);});
+            $("#btn_update_close").click(function () { myClass.update(true); });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -159,7 +162,7 @@ JS_Blog.prototype.update = function (type) {
                 $(oForm)[0].reset();
                 $("#feature_img").html('');
                 $("#images").val('');
-                if(type){
+                if (type) {
                     $("#addModal").modal('hide');
                 }
             } else {
@@ -234,10 +237,55 @@ JS_Blog.prototype.delete = function () {
     });
 }
 /**
+ * Cập nhật lại toàn bộ STT
+ */
+JS_Blog.prototype.updateOrderTable = function () {
+    var myClass = this;
+    $.confirm({
+        title: 'Thông báo',
+        content: 'Bạn có chắc chắn muốn cập nhật lại tất cả các số thứ tự!',
+        type: 'green',
+        closeIcon: true,
+        autoClose: 'cancel|9000',
+        buttons: {
+            delete: {
+                btnClass: 'btn-success',
+                text: 'Xác nhận',
+                action: function () {
+                    var url = myClass.urlPath + '/updateOrderTable';
+                    Library.showloadding();
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: { _token: $("#_token").val() },
+                        success: function (arrResult) {
+                            Library.hideloadding();
+                            if (arrResult['success'] == true) {
+                                Library.alertMessage('success', 'Thông báo', arrResult['message']);
+                                myClass.loadList(myClass.currentPage, myClass.perPage);
+                            } else {
+                                Library.alertMessage('danger', 'Lỗi', arrResult['message']);
+                            }
+                        }, error: function (e) {
+                            console.log(e);
+                            Library.hideloadding();
+                        }
+                    });
+                }
+            },
+            cancel: {
+                btnClass: 'btn-default',
+                text: 'Đóng',
+                action: function () { }
+            },
+        }
+    });
+}
+/**
  * Thay đổi trạng thái
  */
-JS_Blog.prototype.changeStatus = function (id) {
-    var myClass = this;
+function changeStatus(id) {
+    var myClass = JS_Blog;
     var url = myClass.urlPath + '/changeStatus';
     var data = '_token=' + $("#_token").val();
     data += '&status=' + ($("#status_" + id).is(":checked") ? 0 : 1);
@@ -269,12 +317,11 @@ function search() {
 /**
  * Hiển thị hình ảnh
  */
-function showImage(_this)
-{
+function showImage(_this) {
     var reader = new FileReader();
     var img = document.createElement("img");
     reader.readAsDataURL($(_this)[0].files[0]);
-    reader.onload = function(){
+    reader.onload = function () {
         var dataURL = reader.result;
         img.src = dataURL;
         img.style = 'width: 100%;';

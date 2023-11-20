@@ -117,7 +117,7 @@ class ListtypeService extends BaseService
     {
         try {
             $this->logger->setChannel('UpdateOrderTable')->log('Params', $input);
-            $listtype = $this->repository->select('*')->orderBy('updated_at')->orderBy('created_at')->get();
+            $listtype = $this->repository->select('*')->orderBy('order')->get();
             $i = 1;
             foreach ($listtype as $key => $value) {
                 $value->update(['order' => $i++]);
