@@ -68,6 +68,19 @@ class BlogsService extends BaseService
         return $data;
     }
     /**
+     * Sửa
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function edit($input): array
+    {
+        $data['blog_type'] = ListtypeHelper::_getAllByCode(['DM_LOAI_BAI_VIET']);
+        $data['current_status'] = ListtypeHelper::_getAllByCode(['DM_TRANG_THAI_BAI_VIET']);
+        $data['categories'] = $this->categoriesService->select('*')->orderBy('order')->get();
+        $data['datas'] = $this->repository->where('id', $input['id'])->first();
+        return $data;
+    }
+    /**
      * Cập nhật
      * @param $input Dữ liệu truyền vào
      * @return array

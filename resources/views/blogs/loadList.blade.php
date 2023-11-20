@@ -22,7 +22,7 @@
         <tr>
             <td align="center"><input type="checkbox" ondblclick="" onclick="{select_checkbox_row(this);}" name="chk_item_id" value="{{$data->id}}"></td>
             <td onclick="{select_row(this);}">{{ $data->title }}</td>
-            <td onclick="{select_row(this);}"><a href="{{ $data->slug }}">{{ $data->slug }}</a></td>
+            <td onclick="{select_row(this);}"><a href="{{ config('moduleConfig.url_client') . 'reader/' . $data->slug }}">{{ $data->slug }}</a></td>
             <td onclick="{select_row(this);}" align="center">
                 <img src="{{ $data->images ?? '' }}" alt="Ảnh đại diện" width="80">
             </td>

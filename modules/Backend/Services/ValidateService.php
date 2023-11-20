@@ -14,14 +14,22 @@ class ValidateService
         $validator = Validator::make(
             $data,
             [
+                // Danh mục
                 'code' => isset($data['code']) ? 'required' : '',
-                'name' => 'required',
+                'name' => isset($data['name']) ? 'required' : '',
+                // Bài viết
+                'title' => isset($data['title']) ? 'required' : '',
                 'slug' => isset($data['slug']) ? 'required' : '',
+                // Phần chung
                 'order' => ['required','numeric'],
             ],[
+                // Danh mục
                 'code.required' => 'Mã' . $str . ' không được để trống!',
                 'name.required' => 'Tên' . $str . ' không được để trống!',
+                // Bài viết
+                'title.required' => 'Tiêu đề' . $str . ' không được để trống!',
                 'slug.required' => 'Đường dẫn' . $str . ' không được để trống!',
+                // Phần chung
                 'order.required' => 'Thứ tự không được để trống!',
                 'order.numeric' => 'Thứ tự phải là số!',
             ]

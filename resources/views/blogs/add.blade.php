@@ -15,13 +15,16 @@
                             <option selected disabled value="">--Chọn chuyên mục--</option>
                             @if(isset($categories))
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option 
+                                @if(isset($datas) && $datas->categories_id == $category->id) selected @endif
+                                value="{{ $category->id }}"
+                                >{{ $category->name }}</option>
                             @endforeach
                             @endif
                         </select>
                     </div>
                     <div class="col-md-2"><label><span>Ngày đăng</span></label></div>
-                    <div class="col-md-4"><input type="text" name="date_create" id="date_create" class="form-control datepicker" value="{{ $datas->date_create ?? '' }}"></div>
+                    <div class="col-md-4"><input type="text" name="date_create" id="date_create" class="form-control datepicker" value="{{ isset($datas->date_create) && !empty($datas->date_create) ? date('d/m/Y', strtotime($datas->date_create)) : '' }}"></div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-md-2"><label class="required"><span>Tên bài viết</span></label></div>
@@ -67,9 +70,15 @@
                             @foreach($blog_type as $type)
                             <div class="col-md-3">
                                 <label class="form-control mt-0 border-0 ps-0 pe-0">
-                                    <input type="checkbox" name="blog_type[]" @if((isset($datas->blog_type) && $datas->blog_type == $type->code) ||
-                                    $type->code == 'TIN_HIEN_THI_CO_DINH') checked="true" @endif
-                                    value="{{ $type->code }}"
+                                    @php 
+                                        $blogType = [];
+                                        if(isset($datas->blog_type)){
+                                            $blogType = explode(',', $datas->blog_type); 
+                                        }
+                                    @endphp
+                                    <input type="checkbox" name="blog_type[]" 
+                                        @if($type->code == 'TIN_HIEN_THI_CO_DINH' || in_array($type->code, $blogType)) checked="true" @endif 
+                                        value="{{ $type->code }}"
                                     > {{ $type->name }}
                                 </label>
                             </div>

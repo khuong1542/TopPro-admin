@@ -43,7 +43,7 @@ class BlogsController extends Controller
     public function edit(Request $request)
     {
         $data = $this->blogsService->edit($request->all());
-        return view('categories.add', $data);
+        return view('blogs.add', $data);
     }
     /**
      * Cập nhật
