@@ -18,11 +18,10 @@ class BlogsService extends BaseService
     }
     public function loadList($input): array
     {
-        $data['hot_news'] = $this->repository->select('*')->where('blog_type', 'like', '%TIN_NOI_BAT%')->where('current_status', 'DA_DUYET')->where('status', 1)->get()->toArray();
-        $data['latest_news'] = $this->repository->select('*')->where('blog_type', 'like', '%TIN_MOI%')->where('current_status', 'DA_DUYET')->where('status', 1)->get()->toArray();
-        $data['main_news'] = $this->repository->select('*')->where('blog_type', 'like', '%TIN_HIEN_THI_CO_DINH%')->where('current_status', 'DA_DUYET')->where('status', 1)->get()->toArray();
-        $data['notification_news'] = $this->repository->select('*')->where('blog_type', 'like', '%THONG_BAO%')->where('current_status', 'DA_DUYET')->where('status', 1)->get()->toArray();
-        $data = $this->repository->where('status', 1)->get()->toArray();
+        $data['hot_news'] = $this->repository->select('*')->where('blog_type', 'like', '%TIN_NOI_BAT%')->where('current_status', 'DA_DUYET')->where('status', 1)->take(6)->get()->toArray();
+        $data['latest_news'] = $this->repository->select('*')->where('blog_type', 'like', '%TIN_MOI%')->where('current_status', 'DA_DUYET')->where('status', 1)->take(6)->get()->toArray();
+        $data['main_news'] = $this->repository->select('*')->where('blog_type', 'like', '%TIN_HIEN_THI_CO_DINH%')->where('current_status', 'DA_DUYET')->where('status', 1)->take(6)->get()->toArray();
+        $data['notification_news'] = $this->repository->select('*')->where('blog_type', 'like', '%THONG_BAO%')->where('current_status', 'DA_DUYET')->where('status', 1)->take(6)->get()->toArray();
         return $data;
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('blogs', function (Blueprint $table) {
-            $table->string('quotation')->nullable(); // Trích dẫn
+            $table->string('quotation', 2000)->nullable(); // Trích dẫn
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('blogs', function (Blueprint $table) {
-            //
+            $table->dropColumn('quotation');
         });
     }
 };
