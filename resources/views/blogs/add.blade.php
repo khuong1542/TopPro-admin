@@ -35,6 +35,10 @@
                     <div class="col-md-10"><input type="text" name="slug" id="slug" class="form-control" placeholder="Nhập đường dẫn" value="{{ $datas->slug ?? '' }}"></div>
                 </div>
                 <div class="mb-3 row">
+                    <div class="col-md-2"><label><span>Trích dẫn</span></label></div>
+                    <div class="col-md-10"><input type="text" name="quotation" id="quotation" class="form-control" placeholder="Nhập trích dẫn" value="{{ $datas->quotation ?? '' }}"></div>
+                </div>
+                <div class="mb-3 row">
                     <div class="col-md-2"><label><span>Ảnh đại diện</span></label></div>
                     <div class="col-md-10">
                         <label for="images" class="btn btn-default mt-0">Chọn ảnh</label>

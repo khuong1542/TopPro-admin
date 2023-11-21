@@ -15,6 +15,7 @@ class BlogsModel extends Model
         'categories_id',
         'title',
         'slug',
+        'quotation',
         'author',
         'source',
         'date_create',

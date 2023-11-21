@@ -1,7 +1,7 @@
 <header id="header" class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-container navbar-bordered bg-white">
         <div class="navbar-nav-wrap">
             <a class="navbar-brand" href="index.html" aria-label="Front">
-                <img class="navbar-brand-logo" src="{{ URL::asset('public/dist/images/logo.png') }}" alt="Logo" data-hs-theme-appearance="default" style="width: 2.75rem;">
+                <img class="navbar-brand-logo" src="{{ URL::asset('dist/images/logo.png') }}" alt="Logo" data-hs-theme-appearance="default" style="width: 2.75rem;">
             </a>
             <div class="navbar-nav-wrap-content-start">
                 <div class="dropdown ms-7">
@@ -268,7 +268,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                                                        <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -300,7 +300,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                                                        <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -332,7 +332,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                                                        <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -402,7 +402,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                                                        <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -466,7 +466,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                                                        <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -654,7 +654,7 @@
                         <div class="dropdown">
                             <a class="navbar-dropdown-account-wrapper" href="javascript:;" id="accountNavbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" data-bs-dropdown-animation>
                                 <div class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                    <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
                             </a>
@@ -663,7 +663,7 @@
                                 <div class="dropdown-item-text">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-sm avatar-circle">
-                                            <img class="avatar-img" src="{{ URL::asset('public/dist/images/user_default.png') }}" alt="Image Description">
+                                            <img class="avatar-img" src="{{ URL::asset('dist/images/user_default.png') }}" alt="Image Description">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5 class="mb-0">Mark Williams</h5>

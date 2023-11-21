@@ -168,6 +168,7 @@ JS_Blog.prototype.update = function (type) {
             } else {
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
                 Library.hideloadding();
+                $("#" + arrResult['key']).focus();
             }
         }, error: function (e) {
             console.log(e);

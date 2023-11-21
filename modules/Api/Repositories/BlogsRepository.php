@@ -36,6 +36,7 @@ class BlogsRepository extends BaseRepository
         $sql->categories_id       = $data['categories_id'] ?? null;
         $sql->title               = $data['title'] ?? null;
         $sql->slug                = $data['slug'] ?? null;
+        $sql->quotation           = $data['quotation'] ?? null;
         $sql->author              = $data['author'] ?? null;
         $sql->source              = $data['source'] ?? null;
         $sql->date_create         = $data['date_create'] ?? null;

@@ -23,7 +23,7 @@ class FileService
                 copy($file['tmp_name'], $fullname);
                 $result[$i] = [
                     'name' => $file['name'],
-                    'url' => url('public/attach-file') . '/' . date('Y/m/d') . '/' . $filename,
+                    'url' => url('attach-file') . '/' . date('Y/m/d') . '/' . $filename,
                     'base_path' => $fullname,
                     'size' => $file['size'],
                 ];

@@ -21,7 +21,7 @@ class ListSeeder extends Seeder
         $param1 = [
             ['id' => (string)\Str::uuid(),'listtype_id' => $loaibaiviet->id,'code' => 'TIN_NOI_BAT',  'name' => 'Tin nổi bật',  'order' => 1,'status' => 1,'created_at' => date('Y-m-d H:i:s'),],
             ['id' => (string)\Str::uuid(),'listtype_id' => $loaibaiviet->id,'code' => 'TIN_MOI',      'name' => 'Tin mới',      'order' => 2,'status' => 1,'created_at' => date('Y-m-d H:i:s'),],
-            ['id' => (string)\Str::uuid(),'listtype_id' => $loaibaiviet->id,'code' => 'TIN_HIEN_THI', 'name' => 'Tin hiển thị', 'order' => 3,'status' => 1,'created_at' => date('Y-m-d H:i:s'),],
+            ['id' => (string)\Str::uuid(),'listtype_id' => $loaibaiviet->id,'code' => 'TIN_HIEN_THI_CO_DINH', 'name' => 'Tin hiển thị', 'order' => 3,'status' => 1,'created_at' => date('Y-m-d H:i:s'),],
             ['id' => (string)\Str::uuid(),'listtype_id' => $loaibaiviet->id,'code' => 'THONG_BAO',    'name' => 'Thông báo',    'order' => 4,'status' => 1,'created_at' => date('Y-m-d H:i:s'),],
         ];
         ListModel::insert($param1);

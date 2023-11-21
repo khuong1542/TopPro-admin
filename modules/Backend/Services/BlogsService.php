@@ -96,8 +96,12 @@ class BlogsService extends BaseService
             return array('success' => false, 'message' => $validator->errors()->get('dataUpdate')[0]);
         }
         parse_str($input['dataUpdate'], $params);
+        $params['categories_id'] = $params['categories_id'] ?? '';
         $params['date_create'] = !empty($params['date_create']) ? Carbon::createFromFormat('d/m/Y', $params['date_create'])->format('Y-m-d') : null;
         $params['content'] = $input['content'] ?? '';
+        $params['blog_type'] = $params['blog_type'] ?? '';
+        $params['current_status'] = $params['current_status'] ?? '';
+        // dd($params);
         $check = $this->validateService->validate($params, 'bài viết');
         if ($check['status'] === false) {
             foreach ($check['message'] as $key => $message) {

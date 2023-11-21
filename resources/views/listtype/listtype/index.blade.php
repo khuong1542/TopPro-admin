@@ -1,6 +1,6 @@
 @extends('layouts.index')
 @section('js')
-<script src="{{ URL::asset('public/dist/js/JS_Listtype.js') }}"></script>
+<script src="{{ URL::asset('dist/js/JS_Listtype.js') }}"></script>
 @endsection
 @section('content')
 <div class="content container-fluid">

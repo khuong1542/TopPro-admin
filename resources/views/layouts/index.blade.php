@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Quản trị DEVPro</title>
-	<link rel="shortcut icon" href="{{ URL::asset('public/dist/images/logo.png') }}">
+	<link rel="shortcut icon" href="{{ URL::asset('dist/images/logo.png') }}">
 	@include('layouts.css')
 	@include('layouts.js')
 
