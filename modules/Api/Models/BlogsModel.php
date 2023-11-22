@@ -3,6 +3,7 @@
 namespace Modules\Api\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Backend\Models\CategoriesModel;
 
 class BlogsModel extends Model
 {
@@ -49,5 +50,10 @@ class BlogsModel extends Model
                 return $query;
             default: return $query;
         }
+    }
+
+    public function categories()
+    {
+        return $this->hasOne(CategoriesModel::class, 'id', 'categories_id');
     }
 }

@@ -12,11 +12,12 @@ class BlogsResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray($data): array
+    public function toArray($request)
     {
         return [
             'id' => $this->id,
             'categories_id' => $this->categories_id,
+            'categories_name' => $this->categories->name,
             'title' => $this->title,
             'slug' => $this->slug,
             'author' => $this->author,
@@ -35,11 +36,6 @@ class BlogsResource extends JsonResource
             'rating' => $this->rating,
             'order' => $this->order,
             'status' => $this->status,
-            // 'id' => $this->id,
-            // 'name' => $this->name,
-            // 'email' => $this->email,
-            // 'created_at' => $this->created_at,
-            // 'updated_at' => $this->updated_at,
         ];
     }
 }
