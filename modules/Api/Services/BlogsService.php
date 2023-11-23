@@ -25,4 +25,10 @@ class BlogsService extends BaseService
         $data['notification_news'] = $this->repository->select($columnSelect)->where('blog_type', 'like', '%THONG_BAO%')->where('current_status', 'DA_DUYET')->where('status', 1)->take(6)->get()->toArray();
         return $data;
     }
+    public function reader($input): array
+    {
+        $columnSelect = ['*', \DB::raw("(select name from categories where id = blogs.categories_id) as categories_name")];
+        $data['datas'] = $this->repository->select($columnSelect)->where('slug', $input['slug'])->first();
+        return $data;
+    }
 }

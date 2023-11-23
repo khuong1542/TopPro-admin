@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('blogs')->group(function(){
     Route::get('loadList', [BlogsController::class, 'loadList']);
+    Route::get('reader', [BlogsController::class, 'reader']);
 });
