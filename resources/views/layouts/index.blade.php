@@ -15,7 +15,7 @@
 	<div class="main_loadding"></div>
 	@include('layouts.header')
 	@include('layouts.sidebar')
-	<main id="content" role="main" class="main">
+	<main id="main-content" role="main" class="main">
 		@yield('content')
 		@include('layouts.footer')
 	</main>

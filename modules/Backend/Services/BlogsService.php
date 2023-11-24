@@ -174,4 +174,20 @@ class BlogsService extends BaseService
             return array('success' => false, 'message' => 'Xóa thất bại!');
         }
     }
+    /**
+     * Upload file nội dung bài viết
+     */
+    public function uploadFile($input)
+    {
+        $response = '';
+        if($_FILES != [] && isset($input['upload'])){
+            $images = $this->fileService->upload($_FILES, 'uploads');
+
+            $CKEditorFuncNum = $input['CKEditorFuncNum'];
+            $url = $images[0]['url'];
+            $msg = 'Tải ảnh lên thành công.';
+            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+        }
+        echo $response;
+    }
 }

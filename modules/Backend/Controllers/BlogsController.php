@@ -77,4 +77,12 @@ class BlogsController extends Controller
         $data = $this->blogsService->changeStatus($request->all());
         return $data;
     }
+    /**
+     * 
+     */
+    public function uploadFile(Request $request)
+    {
+        $data = $this->blogsService->uploadFile($request->all());
+        return $data;
+    }
 }

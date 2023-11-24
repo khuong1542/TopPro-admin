@@ -3,7 +3,7 @@
 <script src="{{ URL::asset('dist/js/JS_Blog.js') }}"></script>
 @endsection
 @section('content')
-<div class="content container-fluid">
+<div class="main-content container-fluid">
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col-sm mb-2 mb-sm-0">
@@ -32,7 +32,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="addModal" data-bs-backdrop="static"></div>
+<div class="modal fade" id="addModal" data-bs-backdrop="static"  data-bs-focus="false"></div>
 <div class="modal fade" id="addList" data-bs-backdrop="static"></div>
 <div class="modal fade" id="addListtype" data-bs-backdrop="static"></div>
 <script>

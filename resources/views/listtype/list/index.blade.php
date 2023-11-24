@@ -3,7 +3,7 @@
 <script src="{{ URL::asset('dist/js/JS_List.js') }}"></script>
 @endsection
 @section('content')
-<div class="content container-fluid">
+<div class="main-content container-fluid">
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col-sm mb-2 mb-sm-0">

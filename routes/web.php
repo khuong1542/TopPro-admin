@@ -64,6 +64,7 @@ Route::prefix('/')->group(function(){
         Route::post('delete', [BlogsController::class, 'delete']);
         Route::post('updateOrderTable', [BlogsController::class, 'updateOrderTable']);
         Route::post('changeStatus', [BlogsController::class, 'changeStatus']);
+        Route::post('uploadFile', [BlogsController::class, 'uploadFile']);
     });
     // Route::prefix('')->group(function(){});
     // Route::prefix('')->group(function(){});

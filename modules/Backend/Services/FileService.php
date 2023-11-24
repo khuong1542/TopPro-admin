@@ -6,10 +6,10 @@ use Modules\Backend\Helpers\FunctionHelper;
 
 class FileService
 {
-    public function upload($data = [])
+    public function upload($data = [], $public = 'attach-file')
     {
         $files = $data != [] ? $data : ($_FILES != [] ? $_FILES : []);
-        $sDir = base_path('public') . chr(92) . 'attach-file' . chr(92);
+        $sDir = base_path('public') . chr(92) . $public . chr(92);
         $folder = FunctionHelper::createFolder($sDir, date('Y'), date('m'), date('d'));
         $result = [];
         if($files != []){
@@ -23,7 +23,7 @@ class FileService
                 copy($file['tmp_name'], $fullname);
                 $result[$i] = [
                     'name' => $file['name'],
-                    'url' => url('attach-file') . '/' . date('Y/m/d') . '/' . $filename,
+                    'url' => url($public) . '/' . date('Y/m/d') . '/' . $filename,
                     'base_path' => $fullname,
                     'size' => $file['size'],
                 ];

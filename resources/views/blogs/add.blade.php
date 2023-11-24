@@ -5,7 +5,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form id="frmBlogs_add" autocomplete="off">
+            <form id="frmBlogs_add" autocomplete="off" enctype="multipart/form-data">
                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id" id="id" value="{{ $datas->id ?? '' }}">
                 <div class="mb-3 row">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="mb-3 row">
                     <div class="col-md-2"><label><span>Nội dung</span></label></div>
-                    <div class="col-md-10"><textarea type="text" name="content" id="editor1" rows="2" class="form-control" placeholder="Nhập ghi chú">{{ $datas->content ?? '' }}</textarea></div>
+                    <div class="col-md-10"><textarea type="text" name="content" id="content" rows="2" class="form-control" placeholder="Nhập ghi chú" column_name="content">{{ $datas->content ?? '' }}</textarea></div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-md-2"><label class="required"><span>Loại bài viết</span></label></div>
@@ -147,6 +147,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="{{URL::asset('assets/ckeditor/ckeditor.js')}}"></script>
 <script>
     jQuery(document).ready(function() {
         $(".datepicker").datepicker({
@@ -174,11 +175,15 @@
             str = str + '-' + date.getTime() + '.html';
             $("#slug").val(str);
         });
-        CKEDITOR.replace('editor1', {
-            filebrowserBrowseUrl: '1',
-            filebrowserImageBrowseUrl: '2',
-            filebrowserUploadUrl: '4',
-            filebrowserImageUploadUrl: 'a',
-        });
     });
+</script>
+<script language="JavaScript" type="text/javascript">
+        <?php
+            $url = url('blogs/uploadFile?_token=') . csrf_token();
+        ?>
+        var url = '{{ $url }}';
+        CKEDITOR.replace('content', {
+            filebrowserUploadUrl: url,
+            filebrowserUploadMethod: 'form',
+        });
 </script>
