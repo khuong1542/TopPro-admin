@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('register', []);
+
 Route::prefix('blogs')->group(function(){
     Route::get('loadList', [BlogsController::class, 'loadList']);
     Route::get('reader', [BlogsController::class, 'reader']);

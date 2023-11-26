@@ -5,23 +5,23 @@ namespace Modules\Api\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Api\Resources\BlogsResource;
-use Modules\Api\Services\BlogsService;
+use Modules\Api\Services\BlogService;
 
 class BlogsController extends Controller
 {
-    private $blogsService;
-    public function __construct(BlogsService $blogsService)
+    private $blogService;
+    public function __construct(BlogService $blogService)
     {
-        $this->blogsService = $blogsService;
+        $this->blogService = $blogService;
     }
     public function loadList(Request $request)
     {
-        $data = $this->blogsService->loadList($request->all());
+        $data = $this->blogService->loadList($request->all());
         return response()->json(['status' => 200, 'data' => $data]);
     }
     public function reader(Request $request)
     {
-        $data = $this->blogsService->reader($request->all());
+        $data = $this->blogService->reader($request->all());
         return response()->json(['status' => 200, 'data' => $data]);
     }
 }

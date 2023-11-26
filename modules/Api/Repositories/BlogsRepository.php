@@ -2,7 +2,7 @@
 
 namespace Modules\Api\Repositories;
 
-use Modules\Api\Models\BlogsModel;
+use Modules\Api\Models\BlogModel;
 use Modules\Core\BaseRepository;
 
 class BlogsRepository extends BaseRepository
@@ -13,7 +13,7 @@ class BlogsRepository extends BaseRepository
     }
     public function model()
     {
-        return BlogsModel::class;
+        return BlogModel::class;
     }
     /**
      * Lưu thông tin

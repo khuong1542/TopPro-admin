@@ -4,21 +4,21 @@ namespace Modules\Backend\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Backend\Services\BlogsService;
+use Modules\Backend\Services\BlogService;
 
 class BlogsController extends Controller
 {
-    private $blogsService;
-    public function __construct(BlogsService $blogsService)
+    private $blogService;
+    public function __construct(BlogService $blogService)
     {
-        $this->blogsService = $blogsService;
+        $this->blogService = $blogService;
     }
     /**
      * Trang Index
      */
     public function index()
     {
-        $data = $this->blogsService->index();
+        $data = $this->blogService->index();
         return view('blogs.index');
     }
     /**
@@ -26,7 +26,7 @@ class BlogsController extends Controller
      */
     public function loadList(Request $request)
     {
-        $data = $this->blogsService->loadList($request->all());
+        $data = $this->blogService->loadList($request->all());
         return $data;
     }
     /**
@@ -34,7 +34,7 @@ class BlogsController extends Controller
      */
     public function create(Request $request)
     {
-        $data = $this->blogsService->create($request->all());
+        $data = $this->blogService->create($request->all());
         return view('blogs.add', $data);
     }
     /**
@@ -42,7 +42,7 @@ class BlogsController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = $this->blogsService->edit($request->all());
+        $data = $this->blogService->edit($request->all());
         return view('blogs.add', $data);
     }
     /**
@@ -50,7 +50,7 @@ class BlogsController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $this->blogsService->_update($request->all());
+        $data = $this->blogService->_update($request->all());
         return $data;
     }
     /**
@@ -58,7 +58,7 @@ class BlogsController extends Controller
      */
     public function delete(Request $request)
     {
-        $data = $this->blogsService->_delete($request->all());
+        $data = $this->blogService->_delete($request->all());
         return $data;
     }
     /**
@@ -66,7 +66,7 @@ class BlogsController extends Controller
      */
     public function updateOrderTable(Request $request)
     {
-        $data = $this->blogsService->updateOrderTable($request->all());
+        $data = $this->blogService->updateOrderTable($request->all());
         return $data;
     }
     /**
@@ -74,7 +74,7 @@ class BlogsController extends Controller
      */
     public function changeStatus(Request $request)
     {
-        $data = $this->blogsService->changeStatus($request->all());
+        $data = $this->blogService->changeStatus($request->all());
         return $data;
     }
     /**
@@ -82,7 +82,7 @@ class BlogsController extends Controller
      */
     public function uploadFile(Request $request)
     {
-        $data = $this->blogsService->uploadFile($request->all());
+        $data = $this->blogService->uploadFile($request->all());
         return $data;
     }
 }
