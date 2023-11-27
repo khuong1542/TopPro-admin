@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('list', function (Blueprint $table) {
-            $table->string('listtype_code')->nullable();
+            $table->string('listtype_code')->nullable(); // Mã danh mục
         });
     }
 

@@ -181,6 +181,8 @@ return [
          */
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        \Fruitcake\Cors\CorsServiceProvider::class
+
     ],
 
     /*

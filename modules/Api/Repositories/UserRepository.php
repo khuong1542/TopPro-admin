@@ -22,6 +22,7 @@ class UserRepository extends BaseRepository
      */
     public function _update($data)
     {
+        // dd($data);
         // if(isset($data['order']) && !empty($data['order'])){
         //     $this->updateOrder($data);
         // }
@@ -33,11 +34,23 @@ class UserRepository extends BaseRepository
             $sql->id         = (string)\Str::uuid();
             $sql->created_at = date('Y-m-d H:i:s');
         }
-        $sql->name = $data['name'] ?? null;
-        $sql->email = $data['email'] ?? null;
-        $sql->password = $data['password'] ?? null;
-        // $sql->order               = $data['order'] ?? null;
-        // $sql->status              = isset($data['status']) && $data['status'] === 'on' ? 1 : 0;
+        $sql->name              = $data['name'] ?? null;
+        $sql->username          = $data['username'] ?? null;
+        $sql->email             = $data['email'] ?? null;
+        $sql->email_verified_at = $data['email_verified_at'] ?? date('Y-m-d H:i:s');
+        $sql->password          = $data['password'] ?? null;
+        $sql->remember_token    = $data['remember_token'] ?? null;
+        $sql->birthday          = $data['birthday'] ?? null;
+        $sql->phone             = $data['phone'] ?? null;
+        $sql->gender            = $data['gender'] ?? null;
+        $sql->avatar            = $data['avatar'] ?? 'user-default.png';
+        $sql->city              = $data['city'] ?? null;
+        $sql->district          = $data['district'] ?? null;
+        $sql->ward              = $data['ward'] ?? null;
+        $sql->address           = $data['address'] ?? null;
+        $sql->role              = $data['role'] ?? null;
+        $sql->order             = $data['order'] ?? null;
+        $sql->status            = isset($data['status']) && $data['status'] === 'on' ? 1 : 0;
         $sql->save();
         return $sql;
     }

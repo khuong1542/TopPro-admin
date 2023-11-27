@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Api\Controllers\BlogsController;
+use Modules\Api\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +15,11 @@ use Modules\Api\Controllers\BlogsController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::post('register', []);
+Route::post('register', [RegisterController::class, 'register']);
 
 Route::prefix('blogs')->group(function(){
     Route::get('loadList', [BlogsController::class, 'loadList']);
