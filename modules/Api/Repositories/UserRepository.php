@@ -2,6 +2,7 @@
 
 namespace Modules\Api\Repositories;
 
+use Illuminate\Support\Facades\Hash;
 use Modules\Api\Models\UsersModel;
 use Modules\Core\BaseRepository;
 
@@ -38,7 +39,7 @@ class UserRepository extends BaseRepository
         $sql->username          = $data['username'] ?? null;
         $sql->email             = $data['email'] ?? null;
         $sql->email_verified_at = $data['email_verified_at'] ?? date('Y-m-d H:i:s');
-        $sql->password          = $data['password'] ?? null;
+        $sql->password          = isset($data['password']) ? Hash::make($data['password']) : null;
         $sql->remember_token    = $data['remember_token'] ?? null;
         $sql->birthday          = $data['birthday'] ?? null;
         $sql->phone             = $data['phone'] ?? null;

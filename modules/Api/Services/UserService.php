@@ -15,7 +15,7 @@ class UserService extends BaseService
     {
         return UserRepository::class;
     }
-    public function register($input)
+    public function _update($input)
     {
         $data = $this->repository->_update($input);
         return $data;

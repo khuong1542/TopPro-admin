@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Api\Controllers\BlogsController;
-use Modules\Api\Controllers\RegisterController;
+use Modules\Api\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,8 @@ use Modules\Api\Controllers\RegisterController;
 //     return $request->user();
 // });
 
-Route::post('register', [RegisterController::class, 'register']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
 
 Route::prefix('blogs')->group(function(){
     Route::get('loadList', [BlogsController::class, 'loadList']);
