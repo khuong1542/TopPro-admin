@@ -177,7 +177,7 @@
         });
     });
 </script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
         <?php
             $url = url('blogs/uploadFile?_token=') . csrf_token();
         ?>

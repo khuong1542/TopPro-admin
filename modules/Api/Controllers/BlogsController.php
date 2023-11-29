@@ -17,11 +17,11 @@ class BlogsController extends Controller
     public function loadList(Request $request)
     {
         $data = $this->blogService->loadList($request->all());
-        return response()->json(['status' => 200, 'data' => $data]);
+        return response()->json(['status' => true, 'data' => $data]);
     }
     public function reader(Request $request)
     {
         $data = $this->blogService->reader($request->all());
-        return response()->json(['status' => 200, 'data' => $data]);
+        return response()->json(['status' => true, 'data' => $data]);
     }
 }

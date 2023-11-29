@@ -19,11 +19,16 @@ class AuthController extends Controller
         if(isset($data['status']) && $data['status'] === false){
             return response()->json(['status' => false, 'message' => $data['message']]);
         }
-        return response()->json(['status' => 200, 'data' => $data]);
+        return response()->json(['status' => true, 'data' => $data]);
     }
     public function login(Request $request)
     {
         $data = $this->authService->login($request->all());
-        return response()->json(['status' => 200, 'data' => $data]);
+        return response()->json($data);
+    }
+    public function logout(Request $request)
+    {
+        $data = $this->authService->logout($request->all());
+        return response()->json(['status' => true, 'data' => $data]);
     }
 }
