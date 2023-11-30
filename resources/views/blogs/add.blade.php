@@ -187,6 +187,7 @@
             ['Source'],
             ['SelectAll', 'Save', 'NewPage', 'Preview', 'Print'],
             ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+            ['TransformTextToUppercase', 'TransformTextToLowercase', 'TransformTextCapitalize', 'TransformTextSwitcher'],
             ['Scayt', 'Anchor'],
             ['Find', 'Replace'],
             ['Checkbox', 'Radio'],
@@ -202,7 +203,6 @@
             ['Image', 'Link', 'Unlink', 'Youtube'],
             '/',
             ['Styles', 'Format', 'Font', 'FontSize', 'lineheight'],
-            ['TransformTextToUppercase', 'TransformTextToLowercase', 'TransformTextCapitalize', 'TransformTextSwitcher'],
             ['Maximize'],
         ];
         CKEDITOR.replace('content', {

@@ -8,4 +8,5 @@
 <script src="{{URL::asset('assets/chosen/chosen.min.js')}}"></script>
 <script src="{{URL::asset('assets/ckeditor/ckeditor.js')}}"></script>
 <script src="{{URL::asset('assets/datepicker/datepicker.min.js')}}"></script>
+<script src="{{URL::asset('assets/js/tinymce.min.js')}}"></script>
 @yield('js')
