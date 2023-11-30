@@ -182,6 +182,29 @@
             $url = url('blogs/uploadFile?_token=') . csrf_token();
         ?>
         var url = '{{ $url }}';
+        CKEDITOR.config.toolbar = [
+            ['Undo', 'Redo'],
+            ['Source'],
+            ['SelectAll', 'Save', 'NewPage', 'Preview', 'Print'],
+            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+            ['Scayt', 'Anchor'],
+            ['Find', 'Replace'],
+            ['Checkbox', 'Radio'],
+            // ['TextField', 'Textarea', 'Select'],
+            ['TextField', 'Textarea', 'Button'],
+            '/',
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+            ['TextColor', 'BGColor'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['NumberedList', 'BulletedList'],
+            ['Outdent', 'Indent'],
+            ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar'],
+            ['Image', 'Link', 'Unlink', 'Youtube'],
+            '/',
+            ['Styles', 'Format', 'Font', 'FontSize', 'lineheight'],
+            ['TransformTextToUppercase', 'TransformTextToLowercase', 'TransformTextCapitalize', 'TransformTextSwitcher'],
+            ['Maximize'],
+        ];
         CKEDITOR.replace('content', {
             filebrowserUploadUrl: url,
             filebrowserUploadMethod: 'form',
