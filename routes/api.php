@@ -15,8 +15,13 @@ use Modules\Api\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function(){
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('update', [AuthController::class, 'update']);
+    Route::post('uploads', [AuthController::class, 'uploads']);
 });
 
 Route::post('register', [AuthController::class, 'register']);

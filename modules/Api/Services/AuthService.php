@@ -2,17 +2,22 @@
 
 namespace Modules\Api\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Modules\Api\Repositories\UserRepository;
+use Modules\Backend\Services\FileService;
 use Modules\Core\BaseService;
+use Psy\Exception\ThrowUpException;
 
 class AuthService
 {
     private $userService;
+    private $fileService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, FileService $fileService)
     {
         $this->userService = $userService;
+        $this->fileService = $fileService;
     }
     public function repository()
     {
@@ -42,7 +47,7 @@ class AuthService
         if(!empty($users)){
             if(Hash::check($input['password'], $users->password)){
                 $data['users'] = $users;
-                $data['users']['token'] = $users->createToken('authToken')->plainTextToken;
+                $data['users']['token'] = $users->createToken('Token of ' . $users->name)->plainTextToken;
                 return array('status' => true, 'message' => 'Đăng nhập thành công.', 'data' => $data);
             }else{
                 return array('status' => false, 'message' => 'Mật khẩu không đúng!');
@@ -62,5 +67,36 @@ class AuthService
         }
         auth()->guard('web')->logout();
         return array('status' => true, 'message' => 'Đăng xuất thành công.');
+    }
+    /**
+     * Cập nhật ảnh đại diện
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function uploads($input): array
+    {
+        if($_FILES != [] && isset($_FILES['uploads'])){
+            $data = $this->fileService->upload($_FILES);
+            $this->userService->where('id', $input['id'])->update(['avatar' => $data[0]['url']]);
+            return array('status' => true, 'message' => 'Tải ảnh lên thành công.', 'data' => $data[0] ?? $data);
+        }else{
+            return array('status' => false, 'message' => 'Tải ảnh lên thất bại!');
+        }
+    }
+    /**
+     * Cập nhật thông tin
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function update($input): array
+    {
+        $input['status'] = 'on';
+        try{
+            $data = $this->userService->_update($input);
+            $data['token'] = $data->createToken('Token of ' . $data->name)->plainTextToken;
+            return array('status' => true, 'message' => 'Cập nhật thành công!', 'data' => $data);
+        } catch(Exception $e){
+            throw new \ErrorException($e->getMessage());
+        }
     }
 }

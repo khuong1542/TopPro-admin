@@ -13,6 +13,9 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
+    /**
+     * Đăng ký
+     */
     public function register(Request $request)
     {
         $data = $this->authService->register($request->all());
@@ -21,14 +24,36 @@ class AuthController extends Controller
         }
         return response()->json(['status' => true, 'data' => $data]);
     }
+    /**
+     * Đăng nhập
+     */
     public function login(Request $request)
     {
         $data = $this->authService->login($request->all());
         return response()->json($data);
     }
+    /**
+     * Đăng nhập
+     */
     public function logout(Request $request)
     {
         $data = $this->authService->logout($request->all());
+        return response()->json(['status' => true, 'data' => $data]);
+    }
+    /**
+     * Cập nhật ảnh đại diện
+     */
+    public function uploads(Request $request)
+    {
+        $data = $this->authService->uploads($request->all());
+        return response()->json(['status' => true, 'data' => $data]);   
+    }
+    /**
+     * Cập nhật thông tin
+     */
+    public function update(Request $request)
+    {
+        $data = $this->authService->update($request->all());
         return response()->json(['status' => true, 'data' => $data]);
     }
 }
