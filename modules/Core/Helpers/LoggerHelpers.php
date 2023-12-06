@@ -2,7 +2,6 @@
 
 namespace Modules\Core\Helpers;
 
-use Illuminate\Support\Facades\File;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
@@ -65,19 +64,19 @@ class LoggerHelpers
     {
         $sPath = str_replace("/", "\\", $pathLink);
         if (!file_exists($sPath . $folderYear)) {
-            File::makeDirectory($sPath . $folderYear, 0777);
+            mkdir($sPath . $folderYear, 0777);
             $sPath = $sPath . $folderYear;
             if (!file_exists($sPath . chr(92) . $folderMonth)) {
-                File::makeDirectory($sPath . chr(92) . $folderMonth, 0777);
+                mkdir($sPath . chr(92) . $folderMonth, 0777);
             }
         } else {
             $sPath = $sPath . $folderYear;
             if (!file_exists($sPath . chr(92) . $folderMonth)) {
-                File::makeDirectory($sPath . chr(92) . $folderMonth, 0777);
+                mkdir($sPath . chr(92) . $folderMonth, 0777);
             }
         }
         if (!file_exists($sPath . chr(92) . $folderMonth . chr(92) . $sCurrentDay)) {
-            File::makeDirectory($sPath . chr(92) . $folderMonth . chr(92) . $sCurrentDay, 0777);
+            mkdir($sPath . chr(92) . $folderMonth . chr(92) . $sCurrentDay, 0777);
         }
         $strReturn = $pathLink . $folderYear . '/' . $folderMonth . '/' . $sCurrentDay . '/';
         return str_replace("/", "\\", $strReturn);
