@@ -56,4 +56,12 @@ class AuthController extends Controller
         $data = $this->authService->update($request->all());
         return response()->json(['status' => true, 'data' => $data]);
     }
+    /**
+     * Đổi mật khẩu
+     */
+    public function changepass(Request $request)
+    {
+        $data = $this->authService->changepass($request->all());
+        return response()->json($data);
+    }
 }

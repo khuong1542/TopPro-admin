@@ -99,4 +99,28 @@ class AuthService
             throw new \ErrorException($e->getMessage());
         }
     }
+    /**
+     * Đổi mật khẩu
+     * @param $input Dữ liệu truyền vào
+     * @return array
+     */
+    public function changepass($input): array
+    {
+        // dd($input);
+        if(!isset($input['id']) || (isset($input['id']) && empty($input['id']))){
+            return array('status' => false, 'message' => 'Không tồn tại đối tượng');
+        }
+        $users = $this->userService->where('id', $input['id'])->first();
+        if(!empty($users)){
+            if(password_verify($input['password'], $users->password)){
+                $password = Hash::make($input['passnew']);
+                $users->update(['password' => $password]);
+                return array('status' => true, 'message' => 'Cập nhật mật khẩu thành công');
+            }else{
+                return array('status' => false, 'message' => 'Mật khẩu cũ không chính xác');
+            }
+        }else{
+            return array('status' => false, 'message' => 'Không tồn tại đối tượng');
+        }
+    }
 }

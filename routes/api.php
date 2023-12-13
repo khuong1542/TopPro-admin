@@ -22,6 +22,9 @@ Route::middleware('auth:sanctum')->group(function(){
     });
     Route::post('update', [AuthController::class, 'update']);
     Route::post('uploads', [AuthController::class, 'uploads']);
+    Route::prefix('infor')->group(function() {
+        Route::post('changepass', [AuthController::class, 'changepass']);
+    });
 });
 
 Route::post('register', [AuthController::class, 'register']);
