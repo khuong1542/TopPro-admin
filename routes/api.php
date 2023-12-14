@@ -33,5 +33,6 @@ Route::post('logout', [AuthController::class, 'logout']);
 
 Route::prefix('blogs')->group(function(){
     Route::get('loadList', [BlogsController::class, 'loadList']);
+    Route::post('list', [BlogsController::class, 'list']);
     Route::get('reader', [BlogsController::class, 'reader']);
 });
