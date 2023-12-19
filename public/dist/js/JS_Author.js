@@ -1,19 +1,18 @@
-function JS_Listtype(baseUrl, module, action) {
-    $("#active_listtype").attr('class', 'nav-item active');
-    $("#main_listtype").attr('class', 'nav-link dropdown-toggle active');
-    $("#action_listtype").attr('class', 'nav-link active');
-    $("#collapse_listtype").attr('class', 'nav-collapse collapse show');
+function JS_Author(baseUrl, module, action) {
+    $("#main_authors").attr('class', 'nav-link active');
     this.baseUrl = baseUrl;
     this.module = module;
     this.action = action;
     this.urlPath = baseUrl + '/' + module + (action != '' && action != undefined ? '/' + action : '');
+    this.oFormIndex = '#frmAuthors_index';
+    this.oFormAdd = '#frmAuthors_add';
     this.currentPage = 1
     this.perPage = 15;
 }
 /**
  * Sự kiện xảy ra
  */
-JS_Listtype.prototype.loadIndex = function () {
+JS_Author.prototype.loadIndex = function () {
     var myClass = this;
     $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
     myClass.loadList();
@@ -26,19 +25,19 @@ JS_Listtype.prototype.loadIndex = function () {
     $("#btn_delete").click(function () {
         myClass.delete();
     });
-    $("#btn_search").click(function () {
-        search();
-    });
     $("#btn_update_order").click(function () {
         myClass.updateOrderTable();
+    });
+    $("#btn_search").click(function () {
+        search();
     });
 }
 /**
  * Danh sách
  */
-JS_Listtype.prototype.loadList = function (currentPage = 1, perPage = 15) {
+JS_Author.prototype.loadList = function (currentPage = 1, perPage = 15) {
     var myClass = this;
-    var oForm = '#frmListtype_index';
+    var oForm = myClass.oFormIndex;
     myClass.currentPage = currentPage;
     myClass.perPage = perPage;
     var url = myClass.urlPath + '/loadList';
@@ -73,7 +72,7 @@ JS_Listtype.prototype.loadList = function (currentPage = 1, perPage = 15) {
 /**
  * Form thêm mới
  */
-JS_Listtype.prototype.create = function () {
+JS_Author.prototype.create = function () {
     var myClass = this;
     var url = myClass.urlPath + '/create';
     Library.showloadding();
@@ -86,12 +85,8 @@ JS_Listtype.prototype.create = function () {
             $("#addModal").modal('show');
             $("#status").attr('checked', true);
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_update").click(function () {
-                myClass.update(false);
-            });
-            $("#btn_update_close").click(function () {
-                myClass.update(true);
-            });
+            $("#btn_update").click(function () { myClass.update(false); });
+            $("#btn_update_close").click(function () { myClass.update(true); });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -101,7 +96,7 @@ JS_Listtype.prototype.create = function () {
 /**
  * Form sửa
  */
-JS_Listtype.prototype.edit = function (id) {
+JS_Author.prototype.edit = function (id) {
     var myClass = this;
     var url = myClass.urlPath + '/edit';
     var listId = '';
@@ -133,9 +128,7 @@ JS_Listtype.prototype.edit = function (id) {
             $("#addModal").html(arrResult);
             $("#addModal").modal('show');
             $('.chzn-select').chosen({ height: '100%', width: '100%', search_contains: true });
-            $("#btn_update_close").click(function () {
-                myClass.update(true);
-            });
+            $("#btn_update_close").click(function () { myClass.update(true); });
         }, error: function (e) {
             console.log(e);
             Library.hideloadding();
@@ -144,32 +137,36 @@ JS_Listtype.prototype.edit = function (id) {
 }
 /**
  * Lưu thông tin
- * @return string
  */
-JS_Listtype.prototype.update = function (type = false) {
+JS_Author.prototype.update = function (type) {
     var myClass = this;
-    var oForm = 'form#frmListtype_add';
-    var url = myClass.urlPath + '/update';
-    var order = $("#order").val();
-    var data = $(oForm).serialize();
+    var oForm = myClass.oFormAdd;
+    var url = this.urlPath + '/update';
+    var data = new FormData;
+    data.append('_token', $("#_token").val());
+    data.append('dataUpdate', $(oForm).serialize());
+    data.append('files', $("#avatar")[0].files[0]);
     Library.showloadding();
     $.ajax({
         url: url,
         type: 'POST',
         data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
         success: function (arrResult) {
-            Library.hideloadding();
             if (arrResult['success'] == true) {
                 Library.alertMessage('success', 'Thông báo', arrResult['message']);
+                myClass.loadList();
                 $(oForm)[0].reset();
-                $(oForm).find('#order').val(parseInt(order) + 1);
-                myClass.loadList(myClass.currentPage, myClass.perPage);
+                $(myClass.oFormAdd + " #order").val(parseInt(arrResult['data']['order']) + 1);
                 if (type) {
-                    $(".modal").modal('hide');
+                    $("#addModal").modal('hide');
                 }
             } else {
                 Library.alertMessage('danger', 'Lỗi', arrResult['message']);
-                $("#" + arrResult.key).focus();
+                Library.hideloadding();
+                $("#" + arrResult['key']).focus();
             }
         }, error: function (e) {
             console.log(e);
@@ -180,7 +177,7 @@ JS_Listtype.prototype.update = function (type = false) {
 /**
  * Xóa thông tin
  */
-JS_Listtype.prototype.delete = function () {
+JS_Author.prototype.delete = function () {
     var myClass = this;
     var listId = '';
     var chk_item_id = $('#table-data').find('input[name="chk_item_id"]');
@@ -200,6 +197,7 @@ JS_Listtype.prototype.delete = function () {
     var url = myClass.urlPath + '/delete';
     $.confirm({
         title: 'Thông báo',
+        titleClass: 'fw-bold text-danger',
         content: 'Bạn có chắc chắn muốn xóa!',
         type: 'red',
         closeIcon: true,
@@ -240,7 +238,7 @@ JS_Listtype.prototype.delete = function () {
 /**
  * Cập nhật lại toàn bộ STT
  */
-JS_Listtype.prototype.updateOrderTable = function () {
+JS_Author.prototype.updateOrderTable = function () {
     var myClass = this;
     $.confirm({
         title: 'Thông báo',
@@ -286,13 +284,11 @@ JS_Listtype.prototype.updateOrderTable = function () {
  * Thay đổi trạng thái
  */
 function changeStatus(id) {
-    var myClass = JS_Listtype;
+    var myClass = JS_Author;
     var url = myClass.urlPath + '/changeStatus';
-    var data = {
-        _token: $("#_token").val(),
-        status: $("#status_" + id).is(":checked") ? 0 : 1,
-        id: id,
-    }
+    var data = '_token=' + $("#_token").val();
+    data += '&status=' + ($("#status_" + id).is(":checked") ? 0 : 1);
+    data += '&id=' + id;
     Library.showloadding();
     $.ajax({
         url: url,
@@ -315,5 +311,19 @@ function changeStatus(id) {
  * Tìm kiếm
  */
 function search() {
-    JS_Listtype.loadList(JS_Listtype.currentPage, JS_Listtype.perPage);
+    JS_Author.loadList();
+}
+/**
+ * Hiển thị hình ảnh
+ */
+function showImage(_this) {
+    var reader = new FileReader();
+    var img = document.createElement("img");
+    reader.readAsDataURL($(_this)[0].files[0]);
+    reader.onload = function () {
+        var dataURL = reader.result;
+        img.src = dataURL;
+        img.style = 'width: 100%;';
+    };
+    $("#feature_img").html(img);
 }

@@ -300,11 +300,11 @@ JS_Categories.prototype.edit = function (id) {
         }
     });
     if (listId == '') {
-        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một chuyên mục để sửa!');
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một bản ghi để sửa!');
         return false;
     }
     if (listId > 1) {
-        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một chuyên mục để sửa!');
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn một bản ghi để sửa!');
         return false;
     }
     Library.showloadding();
@@ -386,7 +386,7 @@ JS_Categories.prototype.delete = function () {
         }
     });
     if (listId == '') {
-        Library.alertMessage('warning', 'Cảnh báo', 'Chọn ít nhất một chuyên mục để xoá!');
+        Library.alertMessage('warning', 'Cảnh báo', 'Chọn ít nhất một bản ghi để xoá!');
         return false;
     }
     var url = myClass.urlPath + '/delete';

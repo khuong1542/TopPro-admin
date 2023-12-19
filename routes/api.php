@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Api\Controllers\BlogsController;
 use Modules\Api\Controllers\AuthController;
+use Modules\Api\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
+
+Route::prefix('home')->group(function() {
+    Route::post('blogs', [HomeController::class, 'blogs']);
+});
 
 Route::prefix('blogs')->group(function(){
     Route::get('loadList', [BlogsController::class, 'loadList']);

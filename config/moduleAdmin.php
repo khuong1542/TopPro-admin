@@ -32,6 +32,12 @@ return [
         'checkRole' => 'ADMIN',
         'child' => false,
     ],
+    'authors' => [
+        'name' => 'Quản trị tác giả',
+        'icon' => 'bx bxs-user-check',
+        'checkRole' => 'ADMIN',
+        'child' => false,
+    ],
     'blogs' => [
         'name' => 'Quản trị bài viết',
         'icon' => 'bx bx-news',

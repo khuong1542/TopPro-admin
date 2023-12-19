@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Backend\Controllers\AuthorController;
 use Modules\Backend\Controllers\BlogsController;
 use Modules\Backend\Controllers\CategoriesController;
 use Modules\Backend\Controllers\DashboardController;
@@ -55,6 +56,18 @@ Route::prefix('/')->group(function(){
         Route::post('updateOrderTable', [CategoriesController::class, 'updateOrderTable']);
         Route::post('changeStatus', [CategoriesController::class, 'changeStatus']);
     });
+    // Tác giả
+    Route::prefix('authors')->group(function(){
+        Route::get('', [AuthorController::class, 'index']);
+        Route::get('loadList', [AuthorController::class, 'loadList']);
+        Route::get('create', [AuthorController::class, 'create']);
+        Route::get('edit', [AuthorController::class, 'edit']);
+        Route::post('update', [AuthorController::class, 'update']);
+        Route::post('delete', [AuthorController::class, 'delete']);
+        Route::post('updateOrderTable', [AuthorController::class, 'updateOrderTable']);
+        Route::post('changeStatus', [AuthorController::class, 'changeStatus']);
+    });
+    // Bài viết
     Route::prefix('blogs')->group(function(){
         Route::get('', [BlogsController::class, 'index']);
         Route::get('loadList', [BlogsController::class, 'loadList']);
